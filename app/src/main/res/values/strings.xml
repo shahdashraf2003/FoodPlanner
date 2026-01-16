@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">FoodPlanner</string>
+    <string name="skip">Skip</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="aleady_have_an_account">Aleady have an account</string>
+    <string name="sign_in">Sign In</string>
 </resources>

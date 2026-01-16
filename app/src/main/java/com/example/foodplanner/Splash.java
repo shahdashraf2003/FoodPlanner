@@ -23,7 +23,7 @@ public class Splash extends AppCompatActivity {
         Animation rotateAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate);
         iv_splash.startAnimation(rotateAnimation);
         handler.postDelayed(() -> {
-            Intent intent = new Intent(Splash.this, MainActivity.class);
+            Intent intent = new Intent(Splash.this, Login.class);
             startActivity(intent
             );
         }, 5000);
