@@ -10,6 +10,7 @@ public interface LoginContract {
 
     interface Presenter {
         void login(String email, String password);
+        void loginWithGoogle(String idToken);
 
     }
 }
