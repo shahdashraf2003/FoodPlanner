@@ -133,15 +133,15 @@
         app:layout_constraintStart_toEndOf="@+id/alrady"
         app:layout_constraintTop_toTopOf="@+id/alrady"
         app:layout_constraintVertical_bias="1.0" />
+<com.google.android.material.divider.MaterialDivider
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="30dp"
+    android:background="@color/gray"
+    android:gravity="center_horizontal"
 
-    <TextView
-        android:id="@+id/signup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:background="@color/gray"
-        android:gravity="center_horizontal"
-        android:textSize="2sp"
+
+
         app:layout_constraintBottom_toTopOf="@+id/btn_google"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

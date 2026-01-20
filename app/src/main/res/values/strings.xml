@@ -13,4 +13,6 @@
     <string name="profile">Profile</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="have_a_look_at_our_meals">Have a look at our meals</string>
+    <string name="meal_of_the_day">Meal of the day</string>
 </resources>

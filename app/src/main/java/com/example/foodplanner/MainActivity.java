@@ -23,11 +23,13 @@ public class MainActivity extends AppCompatActivity {
         HomeFragment home = new HomeFragment();
         manager = getSupportFragmentManager();
         transaction = manager.beginTransaction();
-        transaction.add(R.id.home_item, home, "home_fragment");
+        transaction.add(R.id.frame_layout, home, "home_fragment");
+        transaction.commit();
         bottomNavigationView.setOnItemSelectedListener(
                 item->{
                     if (item.getItemId() == R.id.home_item) {
                         replaceFragment(new HomeFragment());
+
                     } else if (item.getItemId() == R.id.search_item) {
                         replaceFragment( new SearchFragment());
                     }
@@ -48,7 +50,8 @@ public class MainActivity extends AppCompatActivity {
     }
     public void replaceFragment(Fragment fragment)
     {
-
+        FragmentTransaction transaction=manager.beginTransaction();
         transaction.replace(R.id.frame_layout,fragment);
+        transaction.commit();
     }
 }

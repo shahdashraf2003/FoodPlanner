@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         auth = FirebaseAuth.getInstance();
         loginEmail = findViewById(R.id.et_EmailAddress);
         loginPassword = findViewById(R.id.et_Pass);
-        signup = findViewById(R.id.signup);
+        signup = findViewById(R.id.sginup);
         loginButton = findViewById(R.id.btn_login);
         skip = findViewById(R.id.btn_skip);
         google = findViewById(R.id.btn_google);
