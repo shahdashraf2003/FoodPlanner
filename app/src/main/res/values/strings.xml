@@ -15,4 +15,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="have_a_look_at_our_meals">Have a look at our meals</string>
     <string name="meal_of_the_day">Meal of the day</string>
+    <string name="check_all_categries">Check all categries</string>
 </resources>
