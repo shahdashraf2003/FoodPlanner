@@ -2,6 +2,7 @@ package com.example.foodplanner;
 
 import static com.example.foodplanner.R.id.iv_meal;
 
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -13,10 +14,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.foodplanner.datasource.MealNetworkResponse;
 import com.example.foodplanner.datasource.MealRemoteDataSource;
 import com.example.foodplanner.model.Meal;
@@ -29,6 +35,7 @@ public static String TAG="Home Fra";
 ImageView iv_meal;
 TextView name , desc;
 MealRemoteDataSource mealRemoteDataSource;
+    ProgressBar imageProgress;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +51,7 @@ MealRemoteDataSource mealRemoteDataSource;
         iv_meal=mealCardView.findViewById(R.id.iv_meal);
         name=mealCardView.findViewById(R.id.tv_name);
         desc=mealCardView.findViewById(R.id.tv_desc);
+        imageProgress=mealCardView.findViewById(R.id.imageProgress);
         Log.d(TAG, "iv_meal = " + iv_meal);
         Log.d(TAG, "name = " + name);
         Log.d(TAG, "desc = " + desc);
@@ -54,26 +62,50 @@ MealRemoteDataSource mealRemoteDataSource;
                         System.out.println(meal.get(0).getStrMeal());
                         Log.d(TAG, "onSuccess: "+meal.get(0).getStrMeal());
                         Log.d(TAG, "Meal image URL: " + meal.get(0).getStrMealThumb());
-                        Toast.makeText(getContext(), "succ"+meal.get(0).getStrMeal(), Toast.LENGTH_SHORT).show();
-
                         name.setText(meal.get(0).getStrMeal());
                         desc.setText(meal.get(0).getStrInstructions());
+                        imageProgress.setVisibility(View.VISIBLE);
+                        iv_meal.setVisibility(View.INVISIBLE);
+
                         Glide.with(requireContext())
                                 .load(meal.get(0).getStrMealThumb())
+                                .listener(new RequestListener<Drawable>() {
+                                    @Override
+                                    public boolean onLoadFailed(
+                                            GlideException e,
+                                            Object model,
+                                            Target<Drawable> target,
+                                            boolean isFirstResource
+                                    ) {
+                                        imageProgress.setVisibility(View.GONE);
+                                        iv_meal.setVisibility(View.VISIBLE);
+                                        return false;
+                                    }
+
+                                    @Override
+                                    public boolean onResourceReady(
+                                            Drawable resource,
+                                            Object model,
+                                            Target<Drawable> target,
+                                            DataSource dataSource,
+                                            boolean isFirstResource
+                                    ) {
+                                        imageProgress.setVisibility(View.GONE);
+                                        iv_meal.setVisibility(View.VISIBLE);
+                                        return false;
+                                    }
+                                })
                                 .into(iv_meal);
+
+
 
                     }
 
                     @Override
                     public void onError(String errorMsg) {
 
-                        Toast.makeText(getContext(), "error", Toast.LENGTH_SHORT).show();
                     }
-                    @Override
-                    public void onLoading() {
-                        Toast.makeText(getContext(), "loading", Toast.LENGTH_SHORT).show();
 
-                    }
 
                 }
 
