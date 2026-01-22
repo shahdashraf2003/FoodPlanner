@@ -1,10 +1,10 @@
-package com.example.foodplanner.data.datasource;
+package com.example.foodplanner.data.datasource.meal;
 
 import android.util.Log;
 
 import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.data.meal.model.MealResponse;
-import com.example.foodplanner.network.MealService;
+import com.example.foodplanner.network.Services;
 import com.example.foodplanner.network.Network;
 import java.util.List;
 
@@ -13,11 +13,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MealRemoteDataSource {
-    private MealService mealService;
+    private Services mealService;
     public static String TAG = "HomeFra";
 
     public MealRemoteDataSource() {
-       mealService = Network.getInstance().mealService;
+
+        mealService = Network.getInstance().services;
     }
 
     public void getRandomMeal(MealNetworkResponse callback){

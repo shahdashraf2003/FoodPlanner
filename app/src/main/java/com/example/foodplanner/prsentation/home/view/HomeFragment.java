@@ -4,6 +4,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.example.foodplanner.prsentation.home.presenter.HomePresenter;
 import com.example.foodplanner.prsentation.home.presenter.HomePresenterImp;
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.category.model.Category;
@@ -31,6 +34,9 @@ public static String TAG="Home Fra";
 ImageView iv_meal;
 TextView name , desc;
 HomePresenter homePresenter;
+    RecyclerView recyclerViewCategories;
+    CategoryAdapter categoryAdapter;
+
     ProgressBar imageProgress;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +58,20 @@ HomePresenter homePresenter;
         Log.d(TAG, "desc = " + desc);
         homePresenter = new HomePresenterImp(requireContext(),this);
         homePresenter.getRandomMeal();
+
+
+        recyclerViewCategories = view.findViewById(R.id.recyclerViewCategories);
+        categoryAdapter = new CategoryAdapter(category -> {
+            Log.d(TAG, "Clicked category: " + category.getStrCategory());
+        });
+
+        recyclerViewCategories.setLayoutManager(
+                new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+        );
+        recyclerViewCategories.setAdapter(categoryAdapter);
+
+        homePresenter.getAllCategories();
+
         return view;
 
     }
@@ -111,6 +131,7 @@ HomePresenter homePresenter;
     @Override
     public void onAllCategoriesFetchError(String errMsg) {
 
+
     }
 
     @Override
@@ -120,6 +141,7 @@ HomePresenter homePresenter;
 
     @Override
     public void onAllCategoriesFetchSuccess(List<Category> categories) {
+        categoryAdapter.setCategoryList(categories);
 
     }
 
