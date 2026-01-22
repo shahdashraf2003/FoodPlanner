@@ -20,8 +20,8 @@ public class Splash extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_splash);
         ImageView iv_splash = findViewById(R.id.iv_splash);
-        Animation rotateAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate);
-        iv_splash.startAnimation(rotateAnimation);
+        Animation scaleAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.scale);
+        iv_splash.startAnimation(scaleAnimation);
         handler.postDelayed(() -> {
             Intent intent = new Intent(Splash.this, MainActivity.class);
             startActivity(intent
