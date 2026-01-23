@@ -1,12 +1,9 @@
-package com.example.foodplanner.data.datasource.category_filter;
+package com.example.foodplanner.data.datasource.all_categories;
 
 import android.util.Log;
 
-import com.example.foodplanner.data.datasource.category.CategoryNetworkResponse;
-import com.example.foodplanner.data.models.category.Category;
-import com.example.foodplanner.data.models.category.CategoryResponse;
-import com.example.foodplanner.data.models.category_filter.CategoryFilter;
-import com.example.foodplanner.data.models.category_filter.CategoryFilterResponse;
+import com.example.foodplanner.data.models.all_categories.AllCategories;
+import com.example.foodplanner.data.models.all_categories.AllCategoriesResponse;
 import com.example.foodplanner.network.Network;
 import com.example.foodplanner.network.Services;
 
@@ -16,19 +13,19 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CategoryFilterRemoteDataSource {
+public class AllCategoriesRemoteDataSource {
     private final Services categoryFilterService;
 
-    public CategoryFilterRemoteDataSource() {
+    public AllCategoriesRemoteDataSource() {
         categoryFilterService = Network.getInstance().services;
     }
 
-    public void getAllCategoriesFilter(CategoryFilterNetworkResponse callback){
-        categoryFilterService.getAllCategoriesList().enqueue(new Callback<CategoryFilterResponse>() {
+    public void getAllCategoriesFilter(AllCategoriesNetworkResponse callback){
+        categoryFilterService.getAllCategoriesList().enqueue(new Callback<AllCategoriesResponse>() {
             @Override
-            public void onResponse(Call<CategoryFilterResponse> call, Response<CategoryFilterResponse> response) {
+            public void onResponse(Call<AllCategoriesResponse> call, Response<AllCategoriesResponse> response) {
                 if(response.isSuccessful() && response.body() != null){
-                    List<CategoryFilter> categoriesFilter = response.body().getCategoriesFilter();
+                    List<AllCategories> categoriesFilter = response.body().getCategoriesFilter();
                     if (categoriesFilter != null) {
                         callback.onSuccess(categoriesFilter);
                     } else {
@@ -41,7 +38,7 @@ public class CategoryFilterRemoteDataSource {
             }
 
             @Override
-            public void onFailure(Call<CategoryFilterResponse> call, Throwable t) {
+            public void onFailure(Call<AllCategoriesResponse> call, Throwable t) {
                 Log.e("CategoryFilterRemoteDataSource", "API call failed", t);
                 callback.onError(t.getMessage());
             }

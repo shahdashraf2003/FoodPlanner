@@ -1,12 +1,12 @@
-package com.example.foodplanner.data.models.category_filter;
+package com.example.foodplanner.data.models.all_categories;
 
 import com.google.gson.annotations.SerializedName;
 
-public class CategoryFilter {
+public class AllCategories {
     @SerializedName("strCategory")
     private String strCategory;
 
-    public CategoryFilter(String strCategory) {
+    public AllCategories(String strCategory) {
         this.strCategory = strCategory;
     }
 

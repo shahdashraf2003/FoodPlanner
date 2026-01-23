@@ -2,7 +2,7 @@ package com.example.foodplanner.network;
 
 import com.example.foodplanner.data.models.area.AreaResponse;
 import com.example.foodplanner.data.models.category.CategoryResponse;
-import com.example.foodplanner.data.models.category_filter.CategoryFilterResponse;
+import com.example.foodplanner.data.models.all_categories.AllCategoriesResponse;
 import com.example.foodplanner.data.models.ingredient.IngredientResponse;
 import com.example.foodplanner.data.models.meal.MealResponse;
 
@@ -25,7 +25,7 @@ public interface Services {
     Call<IngredientResponse> getAllIngredientsList();
 
     @GET("list.php?c=list")
-    Call<CategoryFilterResponse> getAllCategoriesList();
+    Call<AllCategoriesResponse> getAllCategoriesList();
 
     @GET("list.php?a=list")
     Call<AreaResponse> getAllAreasList();

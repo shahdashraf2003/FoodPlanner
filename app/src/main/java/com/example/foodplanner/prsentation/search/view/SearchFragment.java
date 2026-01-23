@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodplanner.R;
+import com.example.foodplanner.data.models.all_categories.AllCategories;
 import com.example.foodplanner.data.models.common.DisplayItem;
 import com.example.foodplanner.prsentation.search.presenter.SearchPresenter;
 import com.example.foodplanner.prsentation.search.presenter.SearchPresenterImp;
@@ -73,9 +74,9 @@ public class SearchFragment extends Fragment implements GridAdapter.OnItemClickL
     @Override
     public void onCategoriesFilterFetchLoading() {}
     @Override
-    public void onCategoriesFilterFetchSuccess(java.util.List<com.example.foodplanner.data.models.category_filter.CategoryFilter> categoryFilters) {
+    public void onCategoriesFilterFetchSuccess(java.util.List<AllCategories> allCategories) {
         java.util.List<DisplayItem> items = new ArrayList<>();
-        for (com.example.foodplanner.data.models.category_filter.CategoryFilter c : categoryFilters) {
+        for (AllCategories c : allCategories) {
             items.add(new DisplayItem(c.getStrCategory()));
         }
         adapter.setItems(items);

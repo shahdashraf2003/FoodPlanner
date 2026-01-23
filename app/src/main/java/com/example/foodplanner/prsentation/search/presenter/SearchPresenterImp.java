@@ -5,12 +5,12 @@ import android.util.Log;
 
 import com.example.foodplanner.data.datasource.area.AreaNetworkResponse;
 import com.example.foodplanner.data.datasource.area.AreaRemoteDataSource;
-import com.example.foodplanner.data.datasource.category_filter.CategoryFilterNetworkResponse;
-import com.example.foodplanner.data.datasource.category_filter.CategoryFilterRemoteDataSource;
+import com.example.foodplanner.data.datasource.all_categories.AllCategoriesNetworkResponse;
+import com.example.foodplanner.data.datasource.all_categories.AllCategoriesRemoteDataSource;
 import com.example.foodplanner.data.datasource.ingredient.IngredientNetworkResponse;
 import com.example.foodplanner.data.datasource.ingredient.IngredientRemoteDataSource;
 import com.example.foodplanner.data.models.area.Area;
-import com.example.foodplanner.data.models.category_filter.CategoryFilter;
+import com.example.foodplanner.data.models.all_categories.AllCategories;
 import com.example.foodplanner.data.models.ingredient.Ingredient;
 import com.example.foodplanner.prsentation.search.view.SearchView;
 
@@ -19,13 +19,13 @@ import java.util.List;
 public class SearchPresenterImp implements SearchPresenter {
 
     private final AreaRemoteDataSource areaRemoteDataSource;
-    private final CategoryFilterRemoteDataSource categoryFilterRemoteDataSource;
+    private final AllCategoriesRemoteDataSource allCategoriesRemoteDataSource;
     private final IngredientRemoteDataSource ingredientRemoteDataSource;
     private final SearchView searchView;
 
     public SearchPresenterImp(Context context, SearchView searchView) {
         areaRemoteDataSource = new AreaRemoteDataSource();
-        categoryFilterRemoteDataSource = new CategoryFilterRemoteDataSource();
+        allCategoriesRemoteDataSource = new AllCategoriesRemoteDataSource();
         ingredientRemoteDataSource = new IngredientRemoteDataSource();
         this.searchView = searchView;
     }
@@ -52,10 +52,10 @@ public class SearchPresenterImp implements SearchPresenter {
 
     @Override
     public void getAllCategoriesList() {
-        categoryFilterRemoteDataSource.getAllCategoriesFilter(new CategoryFilterNetworkResponse() {
+        allCategoriesRemoteDataSource.getAllCategoriesFilter(new AllCategoriesNetworkResponse() {
             @Override
-            public void onSuccess(List<CategoryFilter> categoryFilters) {
-                searchView.onCategoriesFilterFetchSuccess(categoryFilters);
+            public void onSuccess(List<AllCategories> allCategories) {
+                searchView.onCategoriesFilterFetchSuccess(allCategories);
             }
 
             @Override

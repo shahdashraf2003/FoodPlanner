@@ -1,17 +1,15 @@
 package com.example.foodplanner.prsentation.search.view;
 
 import com.example.foodplanner.data.models.area.Area;
-import com.example.foodplanner.data.models.category.Category;
-import com.example.foodplanner.data.models.category_filter.CategoryFilter;
+import com.example.foodplanner.data.models.all_categories.AllCategories;
 import com.example.foodplanner.data.models.ingredient.Ingredient;
-import com.example.foodplanner.data.models.meal.Meal;
 
 import java.util.List;
 
 public interface SearchView {
     void onCategoriesFilterListFetchError(String errMsg);
     void onCategoriesFilterFetchLoading();
-    void onCategoriesFilterFetchSuccess(List<CategoryFilter> categoryFilters);
+    void onCategoriesFilterFetchSuccess(List<AllCategories> allCategories);
 
     void onIngredientsListFetchError(String errMsg);
     void onIngredientsFetchLoading();
