@@ -2,11 +2,8 @@ package com.example.foodplanner.data.datasource.category;
 
 import android.util.Log;
 
-import com.example.foodplanner.data.category.model.Category;
-import com.example.foodplanner.data.category.model.CategoryResponse;
-import com.example.foodplanner.data.datasource.meal.MealNetworkResponse;
-import com.example.foodplanner.data.meal.model.Meal;
-import com.example.foodplanner.data.meal.model.MealResponse;
+import com.example.foodplanner.data.models.category.Category;
+import com.example.foodplanner.data.models.category.CategoryResponse;
 import com.example.foodplanner.network.Network;
 import com.example.foodplanner.network.Services;
 

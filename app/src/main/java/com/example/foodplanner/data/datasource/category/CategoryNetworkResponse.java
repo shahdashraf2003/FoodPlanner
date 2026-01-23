@@ -1,6 +1,6 @@
 package com.example.foodplanner.data.datasource.category;
 
-import com.example.foodplanner.data.category.model.Category;
+import com.example.foodplanner.data.models.category.Category;
 
 import java.util.List;
 

@@ -1,9 +1,10 @@
 package com.example.foodplanner.network;
 
-import com.example.foodplanner.data.category.model.CategoryResponse;
-import com.example.foodplanner.data.ingredient.Ingredient;
-import com.example.foodplanner.data.ingredient.IngredientResponse;
-import com.example.foodplanner.data.meal.model.MealResponse;
+import com.example.foodplanner.data.models.area.AreaResponse;
+import com.example.foodplanner.data.models.category.CategoryResponse;
+import com.example.foodplanner.data.models.category_filter.CategoryFilterResponse;
+import com.example.foodplanner.data.models.ingredient.IngredientResponse;
+import com.example.foodplanner.data.models.meal.MealResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -21,7 +22,14 @@ public interface Services {
     Call<MealResponse> getMealDetailsById(@Query("i") String mealId);
 
     @GET("list.php?i=list")
-    Call<IngredientResponse> getAllIngredients();
+    Call<IngredientResponse> getAllIngredientsList();
+
+    @GET("list.php?c=list")
+    Call<CategoryFilterResponse> getAllCategoriesList();
+
+    @GET("list.php?a=list")
+    Call<AreaResponse> getAllAreasList();
+
 
 
 }

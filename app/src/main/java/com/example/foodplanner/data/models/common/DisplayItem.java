@@ -1,0 +1,17 @@
+package com.example.foodplanner.data.models.common;
+
+public class DisplayItem {
+
+
+    private String name;
+
+    public DisplayItem( String name) {
+
+        this.name = name;
+
+    }
+
+
+    public String getName() { return name; }
+
+}

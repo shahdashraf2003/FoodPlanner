@@ -2,8 +2,8 @@ package com.example.foodplanner.data.datasource.meal;
 
 import android.util.Log;
 
-import com.example.foodplanner.data.meal.model.Meal;
-import com.example.foodplanner.data.meal.model.MealResponse;
+import com.example.foodplanner.data.models.meal.Meal;
+import com.example.foodplanner.data.models.meal.MealResponse;
 import com.example.foodplanner.network.Services;
 import com.example.foodplanner.network.Network;
 import java.util.List;

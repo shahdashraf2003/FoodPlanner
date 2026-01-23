@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
-import com.example.foodplanner.data.meal.model.Meal;
+import com.example.foodplanner.data.models.meal.Meal;
 import com.example.foodplanner.prsentation.meal_details.presenter.MealDetailsPresenter;
 import com.example.foodplanner.prsentation.meal_details.presenter.MealDetailsPresenterImp;
 import com.google.android.material.card.MaterialCardView;

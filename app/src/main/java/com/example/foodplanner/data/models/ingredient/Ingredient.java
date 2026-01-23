@@ -1,4 +1,4 @@
-package com.example.foodplanner.data.ingredient;
+package com.example.foodplanner.data.models.ingredient;
 
 
 import com.google.gson.annotations.SerializedName;
@@ -19,6 +19,9 @@ public class Ingredient {
 
     @SerializedName("strType")
     private String type;
+
+    public Ingredient(String salt) {
+    }
 
 
     public String getId() {

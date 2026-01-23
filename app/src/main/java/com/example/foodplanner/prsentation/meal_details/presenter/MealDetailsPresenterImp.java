@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.example.foodplanner.data.datasource.meal.MealNetworkResponse;
 import com.example.foodplanner.data.datasource.meal.MealRemoteDataSource;
-import com.example.foodplanner.data.meal.model.Meal;
+import com.example.foodplanner.data.models.meal.Meal;
 import com.example.foodplanner.prsentation.meal_details.view.MealDetailsView;
 
 import java.util.List;

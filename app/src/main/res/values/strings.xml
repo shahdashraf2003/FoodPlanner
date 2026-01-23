@@ -22,4 +22,8 @@
     <string name="watch_on_youtube">watch_on_youtube</string>
     <string name="open_in_youtube_app">OPen in YouTube</string>
     <string name="watch_the_recipe_from_scratch_on_youtube">Watch the recipe from scratch on youtube</string>
+    <string name="category">Category</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="country">Country</string>
+    <string name="ingredient">Ingredient</string>
 </resources>

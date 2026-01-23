@@ -2,12 +2,12 @@ package com.example.foodplanner.prsentation.home.presenter;
 
 import android.content.Context;
 
-import com.example.foodplanner.data.category.model.Category;
+import com.example.foodplanner.data.models.category.Category;
 import com.example.foodplanner.data.datasource.category.CategoryNetworkResponse;
 import com.example.foodplanner.data.datasource.category.CategoryRemoteDataSource;
 import com.example.foodplanner.data.datasource.meal.MealNetworkResponse;
 import com.example.foodplanner.data.datasource.meal.MealRemoteDataSource;
-import com.example.foodplanner.data.meal.model.Meal;
+import com.example.foodplanner.data.models.meal.Meal;
 import com.example.foodplanner.prsentation.home.view.HomeView;
 
 import java.util.List;
