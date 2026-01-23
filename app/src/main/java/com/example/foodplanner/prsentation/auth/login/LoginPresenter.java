@@ -1,4 +1,4 @@
-package com.example.foodplanner.auth.login;
+package com.example.foodplanner.prsentation.auth.login;
 
 
 
@@ -8,9 +8,8 @@ import static com.google.android.libraries.identity.googleid.GoogleIdTokenCreden
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.credentials.Credential;
-import androidx.credentials.CredentialOption;
 import androidx.credentials.CustomCredential;
-import com.example.foodplanner.auth.data.model.UserModel;
+import com.example.foodplanner.prsentation.auth.data.model.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
@@ -21,7 +20,6 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-import java.util.List;
 import java.util.concurrent.Executor;
 
 public class LoginPresenter implements LoginContract.Presenter{

@@ -6,4 +6,20 @@
     <string name="sign_in">Sign In</string>
     <string name="google">Google</string>
     <string name="default_web_client_id">922858733699-tf1js23fe6dga8fp32r7mbbr9icb4973.apps.googleusercontent.com</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="favorite">Favorite</string>
+    <string name="calender">Calender</string>
+    <string name="profile">Profile</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="have_a_look_at_our_meals">Have a look at our meals</string>
+    <string name="meal_of_the_day">Meal of the day</string>
+    <string name="check_all_categries">Check all categries</string>
+    <string name="login">login</string>
+    <string name="Ingredients">Ingredients :</string>
+    <string name="Instructions">Instructions :</string>
+    <string name="watch_on_youtube">watch_on_youtube</string>
+    <string name="open_in_youtube_app">OPen in YouTube</string>
+    <string name="watch_the_recipe_from_scratch_on_youtube">Watch the recipe from scratch on youtube</string>
 </resources>

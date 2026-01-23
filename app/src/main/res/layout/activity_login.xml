@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".auth.login.LoginActivity">
+    tools:context=".prsentation.auth.login.LoginActivity">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_skip"
@@ -26,6 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="250dp"
         android:layout_marginTop="30dp"
+        android:contentDescription="@string/login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_skip"
@@ -75,6 +76,7 @@
         app:boxCornerRadiusTopStart="16dp"
         app:boxStrokeColor="@color/primary"
         app:boxStrokeWidth="3dp"
+        app:startIconMinSize="3dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/email"
@@ -133,15 +135,15 @@
         app:layout_constraintStart_toEndOf="@+id/alrady"
         app:layout_constraintTop_toTopOf="@+id/alrady"
         app:layout_constraintVertical_bias="1.0" />
+<com.google.android.material.divider.MaterialDivider
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="30dp"
+    android:background="@color/gray"
+    android:gravity="center_horizontal"
 
-    <TextView
-        android:id="@+id/signup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:background="@color/gray"
-        android:gravity="center_horizontal"
-        android:textSize="2sp"
+
+
         app:layout_constraintBottom_toTopOf="@+id/btn_google"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -1,10 +1,6 @@
-package com.example.foodplanner.auth.login;
-
-import static com.google.android.libraries.identity.googleid.GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL;
+package com.example.foodplanner.prsentation.auth.login;
 
 import android.content.Intent;
-import android.credentials.GetCredentialException;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -12,23 +8,16 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.credentials.Credential;
 import androidx.credentials.CredentialManager;
-import androidx.credentials.CredentialManagerCallback;
-import androidx.credentials.CustomCredential;
 import androidx.credentials.GetCredentialRequest;
-import androidx.credentials.GetCredentialResponse;
 
-import com.example.foodplanner.MainActivity;
+import com.example.foodplanner.prsentation.MainActivity;
 import com.example.foodplanner.R;
-import com.example.foodplanner.auth.data.model.UserModel;
+import com.example.foodplanner.prsentation.auth.data.model.UserModel;
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
-import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.concurrent.Executors;
 
 public class LoginActivity extends AppCompatActivity implements LoginContract.View  {
     private FirebaseAuth auth;
@@ -60,7 +49,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         auth = FirebaseAuth.getInstance();
         loginEmail = findViewById(R.id.et_EmailAddress);
         loginPassword = findViewById(R.id.et_Pass);
-        signup = findViewById(R.id.signup);
+        signup = findViewById(R.id.sginup);
         loginButton = findViewById(R.id.btn_login);
         skip = findViewById(R.id.btn_skip);
         google = findViewById(R.id.btn_google);

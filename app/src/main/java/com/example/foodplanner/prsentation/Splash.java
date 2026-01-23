@@ -1,4 +1,4 @@
-package com.example.foodplanner;
+package com.example.foodplanner.prsentation;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,8 +10,8 @@ import android.widget.ImageView;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.foodplanner.auth.login.LoginActivity;
-import com.google.firebase.FirebaseApp;
+import com.example.foodplanner.R;
+import com.example.foodplanner.prsentation.auth.login.LoginActivity;
 
 
 public class Splash extends AppCompatActivity {
