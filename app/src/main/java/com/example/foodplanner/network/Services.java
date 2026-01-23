@@ -5,6 +5,7 @@ import com.example.foodplanner.data.models.category.CategoryResponse;
 import com.example.foodplanner.data.models.all_categories.AllCategoriesResponse;
 import com.example.foodplanner.data.models.ingredient.IngredientResponse;
 import com.example.foodplanner.data.models.meal.MealResponse;
+import com.example.foodplanner.data.models.mealfilterby.MealFilterByResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -31,5 +32,16 @@ public interface Services {
     Call<AreaResponse> getAllAreasList();
 
 
+    @GET("filter.php")
+    Call<MealFilterByResponse> filterByIngredient(@Query("i") String ingredient);
+
+    @GET("filter.php")
+    Call<MealFilterByResponse> filterByCategory(@Query("c") String category);
+
+    @GET("filter.php")
+    Call<MealFilterByResponse> filterByArea(@Query("a") String area);
 
 }
+
+
+

@@ -29,14 +29,14 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 import java.util.ArrayList;
 import java.util.List;
 
-public class MealDetailsFragment extends Fragment implements MealDetailsView{
+public class MealDetailsFragment extends Fragment implements MealDetailsView {
 
     private MealDetailsPresenter presenter;
     private String mealId;
 
     private ImageView ivMealImage;
     private TextView tvMealName, tvMealAlternate, badgeCategory, badgeArea;
-    private TextView tvMealInstructions, tvYoutubeTitle,tv_country;
+    private TextView tvMealInstructions, tvYoutubeTitle, tv_country;
     private RecyclerView rvIngredients;
     private MaterialCardView cardYoutube;
     private YouTubePlayerView youtubePlayerView;
@@ -47,9 +47,6 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
         presenter = new MealDetailsPresenterImp(requireContext(), this);
     }
 
@@ -59,8 +56,8 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView{
         View view = inflater.inflate(R.layout.fragment_meal_details, container, false);
 
         Bundle bundle = getArguments();
-        if(bundle != null) {
-             mealId = bundle.getString("idMeal");
+        if (bundle != null) {
+            mealId = bundle.getString("idMeal");
             Log.d("MealDetailsFragment", "Received mealId: " + mealId);
         }
 
@@ -71,7 +68,7 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView{
         badgeArea = view.findViewById(R.id.badge_area);
         rvIngredients = view.findViewById(R.id.rv_ingredients);
         tvMealInstructions = view.findViewById(R.id.tv_meal_instructions);
-        tv_country=view.findViewById(R.id.tv_country);
+        tv_country = view.findViewById(R.id.tv_country);
         tvYoutubeTitle = view.findViewById(R.id.tv_youtube_title);
         cardYoutube = view.findViewById(R.id.card_youtube);
         youtubePlayerView = view.findViewById(R.id.youtube_player_view);
@@ -81,14 +78,12 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView{
         rvIngredients.setLayoutManager(new LinearLayoutManager(requireContext()));
         rvIngredients.setAdapter(ingredientsAdapter);
 
-
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         if (mealId != null && !mealId.isEmpty()) {
             presenter.getMealDetailsById(mealId);
         }
@@ -96,85 +91,83 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView{
 
     @Override
     public void onMealDetailsFetchSuccess(List<Meal> meals) {
-        if (meals != null && !meals.isEmpty()) {
-            Meal meal = meals.get(0);
-
-            Glide.with(this)
-                    .load(meal.getStrMealThumb())
-                    .placeholder(R.drawable.placeholder)
-                    .into(ivMealImage);
-
-            tvMealName.setText(meal.getStrMeal());
-
-            if (meal.getStrMealAlternate() != null && !meal.getStrMealAlternate().isEmpty()) {
-                tvMealAlternate.setText(meal.getStrMealAlternate());
-                tvMealAlternate.setVisibility(View.VISIBLE);
-            }
-
-            badgeCategory.setText(meal.getStrCategory());
-            badgeArea.setText(meal.getStrArea());
-            tvMealInstructions.setText(meal.getStrInstructions());
-            tv_country.setText(meal.getStrArea());
-
-            List<String> ingredients = new ArrayList<>();
-            List<String> measures = new ArrayList<>();
-
-            addIngredient(ingredients, measures, meal.getStrIngredient1(), meal.getStrMeasure1());
-            addIngredient(ingredients, measures, meal.getStrIngredient2(), meal.getStrMeasure2());
-            addIngredient(ingredients, measures, meal.getStrIngredient3(), meal.getStrMeasure3());
-            addIngredient(ingredients, measures, meal.getStrIngredient4(), meal.getStrMeasure4());
-            addIngredient(ingredients, measures, meal.getStrIngredient5(), meal.getStrMeasure5());
-            addIngredient(ingredients, measures, meal.getStrIngredient6(), meal.getStrMeasure6());
-            addIngredient(ingredients, measures, meal.getStrIngredient7(), meal.getStrMeasure7());
-            addIngredient(ingredients, measures, meal.getStrIngredient8(), meal.getStrMeasure8());
-            addIngredient(ingredients, measures, meal.getStrIngredient9(), meal.getStrMeasure9());
-            addIngredient(ingredients, measures, meal.getStrIngredient10(), meal.getStrMeasure10());
-            addIngredient(ingredients, measures, meal.getStrIngredient11(), meal.getStrMeasure11());
-            addIngredient(ingredients, measures, meal.getStrIngredient12(), meal.getStrMeasure12());
-            addIngredient(ingredients, measures, meal.getStrIngredient13(), meal.getStrMeasure13());
-            addIngredient(ingredients, measures, meal.getStrIngredient14(), meal.getStrMeasure14());
-            addIngredient(ingredients, measures, meal.getStrIngredient15(), meal.getStrMeasure15());
-            addIngredient(ingredients, measures, meal.getStrIngredient16(), meal.getStrMeasure16());
-            addIngredient(ingredients, measures, meal.getStrIngredient17(), meal.getStrMeasure17());
-            addIngredient(ingredients, measures, meal.getStrIngredient18(), meal.getStrMeasure18());
-            addIngredient(ingredients, measures, meal.getStrIngredient19(), meal.getStrMeasure19());
-            addIngredient(ingredients, measures, meal.getStrIngredient20(), meal.getStrMeasure20());
-
-            ingredientsAdapter.setIngredients(ingredients, measures);
-
-            String youtubeUrl = meal.getStrYoutube();
-            if (youtubeUrl != null && !youtubeUrl.isEmpty()) {
-                String videoId = extractYouTubeVideoId(youtubeUrl);
-                if (videoId != null) {
-                    tvYoutubeTitle.setVisibility(View.VISIBLE);
-                    cardYoutube.setVisibility(View.VISIBLE);
-                    btnYoutube.setVisibility(View.VISIBLE);
-
-                    getLifecycle().addObserver(youtubePlayerView);
-
-                    youtubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
-                        @Override
-                        public void onReady(@NonNull YouTubePlayer youTubePlayer) {
-                            youTubePlayer.loadVideo(videoId, 0);
-                        }
-                    });
-
-                    btnYoutube.setOnClickListener(v -> {
-                    });
-                }
-            }
-        } else {
+        if (meals == null || meals.isEmpty()) {
             onMealDetailsFetchError("No meal details found");
+            return;
+        }
+
+        Meal meal = meals.get(0);
+
+        Glide.with(this)
+                .load(meal.getStrMealThumb())
+                .placeholder(R.drawable.placeholder)
+                .into(ivMealImage);
+
+        tvMealName.setText(meal.getStrMeal());
+
+        if (meal.getStrMealAlternate() != null && !meal.getStrMealAlternate().isEmpty()) {
+            tvMealAlternate.setText(meal.getStrMealAlternate());
+            tvMealAlternate.setVisibility(View.VISIBLE);
+        }
+
+        badgeCategory.setText(meal.getStrCategory());
+        badgeArea.setText(meal.getStrArea());
+        tvMealInstructions.setText(meal.getStrInstructions());
+        tv_country.setText(meal.getStrArea());
+
+        List<String> ingredients = new ArrayList<>();
+        List<String> measures = new ArrayList<>();
+
+        addIngredient(ingredients, measures, meal.getStrIngredient1(), meal.getStrMeasure1());
+        addIngredient(ingredients, measures, meal.getStrIngredient2(), meal.getStrMeasure2());
+        addIngredient(ingredients, measures, meal.getStrIngredient3(), meal.getStrMeasure3());
+        addIngredient(ingredients, measures, meal.getStrIngredient4(), meal.getStrMeasure4());
+        addIngredient(ingredients, measures, meal.getStrIngredient5(), meal.getStrMeasure5());
+        addIngredient(ingredients, measures, meal.getStrIngredient6(), meal.getStrMeasure6());
+        addIngredient(ingredients, measures, meal.getStrIngredient7(), meal.getStrMeasure7());
+        addIngredient(ingredients, measures, meal.getStrIngredient8(), meal.getStrMeasure8());
+        addIngredient(ingredients, measures, meal.getStrIngredient9(), meal.getStrMeasure9());
+        addIngredient(ingredients, measures, meal.getStrIngredient10(), meal.getStrMeasure10());
+        addIngredient(ingredients, measures, meal.getStrIngredient11(), meal.getStrMeasure11());
+        addIngredient(ingredients, measures, meal.getStrIngredient12(), meal.getStrMeasure12());
+        addIngredient(ingredients, measures, meal.getStrIngredient13(), meal.getStrMeasure13());
+        addIngredient(ingredients, measures, meal.getStrIngredient14(), meal.getStrMeasure14());
+        addIngredient(ingredients, measures, meal.getStrIngredient15(), meal.getStrMeasure15());
+        addIngredient(ingredients, measures, meal.getStrIngredient16(), meal.getStrMeasure16());
+        addIngredient(ingredients, measures, meal.getStrIngredient17(), meal.getStrMeasure17());
+        addIngredient(ingredients, measures, meal.getStrIngredient18(), meal.getStrMeasure18());
+        addIngredient(ingredients, measures, meal.getStrIngredient19(), meal.getStrMeasure19());
+        addIngredient(ingredients, measures, meal.getStrIngredient20(), meal.getStrMeasure20());
+
+        ingredientsAdapter.setIngredients(ingredients, measures);
+
+        String youtubeUrl = meal.getStrYoutube();
+        if (youtubeUrl != null && !youtubeUrl.isEmpty()) {
+            String videoId = extractYouTubeVideoId(youtubeUrl);
+            if (videoId != null) {
+                tvYoutubeTitle.setVisibility(View.VISIBLE);
+                cardYoutube.setVisibility(View.VISIBLE);
+                btnYoutube.setVisibility(View.VISIBLE);
+
+                getLifecycle().addObserver(youtubePlayerView);
+
+                youtubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+                    @Override
+                    public void onReady(@NonNull YouTubePlayer youTubePlayer) {
+                        youTubePlayer.cueVideo(videoId, 0);
+                        btnYoutube.setOnClickListener(v -> youTubePlayer.play());
+                    }
+                });
+            }
         }
     }
 
     @Override
-
     public void onMealDetailsFetchError(String errorMsg) {
-        Toast.makeText(requireContext(), "Error: " + errorMsg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(requireContext(), errorMsg, Toast.LENGTH_SHORT).show();
     }
-    @Override
 
+    @Override
     public void onMealDetailsFetchLoading() {
     }
 
@@ -192,8 +185,6 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView{
         }
         return null;
     }
-
-
 
     @Override
     public void onDestroy() {

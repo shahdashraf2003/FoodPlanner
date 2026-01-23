@@ -43,5 +43,27 @@ public class MealRemoteDataSource {
         });
     }
 
+    public void getDetailsOfMeal(MealNetworkResponse callback,String mealId){
+        mealService.getMealDetailsById(mealId).enqueue(new Callback<MealResponse>() {
+            @Override
+            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
+                if(response.isSuccessful() && response.body() != null){
+                    List<Meal> meal = response.body().getMeals();
+                    Log.d(TAG, "Meals received: " + meal.size());
+                    callback.onSuccess(meal);
+                } else {
+                    Log.d(TAG, "Response failed or empty");
+                    callback.onError("Response empty or failed");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MealResponse> call, Throwable t) {
+                Log.d(TAG, "API call failed: " + t.getMessage());
+                callback.onError(t.getMessage());
+            }
+        });
+    }
+
 
 }
