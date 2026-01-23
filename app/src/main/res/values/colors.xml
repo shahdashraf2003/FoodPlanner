@@ -4,4 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="primary">#EC2578</color>
     <color name="gray">#807E7F</color>
+    <color name="background_grey">#ABA7A7</color>
+    <color name="youtube_red">#FF0033</color>
 </resources>

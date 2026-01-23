@@ -7,7 +7,4 @@ public interface HomePresenter {
 
         void getAllCategories();
 
-
-
-
 }
