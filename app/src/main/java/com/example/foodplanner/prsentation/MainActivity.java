@@ -12,7 +12,7 @@ import com.example.foodplanner.prsentation.favorite.FavoriteFragment;
 import com.example.foodplanner.prsentation.home.view.HomeFragment;
 import com.example.foodplanner.prsentation.profile.ProfileFragment;
 import com.example.foodplanner.R;
-import com.example.foodplanner.prsentation.search.SearchFragment;
+import com.example.foodplanner.prsentation.search.view.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {

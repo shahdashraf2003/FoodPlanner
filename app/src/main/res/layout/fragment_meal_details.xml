@@ -208,7 +208,6 @@
             android:textColor="@color/white"
             android:drawableStart="@drawable/ic_youtube_play"
             android:drawablePadding="8dp"
-            android:visibility="gone"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
     </LinearLayout>

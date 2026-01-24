@@ -2,8 +2,8 @@ package com.example.foodplanner.prsentation.meal_details.presenter;
 
 import android.content.Context;
 
-import com.example.foodplanner.data.datasource.meal.MealNetworkResponse;
-import com.example.foodplanner.data.datasource.meal.MealRemoteDataSource;
+import com.example.foodplanner.data.meal.datasource.MealNetworkResponse;
+import com.example.foodplanner.data.meal.datasource.MealRemoteDataSource;
 import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.prsentation.meal_details.view.MealDetailsView;
 
@@ -19,28 +19,26 @@ public class MealDetailsPresenterImp implements MealDetailsPresenter{
     }
     @Override
     public void getMealDetailsById(String mealId) {
-        mealRemoteDataSource.getRandomMeal(
+        mealRemoteDataSource.getDetailsOfMeal(
                 new MealNetworkResponse() {
                     @Override
-                    public void onSuccess(List<Meal> meal) {
-                        mealDetailsView.onMealDetailsFetchSuccess(meal);
-
+                    public void onSuccess(List<Meal> meals) {
+                        mealDetailsView.onMealDetailsFetchSuccess(meals);
                     }
 
                     @Override
                     public void onError(String errorMsg) {
-
                         mealDetailsView.onMealDetailsFetchError(errorMsg);
-
                     }
 
                     @Override
                     public void onLoading() {
-                        mealDetailsView.onMealDetailsFetchLoading();
-
-
-                }}
-
+                            mealDetailsView.onMealDetailsFetchLoading();
+                    }
+                },mealId
         );
+
+
+
     }
 }

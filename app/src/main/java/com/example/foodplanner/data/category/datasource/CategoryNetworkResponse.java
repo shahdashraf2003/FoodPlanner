@@ -1,4 +1,4 @@
-package com.example.foodplanner.data.datasource.category;
+package com.example.foodplanner.data.category.datasource;
 
 import com.example.foodplanner.data.category.model.Category;
 

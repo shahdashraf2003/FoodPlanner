@@ -3,10 +3,10 @@ package com.example.foodplanner.prsentation.home.presenter;
 import android.content.Context;
 
 import com.example.foodplanner.data.category.model.Category;
-import com.example.foodplanner.data.datasource.category.CategoryNetworkResponse;
-import com.example.foodplanner.data.datasource.category.CategoryRemoteDataSource;
-import com.example.foodplanner.data.datasource.meal.MealNetworkResponse;
-import com.example.foodplanner.data.datasource.meal.MealRemoteDataSource;
+import com.example.foodplanner.data.category.datasource.CategoryNetworkResponse;
+import com.example.foodplanner.data.category.datasource.CategoryRemoteDataSource;
+import com.example.foodplanner.data.meal.datasource.MealNetworkResponse;
+import com.example.foodplanner.data.meal.datasource.MealRemoteDataSource;
 import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.prsentation.home.view.HomeView;
 

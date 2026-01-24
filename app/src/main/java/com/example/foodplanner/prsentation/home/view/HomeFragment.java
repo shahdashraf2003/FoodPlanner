@@ -4,7 +4,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,10 +20,10 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.example.foodplanner.data.category.model.Category;
 import com.example.foodplanner.prsentation.home.presenter.HomePresenter;
 import com.example.foodplanner.prsentation.home.presenter.HomePresenterImp;
 import com.example.foodplanner.R;
-import com.example.foodplanner.data.category.model.Category;
 import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.prsentation.meal_details.view.MealDetailsFragment;
 
