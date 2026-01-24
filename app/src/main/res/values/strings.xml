@@ -27,4 +27,8 @@
     <string name="country">Country</string>
     <string name="ingredient">Ingredient</string>
     <string name="search_recipes">Search recipes..</string>
+    <string name="food_planner_app">Food Planner App</string>
+    <string name="helping_you_plan_meals_smarter">Helping you plan meals smarter</string>
+    <string name="_2026_all_rights_reserved">© 2026 All rights reserved</string>
+    <string name="_2026_food_planner">© 2026 Food Planner</string>
 </resources>

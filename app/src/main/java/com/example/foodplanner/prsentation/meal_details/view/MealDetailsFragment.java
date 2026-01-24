@@ -1,12 +1,12 @@
 package com.example.foodplanner.prsentation.meal_details.view;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,12 +35,13 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView {
     private String mealId;
 
     private ImageView ivMealImage;
-    private TextView tvMealName, tvMealAlternate, badgeCategory, badgeArea;
-    private TextView tvMealInstructions, tvYoutubeTitle, tv_country;
+    private TextView tvMealName, tvMealAlternate, badgeCategory, badgeArea, tvMealInstructions, tvYoutubeTitle, tvCountry;
     private RecyclerView rvIngredients;
     private MaterialCardView cardYoutube;
     private YouTubePlayerView youtubePlayerView;
     private Button btnYoutube;
+    private ProgressBar progressLoading;
+    private TextView tvError;
 
     private IngredientsAdapter ingredientsAdapter;
 
@@ -51,14 +52,12 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_meal_details, container, false);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
             mealId = bundle.getString("idMeal");
-            Log.d("MealDetailsFragment", "Received mealId: " + mealId);
         }
 
         ivMealImage = view.findViewById(R.id.iv_meal_image);
@@ -68,11 +67,13 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView {
         badgeArea = view.findViewById(R.id.badge_area);
         rvIngredients = view.findViewById(R.id.rv_ingredients);
         tvMealInstructions = view.findViewById(R.id.tv_meal_instructions);
-        tv_country = view.findViewById(R.id.tv_country);
+        tvCountry = view.findViewById(R.id.tv_country);
         tvYoutubeTitle = view.findViewById(R.id.tv_youtube_title);
         cardYoutube = view.findViewById(R.id.card_youtube);
         youtubePlayerView = view.findViewById(R.id.youtube_player_view);
         btnYoutube = view.findViewById(R.id.btn_youtube);
+        progressLoading = view.findViewById(R.id.progressMealDetails);
+        tvError = view.findViewById(R.id.tvErrorMealDetails);
 
         ingredientsAdapter = new IngredientsAdapter(new ArrayList<>());
         rvIngredients.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -86,15 +87,51 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView {
         super.onViewCreated(view, savedInstanceState);
         if (mealId != null && !mealId.isEmpty()) {
             presenter.getMealDetailsById(mealId);
+        } else {
+            showError("Meal ID is missing");
         }
+    }
+
+    private void showLoading(boolean isLoading) {
+        progressLoading.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+        rvIngredients.setVisibility(isLoading ? View.INVISIBLE : View.VISIBLE);
+        ivMealImage.setVisibility(isLoading ? View.INVISIBLE : View.VISIBLE);
+        tvError.setVisibility(View.GONE);
+        tvMealName.setVisibility(isLoading ? View.INVISIBLE : View.VISIBLE);
+        tvMealInstructions.setVisibility(isLoading ? View.INVISIBLE : View.VISIBLE);
+    }
+
+    private void showError(String message) {
+        tvError.setVisibility(View.VISIBLE);
+        tvError.setText(message);
+        progressLoading.setVisibility(View.GONE);
+        ivMealImage.setVisibility(View.GONE);
+        rvIngredients.setVisibility(View.GONE);
+        tvMealName.setVisibility(View.GONE);
+        tvMealInstructions.setVisibility(View.GONE);
+        cardYoutube.setVisibility(View.GONE);
+        btnYoutube.setVisibility(View.GONE);
+        tvYoutubeTitle.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onMealDetailsFetchLoading() {
+        showLoading(true);
+    }
+
+    @Override
+    public void onMealDetailsFetchError(String errorMsg) {
+        showError(errorMsg);
     }
 
     @Override
     public void onMealDetailsFetchSuccess(List<Meal> meals) {
         if (meals == null || meals.isEmpty()) {
-            onMealDetailsFetchError("No meal details found");
+            showError("No meal details found");
             return;
         }
+
+        showLoading(false);
 
         Meal meal = meals.get(0);
 
@@ -108,36 +145,26 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView {
         if (meal.getStrMealAlternate() != null && !meal.getStrMealAlternate().isEmpty()) {
             tvMealAlternate.setText(meal.getStrMealAlternate());
             tvMealAlternate.setVisibility(View.VISIBLE);
-        }
+        } else tvMealAlternate.setVisibility(View.GONE);
 
         badgeCategory.setText(meal.getStrCategory());
         badgeArea.setText(meal.getStrArea());
         tvMealInstructions.setText(meal.getStrInstructions());
-        tv_country.setText(meal.getStrArea());
+        tvCountry.setText(meal.getStrArea());
 
         List<String> ingredients = new ArrayList<>();
         List<String> measures = new ArrayList<>();
 
-        addIngredient(ingredients, measures, meal.getStrIngredient1(), meal.getStrMeasure1());
-        addIngredient(ingredients, measures, meal.getStrIngredient2(), meal.getStrMeasure2());
-        addIngredient(ingredients, measures, meal.getStrIngredient3(), meal.getStrMeasure3());
-        addIngredient(ingredients, measures, meal.getStrIngredient4(), meal.getStrMeasure4());
-        addIngredient(ingredients, measures, meal.getStrIngredient5(), meal.getStrMeasure5());
-        addIngredient(ingredients, measures, meal.getStrIngredient6(), meal.getStrMeasure6());
-        addIngredient(ingredients, measures, meal.getStrIngredient7(), meal.getStrMeasure7());
-        addIngredient(ingredients, measures, meal.getStrIngredient8(), meal.getStrMeasure8());
-        addIngredient(ingredients, measures, meal.getStrIngredient9(), meal.getStrMeasure9());
-        addIngredient(ingredients, measures, meal.getStrIngredient10(), meal.getStrMeasure10());
-        addIngredient(ingredients, measures, meal.getStrIngredient11(), meal.getStrMeasure11());
-        addIngredient(ingredients, measures, meal.getStrIngredient12(), meal.getStrMeasure12());
-        addIngredient(ingredients, measures, meal.getStrIngredient13(), meal.getStrMeasure13());
-        addIngredient(ingredients, measures, meal.getStrIngredient14(), meal.getStrMeasure14());
-        addIngredient(ingredients, measures, meal.getStrIngredient15(), meal.getStrMeasure15());
-        addIngredient(ingredients, measures, meal.getStrIngredient16(), meal.getStrMeasure16());
-        addIngredient(ingredients, measures, meal.getStrIngredient17(), meal.getStrMeasure17());
-        addIngredient(ingredients, measures, meal.getStrIngredient18(), meal.getStrMeasure18());
-        addIngredient(ingredients, measures, meal.getStrIngredient19(), meal.getStrMeasure19());
-        addIngredient(ingredients, measures, meal.getStrIngredient20(), meal.getStrMeasure20());
+        for (int i = 1; i <= 20; i++) {
+            try {
+                String ingredient = (String) Meal.class.getMethod("getStrIngredient" + i).invoke(meal);
+                String measure = (String) Meal.class.getMethod("getStrMeasure" + i).invoke(meal);
+                if (ingredient != null && !ingredient.trim().isEmpty()) {
+                    ingredients.add(ingredient);
+                    measures.add(measure != null ? measure : "");
+                }
+            } catch (Exception ignored) {}
+        }
 
         ingredientsAdapter.setIngredients(ingredients, measures);
 
@@ -162,35 +189,14 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView {
         }
     }
 
-    @Override
-    public void onMealDetailsFetchError(String errorMsg) {
-        Toast.makeText(requireContext(), errorMsg, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onMealDetailsFetchLoading() {
-    }
-
-    private void addIngredient(List<String> ingredients, List<String> measures,
-                               String ingredient, String measure) {
-        if (ingredient != null && !ingredient.trim().isEmpty()) {
-            ingredients.add(ingredient);
-            measures.add(measure != null ? measure : "");
-        }
-    }
-
     private String extractYouTubeVideoId(String url) {
-        if (url.contains("v=")) {
-            return url.split("v=")[1].split("&")[0];
-        }
+        if (url.contains("v=")) return url.split("v=")[1].split("&")[0];
         return null;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (youtubePlayerView != null) {
-            getLifecycle().removeObserver(youtubePlayerView);
-        }
+        if (youtubePlayerView != null) getLifecycle().removeObserver(youtubePlayerView);
     }
 }

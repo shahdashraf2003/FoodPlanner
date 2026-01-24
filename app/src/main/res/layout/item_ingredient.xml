@@ -17,7 +17,7 @@
 
     <ImageView
         android:layout_margin="20dp"
-        android:id="@+id/imageView"
+        android:id="@+id/iv_ingredient"
         android:layout_width="20dp"
         android:layout_height="50dp"
         android:layout_weight="1"
