@@ -12,6 +12,23 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <ProgressBar
+            android:id="@+id/progressMealDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tvErrorMealDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/youtube_red"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:visibility="gone"
+            android:layout_marginBottom="12dp"/>
+
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -19,8 +36,7 @@
             app:cardCornerRadius="16dp"
             app:strokeColor="@color/primary"
             app:strokeWidth="2dp"
-            app:cardElevation="4dp"
-            >
+            app:cardElevation="4dp">
 
             <ImageView
                 android:id="@+id/iv_meal_image"
@@ -44,9 +60,7 @@
                 android:textSize="28sp"
                 android:textStyle="bold"
                 android:gravity="center"
-                android:layout_marginBottom="4dp"
-                />
-
+                android:layout_marginBottom="4dp"/>
 
             <TextView
                 android:id="@+id/tv_meal_alternate"
@@ -65,21 +79,12 @@
                 android:layout_marginTop="8dp">
 
                 <TextView
-                    android:id="@+id/tv_video_audio"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:visibility="gone"/>
-
-                <TextView
                     android:id="@+id/tv_country"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
-                    android:layout_marginStart="16dp"
-                   />
+                    android:layout_marginStart="16dp"/>
             </LinearLayout>
-
         </LinearLayout>
 
         <LinearLayout
@@ -109,9 +114,7 @@
                 android:paddingVertical="6dp"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                android:textColor="@color/white"
-                />
-
+                android:textColor="@color/white"/>
         </LinearLayout>
 
         <TextView
@@ -122,8 +125,7 @@
             android:textSize="20sp"
             android:textStyle="bold"
             android:layout_marginBottom="12dp"
-            android:drawablePadding="8dp"
-            />
+            android:drawablePadding="8dp"/>
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
@@ -137,8 +139,7 @@
                 android:id="@+id/rv_ingredients"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp" />
-
+                android:padding="8dp"/>
         </com.google.android.material.card.MaterialCardView>
 
         <TextView
@@ -149,8 +150,7 @@
             android:textStyle="bold"
             android:textColor="@color/primary"
             android:layout_marginBottom="12dp"
-            android:drawablePadding="8dp"
-            />
+            android:drawablePadding="8dp"/>
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
@@ -167,8 +167,7 @@
                 android:textSize="14sp"
                 android:lineSpacingExtra="4sp"
                 android:textIsSelectable="true"
-                android:padding="16dp" />
-
+                android:padding="16dp"/>
         </com.google.android.material.card.MaterialCardView>
 
         <TextView
@@ -181,7 +180,7 @@
             android:textColor="@color/primary"
             android:layout_marginBottom="12dp"
             android:drawablePadding="8dp"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_youtube"
@@ -196,8 +195,7 @@
             <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
                 android:id="@+id/youtube_player_view"
                 android:layout_width="match_parent"
-                android:layout_height="220dp" />
-
+                android:layout_height="220dp"/>
         </com.google.android.material.card.MaterialCardView>
 
         <Button
@@ -208,8 +206,7 @@
             android:textColor="@color/white"
             android:drawableStart="@drawable/ic_youtube_play"
             android:drawablePadding="8dp"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
-
+            android:visibility="gone"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
     </LinearLayout>
-
 </androidx.core.widget.NestedScrollView>
