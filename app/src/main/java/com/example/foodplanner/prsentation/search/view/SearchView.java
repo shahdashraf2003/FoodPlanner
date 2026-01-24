@@ -3,6 +3,7 @@ package com.example.foodplanner.prsentation.search.view;
 import com.example.foodplanner.data.area.model.Area;
 import com.example.foodplanner.data.all_categories.model.AllCategories;
 import com.example.foodplanner.data.ingredient.model.Ingredient;
+import com.example.foodplanner.data.meal.model.Meal;
 
 import java.util.List;
 
@@ -18,5 +19,9 @@ public interface SearchView {
     void onAreaListFetchError(String errMsg);
     void onAreaListFetchLoading();
     void onAreaFetchSuccess(List<Area> areas);
+
+    void onSearchedMaelFetchError(String errMsg);
+    void onSearchedMaelFetchLoading();
+    void onSearchedMaelFetchSuccess(List<Meal> meals);
 
 }

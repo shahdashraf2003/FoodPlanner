@@ -7,4 +7,6 @@ public interface SearchPresenter {
    void getAllCategoriesList();
 
    void getAllAreasList();
+
+   void getSearchedMeal(String mealName);
 }
