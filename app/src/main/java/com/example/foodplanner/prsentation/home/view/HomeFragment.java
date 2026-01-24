@@ -21,6 +21,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.foodplanner.data.category.model.Category;
+import com.example.foodplanner.prsentation.filtered_meals.view.FilteredMealsFragment;
 import com.example.foodplanner.prsentation.home.presenter.HomePresenter;
 import com.example.foodplanner.prsentation.home.presenter.HomePresenterImp;
 import com.example.foodplanner.R;
@@ -30,7 +31,7 @@ import com.example.foodplanner.prsentation.meal_details.view.MealDetailsFragment
 import java.util.List;
 
 
-public class HomeFragment extends Fragment implements HomeView {
+public class HomeFragment extends Fragment implements HomeView ,CategoryOnClickListener{
 public static String TAG="Home Fra";
 ImageView iv_meal;
 TextView name , desc;
@@ -49,7 +50,6 @@ HomePresenter homePresenter;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View  view = inflater.inflate(R.layout.fragment_home, container, false);
-        View mealCardRoot = view.findViewById(R.id.mealCardRoot);
         View mealCardView = view.findViewById(R.id.meal_card_include);        iv_meal=mealCardView.findViewById(R.id.iv_meal);
         name=mealCardView.findViewById(R.id.tv_name);
         desc=mealCardView.findViewById(R.id.tv_desc);
@@ -62,9 +62,7 @@ HomePresenter homePresenter;
 
 
         recyclerViewCategories = view.findViewById(R.id.recyclerViewCategories);
-        categoryAdapter = new CategoryAdapter(category -> {
-            Log.d(TAG, "Clicked category: " + category.getStrCategory());
-        });
+        categoryAdapter = new CategoryAdapter(this);
 
         recyclerViewCategories.setLayoutManager(
                 new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
@@ -166,4 +164,16 @@ HomePresenter homePresenter;
     }
 
 
+    @Override
+    public void onCategoryClick(Category category) {
+        Bundle bundle = new Bundle();
+        bundle.putString("category_name", category.getStrCategory());
+        FilteredMealsFragment fragment = new FilteredMealsFragment();
+        fragment.setArguments(bundle);
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_layout, fragment)
+                .addToBackStack(null)
+                .commit();
+    }
 }
