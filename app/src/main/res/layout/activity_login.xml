@@ -25,9 +25,10 @@
         android:id="@+id/iv_login"
         android:layout_width="wrap_content"
         android:layout_height="250dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="8dp"
         android:contentDescription="@string/login"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_skip"
         app:srcCompat="@drawable/login" />
@@ -101,21 +102,20 @@
         android:layout_height="wrap_content"
         android:layout_margin="60dp"
 
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="15dp"
         android:text="@string/sign_in"
         android:textSize="24sp"
         app:backgroundTint="@color/primary"
         app:layout_constraintBottom_toTopOf="@+id/sginup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/password" />
 
     <TextView
         android:id="@+id/alrady"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="16dp"
         android:text="@string/aleady_have_an_account"
         android:textSize="24sp"
         app:layout_constraintEnd_toStartOf="@+id/sginup"
@@ -135,19 +135,21 @@
         app:layout_constraintStart_toEndOf="@+id/alrady"
         app:layout_constraintTop_toTopOf="@+id/alrady"
         app:layout_constraintVertical_bias="1.0" />
-<com.google.android.material.divider.MaterialDivider
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="30dp"
-    android:background="@color/gray"
-    android:gravity="center_horizontal"
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
 
 
-
+        android:background="@color/gray"
+        android:gravity="center_horizontal"
         app:layout_constraintBottom_toTopOf="@+id/btn_google"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/alrady" />
+        app:layout_constraintTop_toBottomOf="@+id/alrady"
+        app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_google"
@@ -161,6 +163,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sginup" />
+        app:layout_constraintTop_toBottomOf="@+id/alrady" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -23,6 +23,7 @@ import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.prsentation.filtered_meals.view.FilteredMealsFragment;
 import com.example.foodplanner.prsentation.home.presenter.HomePresenter;
 import com.example.foodplanner.prsentation.home.presenter.HomePresenterImp;
+import com.example.foodplanner.prsentation.meal_details.view.MealDetailsFragment;
 
 import java.util.List;
 
@@ -136,7 +137,7 @@ public class HomeFragment extends Fragment implements HomeView, CategoryOnClickL
     }
 
     private void openMealDetails(Meal meal) {
-        FilteredMealsFragment fragment = new FilteredMealsFragment();
+        MealDetailsFragment fragment = new MealDetailsFragment();
         Bundle bundle = new Bundle();
         bundle.putString("idMeal", meal.getIdMeal());
         fragment.setArguments(bundle);
