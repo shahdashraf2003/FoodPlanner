@@ -2,16 +2,10 @@ package com.example.foodplanner.prsentation.filtered_meals.presenter;
 
 import android.content.Context;
 
-import com.example.foodplanner.data.category.datasource.CategoryRemoteDataSource;
-import com.example.foodplanner.data.ingredient.model.Ingredient;
-import com.example.foodplanner.data.meal.datasource.MealNetworkResponse;
-import com.example.foodplanner.data.meal.datasource.MealRemoteDataSource;
-import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.data.mealsfilterby.datasource.MealFilterByDataSource;
 import com.example.foodplanner.data.mealsfilterby.datasource.MealFilterByNetworkResponse;
 import com.example.foodplanner.data.mealsfilterby.model.MealFilterBy;
 import com.example.foodplanner.prsentation.filtered_meals.view.FilteredMealsView;
-import com.example.foodplanner.prsentation.home.view.HomeView;
 
 import java.util.List;
 
