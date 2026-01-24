@@ -1,5 +1,6 @@
 package com.example.foodplanner.prsentation.filtered_meals.view;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.mealsfilterby.model.MealFilterBy;
+import com.example.foodplanner.prsentation.meal_details.view.MealDetailsFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +21,12 @@ import java.util.List;
 public class FilteredMealAdapter extends RecyclerView.Adapter<FilteredMealAdapter.MealViewHolder> {
 
         private List<MealFilterBy> mealList = new ArrayList<>();
-        private MealOnClickListener mealOnClickListener;
 
-        public FilteredMealAdapter(MealOnClickListener mealOnClickListener) {
-            this.mealOnClickListener = mealOnClickListener;
+        private FilteredMealOnClickListener filteredMealOnClickListener;
+
+
+        public FilteredMealAdapter(FilteredMealOnClickListener filteredMealOnClickListener) {
+            this.filteredMealOnClickListener = filteredMealOnClickListener;
         }
 
         public void setMealList(List<MealFilterBy> mealList) {
@@ -66,8 +70,8 @@ public class FilteredMealAdapter extends RecyclerView.Adapter<FilteredMealAdapte
 
                 itemView.setOnClickListener(v -> {
                     int position = getBindingAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION && mealOnClickListener != null) {
-                        mealOnClickListener.onMealClick(mealList.get(position), position);
+                    if (position != RecyclerView.NO_POSITION && filteredMealOnClickListener != null) {
+                        filteredMealOnClickListener.onFilteredMealClick(mealList.get(position));
                     }
                 });
 
@@ -86,10 +90,5 @@ public class FilteredMealAdapter extends RecyclerView.Adapter<FilteredMealAdapte
             }
         }
 
-        public interface MealOnClickListener {
-            void onMealClick(MealFilterBy meal, int position);
-
-
-        }
 
 }

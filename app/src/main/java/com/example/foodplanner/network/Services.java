@@ -41,6 +41,9 @@ public interface Services {
     @GET("filter.php")
     Call<MealFilterByResponse> filterByArea(@Query("a") String area);
 
+    @GET("search.php")
+    Call<MealResponse> searchMeal(@Query("s") String mealName);
+
 }
 
 

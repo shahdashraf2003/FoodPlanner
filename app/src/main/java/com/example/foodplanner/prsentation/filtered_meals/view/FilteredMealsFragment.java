@@ -18,6 +18,7 @@ import com.example.foodplanner.data.mealsfilterby.datasource.MealFilterByDataSou
 import com.example.foodplanner.data.mealsfilterby.model.MealFilterBy;
 import com.example.foodplanner.prsentation.filtered_meals.presenter.FilteredMealsPresenter;
 import com.example.foodplanner.prsentation.filtered_meals.presenter.FilteredMealsPresenterImp;
+import com.example.foodplanner.prsentation.meal_details.view.MealDetailsFragment;
 
 import java.util.List;
 
@@ -43,8 +44,8 @@ public class FilteredMealsFragment extends Fragment implements FilteredMealsView
         View view  = inflater.inflate(R.layout.fragment_filtered_meals, container, false);
         recyclerView = view.findViewById(R.id.filteredRecyclerView);
 
-        adapter = new FilteredMealAdapter((meal, position) -> {
-            Log.d("MealClick", meal.getStrMeal());
+        adapter = new FilteredMealAdapter((meal) -> {
+           openMealDetails(meal);
         });
 
         recyclerView.setAdapter(adapter);
@@ -66,6 +67,21 @@ public class FilteredMealsFragment extends Fragment implements FilteredMealsView
         }
 
         return view;
+    }
+
+    private void openMealDetails(MealFilterBy meal) {
+        MealDetailsFragment fragment = new MealDetailsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("idMeal", meal.getIdMeal());
+        fragment.setArguments(bundle);
+
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_layout, fragment)
+                .addToBackStack(null)
+                .commit();
+
+
     }
 
 
