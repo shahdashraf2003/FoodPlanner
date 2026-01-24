@@ -3,11 +3,13 @@ package com.example.foodplanner.prsentation.meal_details.view;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
 
 import java.util.List;
@@ -41,6 +43,12 @@ public   class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapte
         String measure = measures.get(position);
         holder.tvIngredient.setText(ingredient);
         holder.tvMeasure.setText(measure);
+        Glide.with(holder.ivIngredient.getContext())
+                .load("https://www.themealdb.com/images/ingredients/" +
+                        ingredient.toLowerCase().replaceAll("\\s+", "_") +
+                        "-medium.png")
+                .into(holder.ivIngredient);
+
     }
 
     @Override
@@ -50,11 +58,13 @@ public   class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapte
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvIngredient, tvMeasure;
+        ImageView ivIngredient;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvIngredient = itemView.findViewById(R.id.tv_ingredient);
             tvMeasure = itemView.findViewById(R.id.tv_measure);
+            ivIngredient=itemView.findViewById(R.id.iv_ingredient);
         }
     }
 }
