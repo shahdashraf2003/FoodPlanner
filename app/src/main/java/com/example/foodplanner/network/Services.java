@@ -1,11 +1,11 @@
 package com.example.foodplanner.network;
 
-import com.example.foodplanner.data.models.area.AreaResponse;
-import com.example.foodplanner.data.models.category.CategoryResponse;
-import com.example.foodplanner.data.models.all_categories.AllCategoriesResponse;
-import com.example.foodplanner.data.models.ingredient.IngredientResponse;
-import com.example.foodplanner.data.models.meal.MealResponse;
-import com.example.foodplanner.data.models.mealfilterby.MealFilterByResponse;
+import com.example.foodplanner.data.area.model.AreaResponse;
+import com.example.foodplanner.data.category.model.CategoryResponse;
+import com.example.foodplanner.data.all_categories.model.AllCategoriesResponse;
+import com.example.foodplanner.data.ingredient.model.IngredientResponse;
+import com.example.foodplanner.data.meal.model.MealResponse;
+import com.example.foodplanner.data.mealsfilterby.model.MealFilterByResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

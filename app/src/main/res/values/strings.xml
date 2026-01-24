@@ -26,4 +26,5 @@
     <string name="ingredients">Ingredients</string>
     <string name="country">Country</string>
     <string name="ingredient">Ingredient</string>
+    <string name="search_recipes">Search recipes..</string>
 </resources>

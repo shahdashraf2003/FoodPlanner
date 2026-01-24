@@ -3,15 +3,15 @@ package com.example.foodplanner.prsentation.search.presenter;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.foodplanner.data.datasource.area.AreaNetworkResponse;
-import com.example.foodplanner.data.datasource.area.AreaRemoteDataSource;
-import com.example.foodplanner.data.datasource.all_categories.AllCategoriesNetworkResponse;
-import com.example.foodplanner.data.datasource.all_categories.AllCategoriesRemoteDataSource;
-import com.example.foodplanner.data.datasource.ingredient.IngredientNetworkResponse;
-import com.example.foodplanner.data.datasource.ingredient.IngredientRemoteDataSource;
-import com.example.foodplanner.data.models.area.Area;
-import com.example.foodplanner.data.models.all_categories.AllCategories;
-import com.example.foodplanner.data.models.ingredient.Ingredient;
+import com.example.foodplanner.data.area.datasource.AreaNetworkResponse;
+import com.example.foodplanner.data.area.datasource.AreaRemoteDataSource;
+import com.example.foodplanner.data.all_categories.datasource.AllCategoriesNetworkResponse;
+import com.example.foodplanner.data.all_categories.datasource.AllCategoriesRemoteDataSource;
+import com.example.foodplanner.data.ingredient.datasource.IngredientNetworkResponse;
+import com.example.foodplanner.data.ingredient.datasource.IngredientRemoteDataSource;
+import com.example.foodplanner.data.area.model.Area;
+import com.example.foodplanner.data.all_categories.model.AllCategories;
+import com.example.foodplanner.data.ingredient.model.Ingredient;
 import com.example.foodplanner.prsentation.search.view.SearchView;
 
 import java.util.List;

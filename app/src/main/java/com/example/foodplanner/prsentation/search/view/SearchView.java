@@ -1,8 +1,8 @@
 package com.example.foodplanner.prsentation.search.view;
 
-import com.example.foodplanner.data.models.area.Area;
-import com.example.foodplanner.data.models.all_categories.AllCategories;
-import com.example.foodplanner.data.models.ingredient.Ingredient;
+import com.example.foodplanner.data.area.model.Area;
+import com.example.foodplanner.data.all_categories.model.AllCategories;
+import com.example.foodplanner.data.ingredient.model.Ingredient;
 
 import java.util.List;
 

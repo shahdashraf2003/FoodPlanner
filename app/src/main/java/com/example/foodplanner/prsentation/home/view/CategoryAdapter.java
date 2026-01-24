@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
-import com.example.foodplanner.data.models.category.Category;
+import com.example.foodplanner.data.category.model.Category;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
@@ -85,7 +85,5 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         }
     }
 
-    public interface CategoryOnClickListener {
-        void onCategoryClick(Category category);
-    }
+
 }
