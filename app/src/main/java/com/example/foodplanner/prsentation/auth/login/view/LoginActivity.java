@@ -1,4 +1,4 @@
-package com.example.foodplanner.prsentation.auth.login;
+package com.example.foodplanner.prsentation.auth.login.view;
 
 import static com.example.foodplanner.utils.SnackBarUtil.showSnack;
 
@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,13 +14,15 @@ import androidx.credentials.GetCredentialRequest;
 
 import com.example.foodplanner.prsentation.MainActivity;
 import com.example.foodplanner.R;
-import com.example.foodplanner.prsentation.auth.data.model.UserModel;
+import com.example.foodplanner.data.auth.model.UserModel;
+import com.example.foodplanner.prsentation.auth.login.presenter.LoginPresenter;
+import com.example.foodplanner.prsentation.auth.signup.SignupActivity;
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class LoginActivity extends AppCompatActivity implements LoginContract.View  {
+public class LoginActivity extends AppCompatActivity implements LoginContract.View {
     private FirebaseAuth auth;
     private TextInputEditText loginEmail ,loginPassword;
     private TextView signup;
@@ -73,6 +74,13 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                  credentialManager = CredentialManager.create(LoginActivity.this);
 
               
+            }
+        });
+        signup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+                startActivity(intent);
             }
         });
     }
