@@ -1,4 +1,4 @@
-package com.example.foodplanner.prsentation.auth.data.model;
+package com.example.foodplanner.data.auth.model;
 
 public class UserModel {
     private String userID;

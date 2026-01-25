@@ -1,6 +1,6 @@
-package com.example.foodplanner.prsentation.auth.login;
+package com.example.foodplanner.prsentation.auth.login.view;
 
-import com.example.foodplanner.prsentation.auth.data.model.UserModel;
+import com.example.foodplanner.data.auth.model.UserModel;
 
 public interface LoginContract {
     interface View {

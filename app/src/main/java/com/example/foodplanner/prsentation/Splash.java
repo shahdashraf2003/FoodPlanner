@@ -11,7 +11,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.foodplanner.R;
-import com.example.foodplanner.prsentation.auth.login.LoginActivity;
+import com.example.foodplanner.prsentation.auth.login.view.LoginActivity;
 
 
 public class Splash extends AppCompatActivity {
