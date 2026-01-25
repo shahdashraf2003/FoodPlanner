@@ -32,4 +32,6 @@
     <string name="_2026_all_rights_reserved">© 2026 All rights reserved</string>
     <string name="_2026_food_planner">© 2026 Food Planner</string>
     <string name="your_favorite_meals">Your Favorite Meals</string>
+    <string name="email">email\n</string>
+    <string name="password">password\n</string>
 </resources>
