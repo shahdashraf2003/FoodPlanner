@@ -5,16 +5,16 @@ import android.util.Log;
 
 import com.example.foodplanner.data.area.datasource.AreaNetworkResponse;
 import com.example.foodplanner.data.area.datasource.AreaRemoteDataSource;
-import com.example.foodplanner.data.all_categories.datasource.AllCategoriesNetworkResponse;
-import com.example.foodplanner.data.all_categories.datasource.AllCategoriesRemoteDataSource;
+
+import com.example.foodplanner.data.category.datasource.CategoryNetworkResponse;
+import com.example.foodplanner.data.category.datasource.CategoryRemoteDataSource;
+import com.example.foodplanner.data.category.model.Category;
 import com.example.foodplanner.data.ingredient.datasource.IngredientNetworkResponse;
 import com.example.foodplanner.data.ingredient.datasource.IngredientRemoteDataSource;
 import com.example.foodplanner.data.area.model.Area;
-import com.example.foodplanner.data.all_categories.model.AllCategories;
 import com.example.foodplanner.data.ingredient.model.Ingredient;
 import com.example.foodplanner.data.meal.MealRepo;
 import com.example.foodplanner.data.meal.datasource.remote.MealNetworkResponse;
-import com.example.foodplanner.data.meal.datasource.remote.MealRemoteDataSource;
 import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.prsentation.search.view.SearchView;
 
@@ -23,14 +23,14 @@ import java.util.List;
 public class SearchPresenterImp implements SearchPresenter {
 
     private final AreaRemoteDataSource areaRemoteDataSource;
-    private final AllCategoriesRemoteDataSource allCategoriesRemoteDataSource;
+    private final CategoryRemoteDataSource allCategoriesRemoteDataSource;
     private final IngredientRemoteDataSource ingredientRemoteDataSource;
     private final MealRepo mealRepo;
     private final SearchView searchView;
 
     public SearchPresenterImp(Context context, SearchView searchView) {
         areaRemoteDataSource = new AreaRemoteDataSource();
-        allCategoriesRemoteDataSource = new AllCategoriesRemoteDataSource();
+        allCategoriesRemoteDataSource = new CategoryRemoteDataSource();
         ingredientRemoteDataSource = new IngredientRemoteDataSource();
         mealRepo= new MealRepo(context);
         this.searchView = searchView;
@@ -58,9 +58,9 @@ public class SearchPresenterImp implements SearchPresenter {
 
     @Override
     public void getAllCategoriesList() {
-        allCategoriesRemoteDataSource.getAllCategoriesFilter(new AllCategoriesNetworkResponse() {
+        allCategoriesRemoteDataSource.getAllCategories(new CategoryNetworkResponse() {
             @Override
-            public void onSuccess(List<AllCategories> allCategories) {
+            public void onSuccess(List<Category> allCategories) {
                 searchView.onCategoriesFilterFetchSuccess(allCategories);
             }
 

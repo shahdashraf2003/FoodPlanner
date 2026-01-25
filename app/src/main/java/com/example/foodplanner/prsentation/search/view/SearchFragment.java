@@ -20,8 +20,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodplanner.R;
-import com.example.foodplanner.data.all_categories.model.AllCategories;
 import com.example.foodplanner.data.area.model.Area;
+import com.example.foodplanner.data.category.model.Category;
 import com.example.foodplanner.data.ingredient.model.Ingredient;
 import com.example.foodplanner.data.common.DisplayItem;
 import com.example.foodplanner.data.meal.model.Meal;
@@ -49,7 +49,7 @@ public class SearchFragment extends Fragment implements GridAdapter.OnItemClickL
     private enum FilterType { CATEGORY, INGREDIENT, AREA }
     private FilterType currentFilter = FilterType.CATEGORY;
 
-    private List<AllCategories> allCategoriesList = new ArrayList<>();
+    private List<Category> allCategoriesList = new ArrayList<>();
     private List<Ingredient> allIngredientsList = new ArrayList<>();
     private List<Area> allAreasList = new ArrayList<>();
     private List<DisplayItem> currentDisplayItems = new ArrayList<>();
@@ -220,7 +220,7 @@ public class SearchFragment extends Fragment implements GridAdapter.OnItemClickL
     public void onSearchedMaelFetchLoading() { progressBar.setVisibility(View.VISIBLE); }
 
     @Override
-    public void onCategoriesFilterFetchSuccess(List<AllCategories> allCategories) {
+    public void onCategoriesFilterFetchSuccess(List<Category> allCategories) {
         progressBar.setVisibility(View.GONE);
         allCategoriesList = allCategories;
         updateDisplayItemsFromCategories();
@@ -281,21 +281,22 @@ public class SearchFragment extends Fragment implements GridAdapter.OnItemClickL
 
     private void updateDisplayItemsFromCategories() {
         currentDisplayItems.clear();
-        for (AllCategories category : allCategoriesList) currentDisplayItems.add(new DisplayItem(category.getStrCategory()));
+        for (Category category : allCategoriesList) currentDisplayItems.add(
+                new DisplayItem(category.getStrCategory(), category.getStrCategoryThumb()));
         adapter.setItems(currentDisplayItems);
         if (currentFilter == FilterType.CATEGORY && !isSearching) recyclerView.setAdapter(adapter);
     }
 
     private void updateDisplayItemsFromIngredients() {
         currentDisplayItems.clear();
-        for (Ingredient ingredient : allIngredientsList) currentDisplayItems.add(new DisplayItem(ingredient.getName()));
+        for (Ingredient ingredient : allIngredientsList) currentDisplayItems.add(new DisplayItem(ingredient.getName(),ingredient.getImageUrl()));
         adapter.setItems(currentDisplayItems);
         if (currentFilter == FilterType.INGREDIENT && !isSearching) recyclerView.setAdapter(adapter);
     }
 
     private void updateDisplayItemsFromAreas() {
         currentDisplayItems.clear();
-        for (Area area : allAreasList) currentDisplayItems.add(new DisplayItem(area.getStrArea()));
+        for (Area area : allAreasList) currentDisplayItems.add(new DisplayItem(area.getStrArea(),area.getFlagUrl()));
         adapter.setItems(currentDisplayItems);
         if (currentFilter == FilterType.AREA && !isSearching) recyclerView.setAdapter(adapter);
     }
