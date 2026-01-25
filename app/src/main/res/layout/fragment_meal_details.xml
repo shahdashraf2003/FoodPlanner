@@ -61,6 +61,8 @@
                     app:maxImageSize="40dp"
                     app:elevation="4dp"
                     app:borderWidth="4dp"
+                    android:clickable="true"
+                    android:focusable="true"
                     app:rippleColor="@color/white" />
 
             </FrameLayout>

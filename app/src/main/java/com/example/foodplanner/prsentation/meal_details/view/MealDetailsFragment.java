@@ -1,6 +1,9 @@
 package com.example.foodplanner.prsentation.meal_details.view;
 
+import static com.example.foodplanner.utils.SnackBarUtil.showSnack;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +25,8 @@ import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.prsentation.meal_details.presenter.MealDetailsPresenter;
 import com.example.foodplanner.prsentation.meal_details.presenter.MealDetailsPresenterImp;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
@@ -29,7 +34,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 import java.util.ArrayList;
 import java.util.List;
 
-public class MealDetailsFragment extends Fragment implements MealDetailsView {
+public class MealDetailsFragment extends Fragment implements MealDetailsView ,MealOnClickListener{
 
     private MealDetailsPresenter presenter;
     private String mealId;
@@ -42,6 +47,9 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView {
     private Button btnYoutube;
     private ProgressBar progressLoading;
     private TextView tvError;
+    private FloatingActionButton fab ;
+    private Meal meal;
+
 
     private IngredientsAdapter ingredientsAdapter;
 
@@ -74,10 +82,17 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView {
         btnYoutube = view.findViewById(R.id.btn_youtube);
         progressLoading = view.findViewById(R.id.progressMealDetails);
         tvError = view.findViewById(R.id.tvErrorMealDetails);
-
         ingredientsAdapter = new IngredientsAdapter(new ArrayList<>());
         rvIngredients.setLayoutManager(new LinearLayoutManager(requireContext()));
         rvIngredients.setAdapter(ingredientsAdapter);
+        fab = view.findViewById(R.id.fab_favorite);
+        fab.setOnClickListener(v -> {
+                    Log.d("favorite", "onCreateView: "+ meal);
+                    if (meal != null) {
+                        Log.d("favorite", "onCreateView: "+meal);
+                        addMealToFav(meal);
+                    }}
+                );
 
         return view;
     }
@@ -133,7 +148,7 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView {
 
         showLoading(false);
 
-        Meal meal = meals.get(0);
+         meal = meals.get(0);
 
         Glide.with(this)
                 .load(meal.getStrMealThumb())
@@ -189,6 +204,13 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView {
         }
     }
 
+    @Override
+    public void showMessage(String message) {
+        showSnack(requireView().getRootView(),
+                "Meal Added to fav"
+        );
+    }
+
     private String extractYouTubeVideoId(String url) {
         if (url.contains("v=")) return url.split("v=")[1].split("&")[0];
         return null;
@@ -198,5 +220,10 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView {
     public void onDestroy() {
         super.onDestroy();
         if (youtubePlayerView != null) getLifecycle().removeObserver(youtubePlayerView);
+    }
+
+    @Override
+    public void addMealToFav(Meal meal) {
+        presenter.insertMealToFav(meal);
     }
 }

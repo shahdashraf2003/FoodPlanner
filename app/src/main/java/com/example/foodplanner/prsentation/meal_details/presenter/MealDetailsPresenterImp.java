@@ -1,12 +1,14 @@
 package com.example.foodplanner.prsentation.meal_details.presenter;
 
 import android.content.Context;
+import android.view.View;
 
 import com.example.foodplanner.data.meal.MealRepo;
 import com.example.foodplanner.data.meal.datasource.remote.MealNetworkResponse;
 import com.example.foodplanner.data.meal.datasource.remote.MealRemoteDataSource;
 import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.prsentation.meal_details.view.MealDetailsView;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -39,6 +41,14 @@ public class MealDetailsPresenterImp implements MealDetailsPresenter{
                 },mealId
         );
 
+
+
+    }
+
+    @Override
+    public void insertMealToFav(Meal meal) {
+        mealRepo.insertFavMeal(meal);
+        mealDetailsView.showMessage("Meal added to favorites");
 
 
     }

@@ -8,5 +8,6 @@ public interface MealDetailsView {
     void onMealDetailsFetchError(String errMsg);
     void onMealDetailsFetchLoading();
     void onMealDetailsFetchSuccess(List<Meal> meals);
+    void showMessage(String message);
 
 }

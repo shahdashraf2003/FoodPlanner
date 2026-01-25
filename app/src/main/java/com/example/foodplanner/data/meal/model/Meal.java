@@ -13,7 +13,7 @@ public class Meal {
     @PrimaryKey
     @ColumnInfo(name = "id")
     @SerializedName("idMeal")
-    private String idMeal;
+    private String idMeal = "";
 
     @ColumnInfo(name = "name")
     @SerializedName("strMeal")
@@ -119,8 +119,9 @@ public class Meal {
     private String strCreativeCommonsConfirmed;
     private String dateModified;
 
-    public String getIdMeal() { return idMeal != null ? idMeal : ""; }
-    public void setIdMeal(String idMeal) { this.idMeal = idMeal; }
+    @NonNull
+    public String getIdMeal() { return idMeal; }
+    public void setIdMeal(@NonNull String idMeal) { this.idMeal = idMeal; }
     public String getStrMeal() { return strMeal != null ? strMeal : "No name"; }
     public void setStrMeal(String strMeal) { this.strMeal = strMeal; }
     public String getStrMealAlternate() { return strMealAlternate != null ? strMealAlternate : ""; }

@@ -2,6 +2,7 @@ package com.example.foodplanner.data.meal.datasource.local;
 
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -23,6 +24,9 @@ public class MealLocalDataSource {
         new  Thread(new Runnable() {
             @Override
             public void run() {
+
+                Log.d("favorite", "run: "+ meal);
+
                 mealsDao.insertMeal(meal);
             }
         }).start();
