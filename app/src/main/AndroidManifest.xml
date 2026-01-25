@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodPlanner">
         <activity
-            android:name=".prsentation.auth.signup.SignupActivity"
+            android:name=".prsentation.auth.signup.view.SignupActivity"
             android:exported="false" />
         <activity
             android:name=".prsentation.auth.login.view.LoginActivity"

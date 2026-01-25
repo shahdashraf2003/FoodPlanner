@@ -16,7 +16,7 @@ import com.example.foodplanner.prsentation.MainActivity;
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.auth.model.UserModel;
 import com.example.foodplanner.prsentation.auth.login.presenter.LoginPresenter;
-import com.example.foodplanner.prsentation.auth.signup.SignupActivity;
+import com.example.foodplanner.prsentation.auth.signup.view.SignupActivity;
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
