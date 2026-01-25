@@ -12,8 +12,9 @@ import com.example.foodplanner.data.ingredient.datasource.IngredientRemoteDataSo
 import com.example.foodplanner.data.area.model.Area;
 import com.example.foodplanner.data.all_categories.model.AllCategories;
 import com.example.foodplanner.data.ingredient.model.Ingredient;
-import com.example.foodplanner.data.meal.datasource.MealNetworkResponse;
-import com.example.foodplanner.data.meal.datasource.MealRemoteDataSource;
+import com.example.foodplanner.data.meal.MealRepo;
+import com.example.foodplanner.data.meal.datasource.remote.MealNetworkResponse;
+import com.example.foodplanner.data.meal.datasource.remote.MealRemoteDataSource;
 import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.prsentation.search.view.SearchView;
 
@@ -24,14 +25,14 @@ public class SearchPresenterImp implements SearchPresenter {
     private final AreaRemoteDataSource areaRemoteDataSource;
     private final AllCategoriesRemoteDataSource allCategoriesRemoteDataSource;
     private final IngredientRemoteDataSource ingredientRemoteDataSource;
-    private final MealRemoteDataSource mealRemoteDataSource;
+    private final MealRepo mealRepo;
     private final SearchView searchView;
 
     public SearchPresenterImp(Context context, SearchView searchView) {
         areaRemoteDataSource = new AreaRemoteDataSource();
         allCategoriesRemoteDataSource = new AllCategoriesRemoteDataSource();
         ingredientRemoteDataSource = new IngredientRemoteDataSource();
-        mealRemoteDataSource= new MealRemoteDataSource();
+        mealRepo= new MealRepo(context);
         this.searchView = searchView;
     }
 
@@ -102,7 +103,7 @@ public class SearchPresenterImp implements SearchPresenter {
 
     @Override
     public void getSearchedMeal(String mealName) {
-        mealRemoteDataSource.getSearchedMeal(new MealNetworkResponse() {
+        mealRepo.getSearchedMeal(new MealNetworkResponse() {
             @Override
             public void onSuccess(List<Meal> meals) {
                     searchView.onSearchedMaelFetchSuccess(meals);

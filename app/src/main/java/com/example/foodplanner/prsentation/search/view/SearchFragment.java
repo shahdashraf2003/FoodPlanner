@@ -1,5 +1,7 @@
 package com.example.foodplanner.prsentation.search.view;
 
+import static com.example.foodplanner.utils.SnackBarUtil.showSnack;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -11,7 +13,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -154,7 +155,9 @@ public class SearchFragment extends Fragment implements GridAdapter.OnItemClickL
                     presenter.getSearchedMeal(query);
                     hideKeyboard();
                 } else {
-                    Toast.makeText(requireContext(), "Enter at least " + MIN_SEARCH_CHARS + " characters", Toast.LENGTH_SHORT).show();
+                    showSnack(requireView().getRootView(),
+                            "Enter at least " + MIN_SEARCH_CHARS + " characters"
+                    );
                 }
                 return true;
             }

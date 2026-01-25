@@ -1,4 +1,4 @@
-package com.example.foodplanner.data.meal.datasource;
+package com.example.foodplanner.data.meal.datasource.remote;
 
 import android.util.Log;
 

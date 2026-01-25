@@ -1,5 +1,7 @@
 package com.example.foodplanner.prsentation.auth.login;
 
+import static com.example.foodplanner.utils.SnackBarUtil.showSnack;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -77,17 +79,26 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
     @Override
     public void onLoginSuccess(UserModel user) {
-        Toast.makeText(this, "Welcome back", Toast.LENGTH_SHORT).show();
+        View rootView = findViewById(android.R.id.content);
+
+        showSnack(rootView,
+                "Welcome back"
+        );
         startActivity(new Intent(
                 this, MainActivity.class));
         loginEmail.setText("");
         loginPassword.setText("");
     }
 
+
+
+
+
     @Override
     public void onLoginError(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-
+        View rootView = findViewById(android.R.id.content);
+        showSnack(rootView, message);
     }
+
 
 }

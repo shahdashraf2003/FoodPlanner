@@ -1,15 +1,26 @@
 package com.example.foodplanner.data.meal.model;
 
-import com.google.gson.annotations.SerializedName;
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+@Entity(tableName = "meals")
 public class Meal {
 
+    @NonNull
+    @PrimaryKey
+    @ColumnInfo(name = "id")
     @SerializedName("idMeal")
-    private String idMeal;
+    private String idMeal = "";
+
+    @ColumnInfo(name = "name")
     @SerializedName("strMeal")
     private String strMeal;
     @SerializedName("strMealAlternate")
     private String strMealAlternate;
+    @ColumnInfo(name = "category")
     @SerializedName("strCategory")
     private String strCategory;
     @SerializedName("strArea")
@@ -108,8 +119,9 @@ public class Meal {
     private String strCreativeCommonsConfirmed;
     private String dateModified;
 
-    public String getIdMeal() { return idMeal != null ? idMeal : ""; }
-    public void setIdMeal(String idMeal) { this.idMeal = idMeal; }
+    @NonNull
+    public String getIdMeal() { return idMeal; }
+    public void setIdMeal(@NonNull String idMeal) { this.idMeal = idMeal; }
     public String getStrMeal() { return strMeal != null ? strMeal : "No name"; }
     public void setStrMeal(String strMeal) { this.strMeal = strMeal; }
     public String getStrMealAlternate() { return strMealAlternate != null ? strMealAlternate : ""; }
