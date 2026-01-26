@@ -7,13 +7,15 @@
     android:layout_height="match_parent"
     tools:context=".Splash">
 
-    <ImageView
-        android:id="@+id/iv_splash"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/splash_lottie"
+        android:layout_width="372dp"
+        android:layout_height="368dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/splash" />
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="splash.json"
+        app:lottie_loop="true" />
 </androidx.constraintlayout.widget.ConstraintLayout>
