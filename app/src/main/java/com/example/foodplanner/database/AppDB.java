@@ -6,14 +6,14 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.example.foodplanner.data.meal.datasource.local.MealsDao;
-import com.example.foodplanner.data.meal.model.Meal;
+import com.example.foodplanner.data.meal.datasource.local.LocalMealsDao;
+import com.example.foodplanner.data.meal.model.loacl.LocalMeal;
 
 
-@Database(entities = {Meal.class} , version = 1)
+@Database(entities = {LocalMeal.class} , version = 1)
 public abstract class AppDB extends RoomDatabase {
 
-    public abstract MealsDao mealsDao();
+    public abstract LocalMealsDao localMealsDao();
     private static  AppDB instance =null;
     public static AppDB getInstance(Context context) {
         if (instance==null)

@@ -2,11 +2,9 @@ package com.example.foodplanner.prsentation.favorite.view;
 
 import static com.example.foodplanner.utils.SnackBarUtil.showSnack;
 
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,12 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.foodplanner.R;
-import com.example.foodplanner.data.meal.model.Meal;
+import com.example.foodplanner.data.meal.model.loacl.LocalMeal;
+import com.example.foodplanner.data.meal.model.remote.Meal;
 import com.example.foodplanner.prsentation.favorite.presenter.FavPresenter;
 import com.example.foodplanner.prsentation.favorite.presenter.FavPresenterImpl;
-import com.google.android.material.snackbar.Snackbar;
-
-import java.util.List;
 
 
 public class FavoriteFragment extends Fragment implements FavView, OnFavoriteClickListener {
@@ -35,7 +31,6 @@ public class FavoriteFragment extends Fragment implements FavView, OnFavoriteCli
 
         rvFavMeals = view.findViewById(R.id.rvFavMeals);
         rvFavMeals.setLayoutManager(new LinearLayoutManager(requireContext()));
-        rvFavMeals.setHasFixedSize(true);
 
         favAdapter = new FavoriteAdapter(this);
         rvFavMeals.setAdapter(favAdapter);
@@ -50,7 +45,7 @@ public class FavoriteFragment extends Fragment implements FavView, OnFavoriteCli
     }
 
     @Override
-    public void onMealClick(Meal meal) {
+    public void onMealClick(LocalMeal meal) {
         favPresenter.deleteFavMeal(meal);
 
     }

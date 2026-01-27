@@ -3,6 +3,7 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
@@ -15,12 +16,12 @@
         android:id="@+id/constraint_cal_meal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp">
+        android:layout_margin="8dp">
 
         <ImageView
             android:id="@+id/iv_cal_poster"
-            android:layout_width="222dp"
-            android:layout_height="160dp"
+            android:layout_width="180dp"
+            android:layout_height="166dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -61,7 +62,6 @@
             app:borderWidth="4dp"
             app:elevation="4dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iv_cal_poster"
             app:layout_constraintTop_toBottomOf="@+id/tv_cal_category"
             app:maxImageSize="40dp"
             app:rippleColor="@color/white"

@@ -1,7 +1,6 @@
+package com.example.foodplanner.prsentation.calender.view;
 
-package com.example.foodplanner.prsentation.favorite.view;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,51 +13,49 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.meal.model.loacl.LocalMeal;
-import com.example.foodplanner.data.meal.model.remote.Meal;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.FavViewHolder> {
+public class CalenderAdapter extends RecyclerView.Adapter<CalenderAdapter.CalViewHolder> {
 
-    private List<LocalMeal> meals ;
-    private OnFavoriteClickListener listener;
+    private List<LocalMeal> meals = new ArrayList<>();
+    private OnCalenderedMealClickListener listener;
     private Context context;
 
-    public FavoriteAdapter(OnFavoriteClickListener listener) {
-
+    public CalenderAdapter(OnCalenderedMealClickListener listener) {
         this.listener = listener;
     }
 
     public void setList(List<LocalMeal> meals) {
         this.meals = meals;
-        Log.d("Fav", "setList: "+meals.size());
         notifyDataSetChanged();
     }
 
     @NonNull
     @Override
-    public FavViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CalViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
         View view = LayoutInflater.from(context)
-                .inflate(R.layout.item_favorite, parent, false);
-        return new FavViewHolder(view);
+                .inflate(R.layout.item_calender, parent, false);
+        return new CalViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FavViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CalViewHolder holder, int position) {
         LocalMeal meal = meals.get(position);
         holder.tvName.setText(meal.getStrMeal());
         holder.tvCategory.setText(meal.getStrCategory());
         Glide.with(holder.itemView)
                 .load(meal.getStrMealThumb())
+                .placeholder(R.drawable.placeholder)
                 .into(holder.ivPoster);
 
-
         holder.btnDelete.setOnClickListener(v -> {
-            listener.onMealClick(meal);
+            if (listener != null) {
+                listener.onCalenderedMealClick(meal);
+            }
         });
     }
 
@@ -67,20 +64,18 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.FavVie
         return meals == null ? 0 : meals.size();
     }
 
-    static class FavViewHolder extends RecyclerView.ViewHolder {
+    static class CalViewHolder extends RecyclerView.ViewHolder {
 
         ImageView ivPoster;
         TextView tvName, tvCategory;
         FloatingActionButton btnDelete;
 
-        public FavViewHolder(@NonNull View itemView) {
+        public CalViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            ivPoster = itemView.findViewById(R.id.iv_fav_poster);
-            tvName = itemView.findViewById(R.id.tv_fav_name);
-            tvCategory = itemView.findViewById(R.id.tv_fav_category);
-            btnDelete = itemView.findViewById(R.id.fab_remove_Meals);
+            ivPoster = itemView.findViewById(R.id.iv_cal_poster);
+            tvName = itemView.findViewById(R.id.tv_cal_name);
+            tvCategory = itemView.findViewById(R.id.tv_cal_category);
+            btnDelete = itemView.findViewById(R.id.fab_remove_cal_Meals);
         }
     }
 }
-
