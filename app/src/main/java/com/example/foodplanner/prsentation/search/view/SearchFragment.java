@@ -24,7 +24,7 @@ import com.example.foodplanner.data.area.model.Area;
 import com.example.foodplanner.data.category.model.Category;
 import com.example.foodplanner.data.ingredient.model.Ingredient;
 import com.example.foodplanner.data.common.DisplayItem;
-import com.example.foodplanner.data.meal.model.Meal;
+import com.example.foodplanner.data.meal.model.remote.Meal;
 import com.example.foodplanner.prsentation.filtered_meals.view.FilteredMealsFragment;
 import com.example.foodplanner.prsentation.meal_details.view.MealDetailsFragment;
 import com.example.foodplanner.prsentation.search.presenter.SearchPresenter;

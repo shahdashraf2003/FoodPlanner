@@ -37,7 +37,7 @@ public class SnackBarUtil {
         TextView tv =
                 snackView.findViewById(com.google.android.material.R.id.snackbar_text);
         tv.setTextColor(Color.WHITE);
-        tv.setTextSize(20);
+        tv.setTextSize(14);
         tv.setMaxLines(2);
         tv.setGravity(Gravity.CENTER);
 

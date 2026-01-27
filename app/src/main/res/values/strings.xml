@@ -35,4 +35,5 @@
     <string name="email">email\n</string>
     <string name="password">password\n</string>
     <string name="user_name">user name\n</string>
+    <string name="meals_for_this_day">Meals for this day</string>
 </resources>

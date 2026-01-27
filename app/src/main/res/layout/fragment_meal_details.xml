@@ -65,6 +65,22 @@
                     android:focusable="true"
                     app:rippleColor="@color/white" />
 
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fab_calender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|start"
+                    android:layout_margin="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:backgroundTint="@color/primary"
+                    app:borderWidth="4dp"
+                    app:elevation="4dp"
+                    app:maxImageSize="40dp"
+                    app:rippleColor="@color/white"
+                    app:srcCompat="@drawable/calendar_add_on"
+                    app:tint="@color/white" />
+
             </FrameLayout>
 
         </com.google.android.material.card.MaterialCardView>
@@ -84,29 +100,9 @@
                 android:gravity="center"
                 android:layout_marginBottom="4dp"/>
 
-            <TextView
-                android:id="@+id/tv_meal_alternate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:textStyle="italic"
-                android:visibility="gone" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_marginTop="8dp">
 
-                <TextView
-                    android:id="@+id/tv_country"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:layout_marginStart="16dp"/>
-            </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout
@@ -123,9 +119,9 @@
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="6dp"
-                android:textSize="12sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:layout_marginEnd="8dp" />
 
             <TextView
@@ -134,9 +130,9 @@
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="6dp"
-                android:textSize="12sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
-                android:textColor="@color/white"/>
+                android:textColor="@color/black"/>
         </LinearLayout>
 
         <TextView

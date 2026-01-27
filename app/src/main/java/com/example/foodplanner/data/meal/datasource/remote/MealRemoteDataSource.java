@@ -2,8 +2,8 @@ package com.example.foodplanner.data.meal.datasource.remote;
 
 import android.util.Log;
 
-import com.example.foodplanner.data.meal.model.Meal;
-import com.example.foodplanner.data.meal.model.MealResponse;
+import com.example.foodplanner.data.meal.model.remote.Meal;
+import com.example.foodplanner.data.meal.model.remote.MealResponse;
 import com.example.foodplanner.network.Services;
 import com.example.foodplanner.network.Network;
 import java.util.List;
@@ -14,7 +14,7 @@ import retrofit2.Response;
 
 public class MealRemoteDataSource {
     private Services mealService;
-    public static String TAG = "HomeFra";
+    public static String TAG = "MealRemoteDataSource";
 
     public MealRemoteDataSource() {
 

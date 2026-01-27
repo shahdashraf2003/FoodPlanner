@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.foodplanner.prsentation.calender.CalenderFragment;
+import com.example.foodplanner.prsentation.calender.view.CalenderFragment;
 import com.example.foodplanner.prsentation.favorite.view.FavoriteFragment;
 import com.example.foodplanner.prsentation.home.view.HomeFragment;
 import com.example.foodplanner.prsentation.profile.ProfileFragment;

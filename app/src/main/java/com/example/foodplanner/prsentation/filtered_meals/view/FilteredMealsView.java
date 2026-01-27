@@ -1,7 +1,5 @@
 package com.example.foodplanner.prsentation.filtered_meals.view;
 
-import com.example.foodplanner.data.category.model.Category;
-import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.data.mealsfilterby.model.MealFilterBy;
 
 import java.util.List;

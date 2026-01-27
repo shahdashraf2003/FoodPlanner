@@ -1,5 +1,6 @@
 package com.example.foodplanner.prsentation.meal_details.view;
 
+import static com.example.foodplanner.utils.CalenderUtil.showCalendarDialog;
 import static com.example.foodplanner.utils.SnackBarUtil.showSnack;
 
 import android.os.Bundle;
@@ -11,7 +12,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,12 +21,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
-import com.example.foodplanner.data.meal.model.Meal;
+import com.example.foodplanner.data.meal.model.loacl.LocalMeal;
+import com.example.foodplanner.data.meal.model.remote.Meal;
 import com.example.foodplanner.prsentation.meal_details.presenter.MealDetailsPresenter;
 import com.example.foodplanner.prsentation.meal_details.presenter.MealDetailsPresenterImp;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
@@ -40,14 +40,13 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView ,Me
     private String mealId;
 
     private ImageView ivMealImage;
-    private TextView tvMealName, tvMealAlternate, badgeCategory, badgeArea, tvMealInstructions, tvYoutubeTitle, tvCountry;
+    private TextView tvMealName, badgeCategory, badgeArea, tvMealInstructions, tvYoutubeTitle;
     private RecyclerView rvIngredients;
     private MaterialCardView cardYoutube;
     private YouTubePlayerView youtubePlayerView;
     private Button btnYoutube;
     private ProgressBar progressLoading;
     private TextView tvError;
-    private FloatingActionButton fab ;
     private Meal meal;
 
 
@@ -70,12 +69,10 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView ,Me
 
         ivMealImage = view.findViewById(R.id.iv_meal_image);
         tvMealName = view.findViewById(R.id.tv_meal_name);
-        tvMealAlternate = view.findViewById(R.id.tv_meal_alternate);
         badgeCategory = view.findViewById(R.id.badge_category);
         badgeArea = view.findViewById(R.id.badge_area);
         rvIngredients = view.findViewById(R.id.rv_ingredients);
         tvMealInstructions = view.findViewById(R.id.tv_meal_instructions);
-        tvCountry = view.findViewById(R.id.tv_country);
         tvYoutubeTitle = view.findViewById(R.id.tv_youtube_title);
         cardYoutube = view.findViewById(R.id.card_youtube);
         youtubePlayerView = view.findViewById(R.id.youtube_player_view);
@@ -85,14 +82,22 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView ,Me
         ingredientsAdapter = new IngredientsAdapter(new ArrayList<>());
         rvIngredients.setLayoutManager(new LinearLayoutManager(requireContext()));
         rvIngredients.setAdapter(ingredientsAdapter);
-        fab = view.findViewById(R.id.fab_favorite);
+        FloatingActionButton fab = view.findViewById(R.id.fab_favorite);
         fab.setOnClickListener(v -> {
                     Log.d("favorite", "onCreateView: "+ meal);
                     if (meal != null) {
+                        LocalMeal localMeal = convertToLocalMeal(meal);
                         Log.d("favorite", "onCreateView: "+meal);
-                        addMealToFav(meal);
+                        addMealToFav(localMeal);
                     }}
                 );
+        FloatingActionButton addToCal = view.findViewById(R.id.fab_calender);
+        addToCal.setOnClickListener(v -> {
+            if (meal != null) {
+                LocalMeal localMeal = convertToLocalMeal(meal);
+                showCalendarDialog(localMeal, requireContext(), presenter.getMealRepo());
+            }
+        });
 
         return view;
     }
@@ -157,15 +162,11 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView ,Me
 
         tvMealName.setText(meal.getStrMeal());
 
-        if (meal.getStrMealAlternate() != null && !meal.getStrMealAlternate().isEmpty()) {
-            tvMealAlternate.setText(meal.getStrMealAlternate());
-            tvMealAlternate.setVisibility(View.VISIBLE);
-        } else tvMealAlternate.setVisibility(View.GONE);
+
 
         badgeCategory.setText(meal.getStrCategory());
         badgeArea.setText(meal.getStrArea());
         tvMealInstructions.setText(meal.getStrInstructions());
-        tvCountry.setText(meal.getStrArea());
 
         List<String> ingredients = new ArrayList<>();
         List<String> measures = new ArrayList<>();
@@ -221,9 +222,20 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView ,Me
         super.onDestroy();
         if (youtubePlayerView != null) getLifecycle().removeObserver(youtubePlayerView);
     }
+    private LocalMeal convertToLocalMeal(Meal meal) {
+        LocalMeal localMeal = new LocalMeal();
+        localMeal.setIdMeal(meal.getIdMeal());
+        localMeal.setStrMeal(meal.getStrMeal());
+        localMeal.setStrMealThumb(meal.getStrMealThumb());
+        localMeal.setStrCategory(meal.getStrCategory());
+        return localMeal;
+    }
 
     @Override
-    public void addMealToFav(Meal meal) {
+    public void addMealToFav(LocalMeal meal) {
         presenter.insertMealToFav(meal);
+
     }
+
+
 }

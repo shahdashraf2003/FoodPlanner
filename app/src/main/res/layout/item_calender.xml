@@ -3,6 +3,7 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
@@ -12,21 +13,21 @@
     app:cardElevation="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraint_fav_meal"
+        android:id="@+id/constraint_cal_meal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp">
 
         <ImageView
-            android:id="@+id/iv_fav_poster"
-            android:layout_width="200dp"
-            android:layout_height="160dp"
+            android:id="@+id/iv_cal_poster"
+            android:layout_width="180dp"
+            android:layout_height="166dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_fav_name"
+            android:id="@+id/tv_cal_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -36,23 +37,23 @@
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iv_fav_poster"
-            app:layout_constraintTop_toTopOf="@+id/iv_fav_poster" />
+            app:layout_constraintStart_toEndOf="@+id/iv_cal_poster"
+            app:layout_constraintTop_toTopOf="@+id/iv_cal_poster" />
 
         <TextView
-            android:id="@+id/tv_fav_category"
+            android:id="@+id/tv_cal_category"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="@string/category"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/tv_fav_name"
-            app:layout_constraintStart_toStartOf="@+id/tv_fav_name"
-            app:layout_constraintTop_toBottomOf="@+id/tv_fav_name" />
+            app:layout_constraintEnd_toEndOf="@+id/tv_cal_name"
+            app:layout_constraintStart_toStartOf="@+id/tv_cal_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_cal_name" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_remove_Meals"
+            android:id="@+id/fab_remove_cal_Meals"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|end"
@@ -61,10 +62,10 @@
             app:borderWidth="4dp"
             app:elevation="4dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_fav_category"
+            app:layout_constraintTop_toBottomOf="@+id/tv_cal_category"
             app:maxImageSize="40dp"
             app:rippleColor="@color/white"
-            app:srcCompat="@drawable/remo_fav"
+            app:srcCompat="@drawable/delete"
             app:tint="@color/white" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
