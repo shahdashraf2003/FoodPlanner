@@ -21,7 +21,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.category.model.Category;
-import com.example.foodplanner.data.meal.model.remote.Meal;
+import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.prsentation.filtered_meals.view.FilteredMealsFragment;
 import com.example.foodplanner.prsentation.home.presenter.HomePresenter;
 import com.example.foodplanner.prsentation.home.presenter.HomePresenterImp;

@@ -13,8 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.foodplanner.R;
-import com.example.foodplanner.data.meal.model.loacl.LocalMeal;
-import com.example.foodplanner.data.meal.model.remote.Meal;
+import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.prsentation.favorite.presenter.FavPresenter;
 import com.example.foodplanner.prsentation.favorite.presenter.FavPresenterImpl;
 
@@ -45,7 +44,7 @@ public class FavoriteFragment extends Fragment implements FavView, OnFavoriteCli
     }
 
     @Override
-    public void onMealClick(LocalMeal meal) {
+    public void onMealClick(Meal meal) {
         favPresenter.deleteFavMeal(meal);
 
     }

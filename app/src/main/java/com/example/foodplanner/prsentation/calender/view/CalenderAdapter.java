@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
-import com.example.foodplanner.data.meal.model.loacl.LocalMeal;
+import com.example.foodplanner.data.meal.model.Meal;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import java.util.List;
 
 public class CalenderAdapter extends RecyclerView.Adapter<CalenderAdapter.CalViewHolder> {
 
-    private List<LocalMeal> meals = new ArrayList<>();
+    private List<Meal> meals = new ArrayList<>();
     private OnCalenderedMealClickListener listener;
     private Context context;
 
@@ -28,7 +28,7 @@ public class CalenderAdapter extends RecyclerView.Adapter<CalenderAdapter.CalVie
         this.listener = listener;
     }
 
-    public void setList(List<LocalMeal> meals) {
+    public void setList(List<Meal> meals) {
         this.meals = meals;
         notifyDataSetChanged();
     }
@@ -44,7 +44,7 @@ public class CalenderAdapter extends RecyclerView.Adapter<CalenderAdapter.CalVie
 
     @Override
     public void onBindViewHolder(@NonNull CalViewHolder holder, int position) {
-        LocalMeal meal = meals.get(position);
+        Meal meal = meals.get(position);
         holder.tvName.setText(meal.getStrMeal());
         holder.tvCategory.setText(meal.getStrCategory());
         Glide.with(holder.itemView)

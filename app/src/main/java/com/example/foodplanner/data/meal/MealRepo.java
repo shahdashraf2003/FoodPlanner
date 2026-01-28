@@ -7,8 +7,7 @@ import androidx.lifecycle.LiveData;
 import com.example.foodplanner.data.meal.datasource.local.MealLocalDataSource;
 import com.example.foodplanner.data.meal.datasource.remote.MealNetworkResponse;
 import com.example.foodplanner.data.meal.datasource.remote.MealRemoteDataSource;
-import com.example.foodplanner.data.meal.model.loacl.LocalMeal;
-import com.example.foodplanner.data.meal.model.remote.Meal;
+import com.example.foodplanner.data.meal.model.Meal;
 
 import java.util.List;
 
@@ -31,31 +30,31 @@ public class MealRepo {
      public void getSearchedMeal(MealNetworkResponse mealResponse,String mealName){
          mealRemoteDataSource.getSearchedMeal(mealResponse,mealName);
      }
-    public LiveData<List<LocalMeal>> getFavMeals()
+    public LiveData<List<Meal>> getFavMeals()
     {
         return  mealLocalDataSource.getFavMeals();
     }
 
-    public void insertFavMeal(LocalMeal meal)
+    public void insertFavMeal(Meal meal)
     {meal.setFav(true);
         mealLocalDataSource.insertFavMeal(meal);
     }
 
-    public void deleteFavMeal(LocalMeal meal)
+    public void deleteFavMeal(Meal meal)
     {
         mealLocalDataSource.deleteFavMeal(meal);
     }
 
-    public void addMealToCalendar(LocalMeal meal,String date)
+    public void addMealToCalendar(Meal meal,String date)
     {
         mealLocalDataSource.addMealToCalendar(meal,date);
     }
-    public void removeCalenderedMeal(LocalMeal meal)
+    public void removeCalenderedMeal(Meal meal)
     {
         mealLocalDataSource.removeMealFromCalendar(meal);
 
     }
-    public LiveData<List<LocalMeal>> getCalendarMeals()
+    public LiveData<List<Meal>> getCalendarMeals()
     {
         return  mealLocalDataSource.getCalendarMeals();
     }
