@@ -5,7 +5,7 @@ import android.content.Context;
 import androidx.lifecycle.LiveData;
 
 import com.example.foodplanner.data.meal.MealRepo;
-import com.example.foodplanner.data.meal.model.loacl.LocalMeal;
+import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.prsentation.calender.view.CalenderView;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public class CalenderPresenterImp implements CalenderPresenter{
     }
 
     @Override
-    public void removeMealFromCalendar(LocalMeal meal) {
+    public void removeMealFromCalendar(Meal meal) {
         mealRepo.removeCalenderedMeal(meal);
         calenderView.onMealRemoved(meal);
 
@@ -27,7 +27,7 @@ public class CalenderPresenterImp implements CalenderPresenter{
     }
 
     @Override
-    public LiveData<List<LocalMeal>> getCalendarMeals() {
+    public LiveData<List<Meal>> getCalendarMeals() {
         return  mealRepo.getCalendarMeals();
     }
 

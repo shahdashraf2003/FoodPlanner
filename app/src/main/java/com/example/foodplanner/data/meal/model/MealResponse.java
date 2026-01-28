@@ -1,4 +1,4 @@
-package com.example.foodplanner.data.meal.model.remote;
+package com.example.foodplanner.data.meal.model;
 
 import java.util.List;
 

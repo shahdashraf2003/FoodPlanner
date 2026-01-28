@@ -1,6 +1,7 @@
 package com.example.foodplanner.prsentation.meal_details.view;
 
-import com.example.foodplanner.data.meal.model.remote.Meal;
+
+import com.example.foodplanner.data.meal.model.Meal;
 
 import java.util.List;
 

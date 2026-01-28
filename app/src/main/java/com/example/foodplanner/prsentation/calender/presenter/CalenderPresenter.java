@@ -1,15 +1,13 @@
 package com.example.foodplanner.prsentation.calender.presenter;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 
-import com.example.foodplanner.data.meal.model.loacl.LocalMeal;
+import com.example.foodplanner.data.meal.model.Meal;
 
 import java.util.List;
 
 public interface CalenderPresenter {
-     void removeMealFromCalendar(LocalMeal meal);
+     void removeMealFromCalendar(Meal meal);
 
-   LiveData <List<LocalMeal>> getCalendarMeals();
+   LiveData <List<Meal>> getCalendarMeals();
 }

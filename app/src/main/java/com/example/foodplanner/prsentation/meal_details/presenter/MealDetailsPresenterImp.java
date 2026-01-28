@@ -4,8 +4,7 @@ import android.content.Context;
 
 import com.example.foodplanner.data.meal.MealRepo;
 import com.example.foodplanner.data.meal.datasource.remote.MealNetworkResponse;
-import com.example.foodplanner.data.meal.model.loacl.LocalMeal;
-import com.example.foodplanner.data.meal.model.remote.Meal;
+import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.prsentation.meal_details.view.MealDetailsView;
 
 import java.util.List;
@@ -44,7 +43,7 @@ public class MealDetailsPresenterImp implements MealDetailsPresenter{
     }
 
     @Override
-    public void insertMealToFav(LocalMeal meal) {
+    public void insertMealToFav(Meal meal) {
         mealRepo.insertFavMeal(meal);
         mealDetailsView.showMessage("Meal added to favorites");
 
@@ -57,7 +56,7 @@ public class MealDetailsPresenterImp implements MealDetailsPresenter{
     }
 
     @Override
-    public void addMealToCalendar(LocalMeal meal, String date) {
+    public void addMealToCalendar(Meal meal, String date) {
         meal.setCalendar(true);
         meal.setCalendarDate(date);
         mealRepo.addMealToCalendar(meal, date);
