@@ -7,8 +7,12 @@ import android.os.Handler;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.foodplanner.R;
+import com.example.foodplanner.data.auth.local.SessionManager;
 import com.example.foodplanner.prsentation.auth.login.view.LoginActivity;
 import com.airbnb.lottie.LottieAnimationView;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 public class Splash extends AppCompatActivity {
@@ -24,11 +28,32 @@ public class Splash extends AppCompatActivity {
         lottie = findViewById(R.id.splash_lottie);
         lottie.playAnimation();
         handler.postDelayed(() -> {
-            Intent intent = new Intent(Splash.this, LoginActivity.class);
-            startActivity(intent
-            );
+            SessionManager sessionManager = new SessionManager(this);
+
+            sessionManager.getUser()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(user -> openMainActivity(), throwable -> {}, () -> {
+                        if(sessionManager.isGuest()) {
+                            openMainActivity();
+                        } else {
+                            openLoginActivity();
+                        }
+                    });
+
         }, 5000);
 
 
     }
+
+    public void openMainActivity() {
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
+public void openLoginActivity() {
+    startActivity(new Intent(this, LoginActivity.class));
+    finish();
+
+}
+
 }

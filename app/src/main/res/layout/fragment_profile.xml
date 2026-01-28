@@ -4,13 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:layout_marginTop="40dp"
+    android:background="@color/white">
 
     <TextView
         android:id="@+id/tvHello"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello, my chef"
+        android:text="Our Application works "
         android:textSize="28sp"
         android:textStyle="bold"
         android:textColor="@color/primary"
@@ -23,7 +24,7 @@
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Shahd"
+        android:text="for you "
         android:textSize="32sp"
         android:textStyle="bold"
         android:textColor="@color/primary"

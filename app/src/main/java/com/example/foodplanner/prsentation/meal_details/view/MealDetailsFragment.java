@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
+import com.example.foodplanner.data.auth.local.SessionManager;
 import com.example.foodplanner.data.meal.model.loacl.LocalMeal;
 import com.example.foodplanner.data.meal.model.remote.Meal;
 import com.example.foodplanner.prsentation.meal_details.presenter.MealDetailsPresenter;
@@ -63,7 +64,8 @@ private NetworkConnectionObserver networkObserver;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_meal_details, container, false);
-
+        SessionManager sessionManager = new SessionManager(requireContext());
+        boolean isGuest = sessionManager.isGuest();
         Bundle bundle = getArguments();
         if (bundle != null) {
             mealId = bundle.getString("idMeal");
@@ -85,19 +87,34 @@ private NetworkConnectionObserver networkObserver;
         rvIngredients.setLayoutManager(new LinearLayoutManager(requireContext()));
         rvIngredients.setAdapter(ingredientsAdapter);
         FloatingActionButton fab = view.findViewById(R.id.fab_favorite);
+
+
+
         fab.setOnClickListener(v -> {
-                    Log.d("favorite", "onCreateView: "+ meal);
-                    if (meal != null) {
-                        LocalMeal localMeal = convertToLocalMeal(meal);
-                        Log.d("favorite", "onCreateView: "+meal);
-                        addMealToFav(localMeal);
-                    }}
+                    Log.d("favorite", "onCreateView: " + meal);
+                    if (isGuest) {
+                        showGuestWarningDialog();
+
+                    }
+                   else {
+                        if (meal != null) {
+                            LocalMeal localMeal = convertToLocalMeal(meal);
+                            Log.d("favorite", "onCreateView: " + meal);
+                            addMealToFav(localMeal);
+                        }
+                    }
+                }
                 );
         FloatingActionButton addToCal = view.findViewById(R.id.fab_calender);
         addToCal.setOnClickListener(v -> {
-            if (meal != null) {
-                LocalMeal localMeal = convertToLocalMeal(meal);
-                showCalendarDialog(localMeal, requireContext(), presenter.getMealRepo());
+            if(isGuest){
+                showGuestWarningDialog();
+
+            }else {
+                if (meal != null) {
+                    LocalMeal localMeal = convertToLocalMeal(meal);
+                    showCalendarDialog(localMeal, requireContext(), presenter.getMealRepo());
+                }
             }
         });
         NoInternetDialog noInternetDialog = new NoInternetDialog(requireContext());
@@ -254,6 +271,19 @@ private NetworkConnectionObserver networkObserver;
         presenter.insertMealToFav(meal);
 
     }
+    private void showGuestWarningDialog() {
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(requireContext());
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_guest_warning, null);
+        builder.setView(dialogView);
+
+        androidx.appcompat.app.AlertDialog dialog = builder.create();
+
+        dialogView.findViewById(R.id.btn_guest_ok).setOnClickListener(v -> dialog.dismiss());
+
+        dialog.setCancelable(false);
+        dialog.show();
+    }
+
 
     @Override
     public void onDestroyView() {

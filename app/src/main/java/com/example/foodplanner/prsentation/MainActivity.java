@@ -10,8 +10,8 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.foodplanner.prsentation.calender.view.CalenderFragment;
 import com.example.foodplanner.prsentation.favorite.view.FavoriteFragment;
 import com.example.foodplanner.prsentation.home.view.HomeFragment;
-import com.example.foodplanner.prsentation.profile.ProfileFragment;
 import com.example.foodplanner.R;
+import com.example.foodplanner.prsentation.profile.view.ProfileFragment;
 import com.example.foodplanner.prsentation.search.view.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
