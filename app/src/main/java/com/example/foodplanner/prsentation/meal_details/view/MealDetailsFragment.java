@@ -21,8 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
-import com.example.foodplanner.data.meal.model.loacl.LocalMeal;
-import com.example.foodplanner.data.meal.model.remote.Meal;
+import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.prsentation.meal_details.presenter.MealDetailsPresenter;
 import com.example.foodplanner.prsentation.meal_details.presenter.MealDetailsPresenterImp;
 import com.example.foodplanner.utils.NetworkConnectionObserver;
@@ -88,16 +87,14 @@ private NetworkConnectionObserver networkObserver;
         fab.setOnClickListener(v -> {
                     Log.d("favorite", "onCreateView: "+ meal);
                     if (meal != null) {
-                        LocalMeal localMeal = convertToLocalMeal(meal);
                         Log.d("favorite", "onCreateView: "+meal);
-                        addMealToFav(localMeal);
+                        addMealToFav(meal);
                     }}
                 );
         FloatingActionButton addToCal = view.findViewById(R.id.fab_calender);
         addToCal.setOnClickListener(v -> {
             if (meal != null) {
-                LocalMeal localMeal = convertToLocalMeal(meal);
-                showCalendarDialog(localMeal, requireContext(), presenter.getMealRepo());
+                showCalendarDialog(meal, requireContext(), presenter.getMealRepo());
             }
         });
         NoInternetDialog noInternetDialog = new NoInternetDialog(requireContext());
@@ -240,17 +237,10 @@ private NetworkConnectionObserver networkObserver;
         super.onDestroy();
         if (youtubePlayerView != null) getLifecycle().removeObserver(youtubePlayerView);
     }
-    private LocalMeal convertToLocalMeal(Meal meal) {
-        LocalMeal localMeal = new LocalMeal();
-        localMeal.setIdMeal(meal.getIdMeal());
-        localMeal.setStrMeal(meal.getStrMeal());
-        localMeal.setStrMealThumb(meal.getStrMealThumb());
-        localMeal.setStrCategory(meal.getStrCategory());
-        return localMeal;
-    }
+
 
     @Override
-    public void addMealToFav(LocalMeal meal) {
+    public void addMealToFav(Meal meal) {
         presenter.insertMealToFav(meal);
 
     }

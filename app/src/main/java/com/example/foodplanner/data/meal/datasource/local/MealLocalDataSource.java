@@ -5,7 +5,7 @@ import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.foodplanner.data.meal.model.loacl.LocalMeal;
+import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.database.AppDB;
 
 import java.util.List;
@@ -18,7 +18,7 @@ public class MealLocalDataSource {
         localMealsDao = db.localMealsDao();
     }
 
-    public void insertFavMeal(LocalMeal meal) {
+    public void insertFavMeal(Meal meal) {
         new Thread(() -> {
 
             if (localMealsDao.exists(meal.getIdMeal()) > 0) {
@@ -36,7 +36,7 @@ public class MealLocalDataSource {
 
 
 
-    public void deleteFavMeal(LocalMeal meal) {
+    public void deleteFavMeal(Meal meal) {
         new Thread(() -> {
             meal.setFav(false);
             localMealsDao.updateFav(meal.getIdMeal(), false);
@@ -44,11 +44,11 @@ public class MealLocalDataSource {
         }).start();
     }
 
-    public LiveData<List<LocalMeal>> getFavMeals() {
+    public LiveData<List<Meal>> getFavMeals() {
         return localMealsDao.getFavMeals();
     }
 
-    public void addMealToCalendar(LocalMeal meal, String date) {
+    public void addMealToCalendar(Meal meal, String date) {
         new Thread(() -> {
 
             if (localMealsDao.exists(meal.getIdMeal()) > 0) {
@@ -63,7 +63,7 @@ public class MealLocalDataSource {
         }).start();
     }
 
-    public void removeMealFromCalendar(LocalMeal meal) {
+    public void removeMealFromCalendar(Meal meal) {
         new Thread(() -> {
             meal.setCalendar(false);
             meal.setCalendarDate(null);
@@ -72,7 +72,7 @@ public class MealLocalDataSource {
         }).start();
     }
 
-    public LiveData<List<LocalMeal>> getCalendarMeals() {
+    public LiveData<List<Meal>> getCalendarMeals() {
         return localMealsDao.getCalendarMeals();
     }
 }

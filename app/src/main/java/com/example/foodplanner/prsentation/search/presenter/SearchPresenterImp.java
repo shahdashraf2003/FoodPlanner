@@ -15,7 +15,7 @@ import com.example.foodplanner.data.area.model.Area;
 import com.example.foodplanner.data.ingredient.model.Ingredient;
 import com.example.foodplanner.data.meal.MealRepo;
 import com.example.foodplanner.data.meal.datasource.remote.MealNetworkResponse;
-import com.example.foodplanner.data.meal.model.remote.Meal;
+import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.prsentation.search.view.SearchView;
 
 import java.util.List;

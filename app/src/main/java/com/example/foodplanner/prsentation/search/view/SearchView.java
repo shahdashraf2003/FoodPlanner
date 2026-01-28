@@ -3,7 +3,7 @@ package com.example.foodplanner.prsentation.search.view;
 import com.example.foodplanner.data.area.model.Area;
 import com.example.foodplanner.data.category.model.Category;
 import com.example.foodplanner.data.ingredient.model.Ingredient;
-import com.example.foodplanner.data.meal.model.remote.Meal;
+import com.example.foodplanner.data.meal.model.Meal;
 
 import java.util.List;
 

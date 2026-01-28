@@ -2,8 +2,8 @@ package com.example.foodplanner.data.meal.datasource.remote;
 
 import android.util.Log;
 
-import com.example.foodplanner.data.meal.model.remote.Meal;
-import com.example.foodplanner.data.meal.model.remote.MealResponse;
+import com.example.foodplanner.data.meal.model.Meal;
+import com.example.foodplanner.data.meal.model.MealResponse;
 import com.example.foodplanner.network.Services;
 import com.example.foodplanner.network.Network;
 import java.util.List;

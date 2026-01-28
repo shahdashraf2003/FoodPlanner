@@ -2,7 +2,7 @@ package com.example.foodplanner.prsentation.home.view;
 
 
 import com.example.foodplanner.data.category.model.Category;
-import com.example.foodplanner.data.meal.model.remote.Meal;
+import com.example.foodplanner.data.meal.model.Meal;
 
 import java.util.List;
 
