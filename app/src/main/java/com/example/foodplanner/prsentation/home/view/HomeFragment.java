@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,8 @@ import com.example.foodplanner.prsentation.filtered_meals.view.FilteredMealsFrag
 import com.example.foodplanner.prsentation.home.presenter.HomePresenter;
 import com.example.foodplanner.prsentation.home.presenter.HomePresenterImp;
 import com.example.foodplanner.prsentation.meal_details.view.MealDetailsFragment;
+import com.example.foodplanner.utils.NetworkConnectionObserver;
+import com.example.foodplanner.utils.NoInternetDialog;
 
 import java.util.List;
 
@@ -38,6 +42,7 @@ public class HomeFragment extends Fragment implements HomeView, CategoryOnClickL
     private View mealCardRoot;
     private TextView tvError;
     private ProgressBar progressLoading;
+    NetworkConnectionObserver networkObserver;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,6 +64,23 @@ public class HomeFragment extends Fragment implements HomeView, CategoryOnClickL
         recyclerViewCategories.setAdapter(categoryAdapter);
 
         homePresenter = new HomePresenterImp(requireContext(), this);
+        NoInternetDialog noInternetDialog = new NoInternetDialog(requireContext());
+
+
+         networkObserver = new NetworkConnectionObserver(requireContext(), new NetworkConnectionObserver.NetworkListener() {
+            @Override
+            public void onNetworkLost() {
+                Log.d("No", "onNetworkLost: ");
+                System.out.println("onNetworkLost");
+                requireActivity().runOnUiThread(() -> noInternetDialog.showDialog());
+
+            }
+
+            @Override
+            public void onNetworkAvailable() {
+                requireActivity().runOnUiThread(() -> noInternetDialog.hideDialog());
+            }
+        });
         loadRandomMeal();
         loadCategories();
 
@@ -178,4 +200,12 @@ public class HomeFragment extends Fragment implements HomeView, CategoryOnClickL
                 .addToBackStack(null)
                 .commit();
     }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (networkObserver != null) {
+            networkObserver.unregister();
+        }
+    }
+
 }

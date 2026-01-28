@@ -65,13 +65,13 @@
         app:layout_constraintTop_toBottomOf="@+id/headerCard"
         app:strokeWidth="1dp">
 
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/filteredRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="357dp"
+            android:layout_height="469dp"
             android:clipToPadding="false"
-            android:padding="8dp"
-            />
+            android:padding="8dp" />
         <TextView
             android:id="@+id/tvErrorFiltered"
             android:layout_width="wrap_content"
@@ -92,6 +92,8 @@
 
 
     </com.google.android.material.card.MaterialCardView>
+
+
 
 
 

@@ -1,20 +1,26 @@
 package com.example.foodplanner.prsentation.filtered_meals.view;
 
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.mealsfilterby.model.MealFilterBy;
 import com.example.foodplanner.prsentation.filtered_meals.presenter.FilteredMealsPresenter;
 import com.example.foodplanner.prsentation.filtered_meals.presenter.FilteredMealsPresenterImp;
 import com.example.foodplanner.prsentation.meal_details.view.MealDetailsFragment;
+import com.example.foodplanner.utils.NetworkConnectionObserver;
+import com.example.foodplanner.utils.NoInternetDialog;
 
 import java.util.List;
 
@@ -27,6 +33,7 @@ public class FilteredMealsFragment extends Fragment implements FilteredMealsView
     private ProgressBar progressBar;
     private TextView tvError;
 
+    private NetworkConnectionObserver networkObserver;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +51,26 @@ public class FilteredMealsFragment extends Fragment implements FilteredMealsView
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
 
-        Bundle bundle = getArguments();
+        NoInternetDialog noInternetDialog = new NoInternetDialog(requireContext());
+
+
+
+        networkObserver = new NetworkConnectionObserver(requireContext(), new NetworkConnectionObserver.NetworkListener() {
+            @Override
+            public void onNetworkLost() {
+                Log.d("No", "onNetworkLost: ");
+                System.out.println("onNetworkLost");
+                requireActivity().runOnUiThread(() -> noInternetDialog.showDialog());
+
+            }
+
+            @Override
+            public void onNetworkAvailable() {
+                requireActivity().runOnUiThread(() -> noInternetDialog.hideDialog());
+            }
+        });
+
+    Bundle bundle = getArguments();
         if (bundle != null) {
             areaName = bundle.getString("area_name");
             ingredientName = bundle.getString("ingredient_name");
@@ -104,6 +130,13 @@ public class FilteredMealsFragment extends Fragment implements FilteredMealsView
                 .addToBackStack(null)
                 .commit();
     }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (networkObserver != null) {
+            networkObserver.unregister();
+        }
+    }
 
     @Override
     public void onFilteredMealsByCategoryLoading() { showLoading(true); }
@@ -131,4 +164,6 @@ public class FilteredMealsFragment extends Fragment implements FilteredMealsView
 
     @Override
     public void onFilteredMealsByCountrySuccess(List<MealFilterBy> meals) { showMeals(meals); }
+
+
 }

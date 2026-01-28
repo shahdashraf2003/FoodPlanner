@@ -18,4 +18,6 @@ public interface FilteredMealsView {
     void onFilteredMealsByCountryError(String errMsg);
     void onFilteredMealsByCountryLoading();
     void onFilteredMealsByCountrySuccess(List<MealFilterBy> meals);
+
+
 }

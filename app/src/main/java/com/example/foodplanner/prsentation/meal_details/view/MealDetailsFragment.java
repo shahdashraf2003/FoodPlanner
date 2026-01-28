@@ -25,6 +25,8 @@ import com.example.foodplanner.data.meal.model.loacl.LocalMeal;
 import com.example.foodplanner.data.meal.model.remote.Meal;
 import com.example.foodplanner.prsentation.meal_details.presenter.MealDetailsPresenter;
 import com.example.foodplanner.prsentation.meal_details.presenter.MealDetailsPresenterImp;
+import com.example.foodplanner.utils.NetworkConnectionObserver;
+import com.example.foodplanner.utils.NoInternetDialog;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
@@ -49,7 +51,7 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView ,Me
     private TextView tvError;
     private Meal meal;
 
-
+private NetworkConnectionObserver networkObserver;
     private IngredientsAdapter ingredientsAdapter;
 
     @Override
@@ -98,7 +100,23 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView ,Me
                 showCalendarDialog(localMeal, requireContext(), presenter.getMealRepo());
             }
         });
+        NoInternetDialog noInternetDialog = new NoInternetDialog(requireContext());
 
+
+         networkObserver = new NetworkConnectionObserver(requireContext(), new NetworkConnectionObserver.NetworkListener() {
+            @Override
+            public void onNetworkLost() {
+                Log.d("No", "onNetworkLost: ");
+                System.out.println("onNetworkLost");
+                requireActivity().runOnUiThread(() -> noInternetDialog.showDialog());
+
+            }
+
+            @Override
+            public void onNetworkAvailable() {
+                requireActivity().runOnUiThread(() -> noInternetDialog.hideDialog());
+            }
+        });
         return view;
     }
 
@@ -237,5 +255,12 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView ,Me
 
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (networkObserver != null) {
+            networkObserver.unregister();
+        }
+    }
 
 }

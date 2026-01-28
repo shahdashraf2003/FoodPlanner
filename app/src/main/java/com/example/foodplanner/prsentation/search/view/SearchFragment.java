@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,8 @@ import com.example.foodplanner.prsentation.filtered_meals.view.FilteredMealsFrag
 import com.example.foodplanner.prsentation.meal_details.view.MealDetailsFragment;
 import com.example.foodplanner.prsentation.search.presenter.SearchPresenter;
 import com.example.foodplanner.prsentation.search.presenter.SearchPresenterImp;
+import com.example.foodplanner.utils.NetworkConnectionObserver;
+import com.example.foodplanner.utils.NoInternetDialog;
 import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
@@ -59,6 +62,7 @@ public class SearchFragment extends Fragment implements GridAdapter.OnItemClickL
     private Runnable searchRunnable;
     private String lastSearchQuery = "";
     private static final int MIN_SEARCH_CHARS = 2;
+    NetworkConnectionObserver networkObserver;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -87,7 +91,23 @@ public class SearchFragment extends Fragment implements GridAdapter.OnItemClickL
 
         chipGroup.check(R.id.chip_category);
         presenter.getAllCategoriesList();
+        NoInternetDialog noInternetDialog = new NoInternetDialog(requireContext());
 
+
+         networkObserver = new NetworkConnectionObserver(requireContext(), new NetworkConnectionObserver.NetworkListener() {
+            @Override
+            public void onNetworkLost() {
+                Log.d("No", "onNetworkLost: ");
+                System.out.println("onNetworkLost");
+                requireActivity().runOnUiThread(() -> noInternetDialog.showDialog());
+
+            }
+
+            @Override
+            public void onNetworkAvailable() {
+                requireActivity().runOnUiThread(() -> noInternetDialog.hideDialog());
+            }
+        });
         return view;
     }
 
@@ -314,10 +334,12 @@ public class SearchFragment extends Fragment implements GridAdapter.OnItemClickL
 
     @Override
     public void onMealClick(Meal meal) { navigateToMealDetails(meal); }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         if (handler != null) handler.removeCallbacksAndMessages(null);
+        if (networkObserver != null) networkObserver.unregister();
     }
+
+
 }
