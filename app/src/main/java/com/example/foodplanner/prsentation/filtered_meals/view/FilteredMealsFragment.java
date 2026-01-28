@@ -130,6 +130,13 @@ public class FilteredMealsFragment extends Fragment implements FilteredMealsView
                 .addToBackStack(null)
                 .commit();
     }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (networkObserver != null) {
+            networkObserver.unregister();
+        }
+    }
 
     @Override
     public void onFilteredMealsByCategoryLoading() { showLoading(true); }
