@@ -1,6 +1,7 @@
 package com.example.foodplanner.prsentation.calender.view;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.example.foodplanner.data.meal.MealRepo;
 import com.example.foodplanner.data.meal.model.Meal;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -66,16 +68,29 @@ public class CalenderFragment extends Fragment implements OnCalenderedMealClickL
     }
 
     private void loadMealsForDate(String date) {
-        mealRepo.getCalendarMeals().
-                subscribeOn(Schedulers.io())
-                .map(meals -> meals.stream()
-                        .filter(meal -> date.equals(meal.getCalendarDate()))
-                        .toList())
+        mealRepo.getCalendarMeals()
+                .subscribeOn(Schedulers.io())
+                .map(meals -> {
+                    List<Meal> filtered = new ArrayList<>();
+                    for (Meal meal : meals) {
+                        if (date.equals(meal.getCalendarDate())) {
+                            filtered.add(meal);
+                        }
+                    }
+                    return filtered;
+                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        meals -> calenderAdapter.setList(meals),
-                        throwable -> calenderAdapter.setList(List.of())
+                        meals -> {
+                            Log.d("DEBUG", "Meals count: " + meals.size());
+                            calenderAdapter.setList(meals);
+                        },
+                        throwable -> {
+                            Log.e("DEBUG", "Error fetching meals", throwable);
+                            calenderAdapter.setList(new ArrayList<>());
+                        }
                 );
+
 
     }
 

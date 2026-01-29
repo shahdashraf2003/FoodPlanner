@@ -1,6 +1,5 @@
 package com.example.foodplanner.prsentation.auth.login.view;
 
-import static androidx.core.content.ContentProviderCompat.requireContext;
 import static com.example.foodplanner.utils.SnackBarUtil.showSnack;
 
 import android.content.Intent;
@@ -10,12 +9,12 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.credentials.CredentialManager;
-import androidx.credentials.GetCredentialRequest;
 
-import com.example.foodplanner.prsentation.MainActivity;
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.auth.model.UserModel;
+import com.example.foodplanner.data.meal.datasource.local.LocalMealsDao;
+import com.example.foodplanner.database.AppDB;
+import com.example.foodplanner.prsentation.MainActivity;
 import com.example.foodplanner.prsentation.auth.login.presenter.LoginPresenterImp;
 import com.example.foodplanner.prsentation.auth.signup.view.SignupActivity;
 import com.google.android.material.button.MaterialButton;
@@ -46,9 +45,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         loginButton = findViewById(R.id.btn_login);
         skip = findViewById(R.id.btn_skip);
         google = findViewById(R.id.btn_google);
-
-        presenter = new LoginPresenterImp(this, this);
-
+        LocalMealsDao localMealsDao = AppDB.getInstance(this).localMealsDao();
+        presenter = new LoginPresenterImp(this, this, localMealsDao);
 
         loginButton.setOnClickListener(v -> {
             String email = loginEmail.getText().toString().trim();
