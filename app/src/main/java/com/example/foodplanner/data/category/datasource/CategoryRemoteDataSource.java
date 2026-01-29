@@ -1,17 +1,10 @@
 package com.example.foodplanner.data.category.datasource;
 
-import android.util.Log;
-
-import com.example.foodplanner.data.category.model.Category;
 import com.example.foodplanner.data.category.model.CategoryResponse;
 import com.example.foodplanner.network.Network;
 import com.example.foodplanner.network.Services;
 
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.rxjava3.core.Single;
 
 public class CategoryRemoteDataSource {
     private final Services categoryService;
@@ -20,28 +13,8 @@ public class CategoryRemoteDataSource {
         categoryService = Network.getInstance().services;
     }
 
-    public void getAllCategories(CategoryNetworkResponse callback){
-        categoryService.getAllCategories().enqueue(new Callback<CategoryResponse>() {
-            @Override
-            public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
-                if(response.isSuccessful() && response.body() != null){
-                    List<Category> categories = response.body().getCategories();
-                    if (categories != null) {
-                        callback.onSuccess(categories);
-                    } else {
-                        callback.onError("No categories found");
-                    }
-                } else {
-                    callback.onError("Response empty or failed");
-                    Log.e("CategoryRemoteDataSource", "Response failed: " + response.message());
-                }
-            }
+    public Single<CategoryResponse> getAllCategories(){
+        return categoryService.getAllCategories();
 
-            @Override
-            public void onFailure(Call<CategoryResponse> call, Throwable t) {
-                Log.e("CategoryRemoteDataSource", "API call failed", t);
-                callback.onError(t.getMessage());
-            }
-        });
     }
 }

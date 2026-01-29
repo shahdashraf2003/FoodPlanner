@@ -3,22 +3,14 @@ package com.example.foodplanner.prsentation.search.presenter;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.foodplanner.data.area.datasource.AreaNetworkResponse;
 import com.example.foodplanner.data.area.datasource.AreaRemoteDataSource;
-
-import com.example.foodplanner.data.category.datasource.CategoryNetworkResponse;
 import com.example.foodplanner.data.category.datasource.CategoryRemoteDataSource;
-import com.example.foodplanner.data.category.model.Category;
-import com.example.foodplanner.data.ingredient.datasource.IngredientNetworkResponse;
 import com.example.foodplanner.data.ingredient.datasource.IngredientRemoteDataSource;
-import com.example.foodplanner.data.area.model.Area;
-import com.example.foodplanner.data.ingredient.model.Ingredient;
 import com.example.foodplanner.data.meal.MealRepo;
-import com.example.foodplanner.data.meal.datasource.remote.MealNetworkResponse;
-import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.prsentation.search.view.SearchView;
 
-import java.util.List;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SearchPresenterImp implements SearchPresenter {
 
@@ -38,87 +30,74 @@ public class SearchPresenterImp implements SearchPresenter {
 
     @Override
     public void getAllIngredientsList() {
-        ingredientRemoteDataSource.getAllIngredients(new IngredientNetworkResponse() {
-            @Override
-            public void onSuccess(List<Ingredient> ingredients) {
-                searchView.onIngredientsFetchSuccess(ingredients);
-            }
+        searchView.onIngredientsFetchLoading();
+        ingredientRemoteDataSource.getAllIngredients()
+                .map(categoryResponse -> categoryResponse.getAllIngredientsList())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        meals->{
+                            searchView.onIngredientsFetchSuccess(meals);
+                        }
+                        ,throwable ->{
+                            searchView.onIngredientsListFetchError(throwable.getMessage());
+                        }
+                );
 
-            @Override
-            public void onError(String errorMsg) {
-                searchView.onIngredientsListFetchError(errorMsg);
-            }
-
-            @Override
-            public void onLoading() {
-                searchView.onIngredientsFetchLoading();
-            }
-        });
     }
 
     @Override
     public void getAllCategoriesList() {
-        allCategoriesRemoteDataSource.getAllCategories(new CategoryNetworkResponse() {
-            @Override
-            public void onSuccess(List<Category> allCategories) {
-                searchView.onCategoriesFilterFetchSuccess(allCategories);
-            }
-
-            @Override
-            public void onError(String errorMsg) {
-                searchView.onCategoriesFilterListFetchError(errorMsg);
-            }
-
-            @Override
-            public void onLoading() {
-                searchView.onCategoriesFilterFetchLoading();
-            }
-        });
+        searchView.onCategoriesFilterFetchLoading();
+        allCategoriesRemoteDataSource.getAllCategories()
+                .map(categoryResponse -> categoryResponse.getCategories())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        meals->{
+                            searchView.onCategoriesFilterFetchSuccess(meals);
+                        }
+                        ,throwable ->{
+                            searchView.onCategoriesFilterListFetchError(throwable.getMessage());
+                        }
+                );
     }
 
     @Override
 
         public void getAllAreasList() {
+        searchView.onAreaListFetchLoading();
             Log.d("SearchPresenter", "Fetching areas...");
-            areaRemoteDataSource.getAllAreasList(new AreaNetworkResponse() {
-                @Override
-                public void onSuccess(List<Area> areas) {
-                    Log.d("SearchPresenter", "Areas fetched: " + areas.size());
-                    searchView.onAreaFetchSuccess(areas);
-                }
 
-                @Override
-                public void onError(String errorMsg) {
-                    Log.e("SearchPresenter", "Error fetching areas: " + errorMsg);
-                    searchView.onAreaListFetchError(errorMsg);
-                }
-
-                @Override
-                public void onLoading() {
-                    Log.d("SearchPresenter", "Areas loading...");
-                    searchView.onAreaListFetchLoading();
-                }
-            });
+            areaRemoteDataSource.getAllAreasList()
+                    .subscribeOn(Schedulers.io())
+                    .map(areaResponse -> areaResponse.getAllAreas())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            areas -> {
+                                searchView.onAreaListFetchSuccess(areas);
+                            },
+                            throwable -> {
+                                searchView.onAreaListFetchError(throwable.getMessage());
+                            }
+                    );
         }
 
     @Override
     public void getSearchedMeal(String mealName) {
-        mealRepo.getSearchedMeal(new MealNetworkResponse() {
-            @Override
-            public void onSuccess(List<Meal> meals) {
-                    searchView.onSearchedMaelFetchSuccess(meals);
-            }
-
-            @Override
-            public void onError(String errorMsg) {
-                    searchView.onAreaListFetchError(errorMsg);
-            }
-
-            @Override
-            public void onLoading() {
-
-            }
-        },mealName);
+        searchView.onSearchedMaelFetchLoading();
+        mealRepo.getSearchedMeal(mealName)
+                .subscribeOn(Schedulers.io())
+                .map(mealResponse -> mealResponse.getMeals())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        meals->{
+                            searchView.onSearchedMaelFetchSuccess(meals);
+                        },
+                        throwable ->{
+                            searchView.onSearchedMaelFetchError(throwable.getMessage());
+                        }
+                );
     }
 
 }
