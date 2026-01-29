@@ -10,5 +10,4 @@ public interface MealDetailsPresenter {
     MealRepo getMealRepo();
     void addMealToCalendar(Meal meal, String date);
 
-
 }

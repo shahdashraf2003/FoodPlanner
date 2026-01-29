@@ -1,15 +1,11 @@
 package com.example.foodplanner.prsentation.search.view;
 
-import static com.example.foodplanner.utils.SnackBarUtil.showSnack;
-
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -26,6 +22,7 @@ import com.example.foodplanner.data.common.DisplayItem;
 import com.example.foodplanner.data.ingredient.model.Ingredient;
 import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.prsentation.filtered_meals.view.FilteredMealsFragment;
+import com.example.foodplanner.prsentation.meal_details.view.MealDetailsFragment;
 import com.example.foodplanner.prsentation.search.presenter.SearchPresenter;
 import com.example.foodplanner.prsentation.search.presenter.SearchPresenterImp;
 import com.example.foodplanner.utils.NetworkConnectionObserver;
@@ -34,6 +31,8 @@ import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.rxjava3.core.Observable;
 
 public class SearchFragment extends Fragment implements GridAdapter.OnItemClickListener, SearchView, OnMealClickListener {
 
@@ -56,9 +55,6 @@ public class SearchFragment extends Fragment implements GridAdapter.OnItemClickL
     private List<DisplayItem> currentDisplayItems = new ArrayList<>();
 
     private boolean isSearching = false;
-    private Handler handler;
-    private Runnable searchRunnable;
-    private static final int MIN_SEARCH_CHARS = 2;
     NetworkConnectionObserver networkObserver;
 
     @Override
@@ -80,13 +76,9 @@ public class SearchFragment extends Fragment implements GridAdapter.OnItemClickL
         tvError = view.findViewById(R.id.tvSearchError);
 
         presenter = new SearchPresenterImp(requireContext(), this);
-        handler = new Handler();
 
         setupChipListeners();
         setupSearchListener();
-
-        if (allCategoriesList.isEmpty()) presenter.getAllCategoriesList();
-        else updateDisplayItemsFromCategories();
 
         NoInternetDialog noInternetDialog = new NoInternetDialog(requireContext());
         networkObserver = new NetworkConnectionObserver(requireContext(), new NetworkConnectionObserver.NetworkListener() {
@@ -138,41 +130,57 @@ public class SearchFragment extends Fragment implements GridAdapter.OnItemClickL
 
     private void setupSearchListener() {
         searchEditText.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                tvError.setText("");
+
+            }
             @Override public void afterTextChanged(Editable s) {}
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (searchRunnable != null) handler.removeCallbacks(searchRunnable);
                 String query = s.toString().trim();
-                if (query.length() < MIN_SEARCH_CHARS) {
+                if (query.isEmpty()) {
                     if (isSearching) revertToFilterView();
                     return;
                 }
-
-                searchRunnable = () -> {
-                    if (!isSearching) switchToSearchMode();
-                    if (currentFilter != null) performLocalSearch(query);
-                    else presenter.getSearchedMeal(query);
-                };
-                handler.postDelayed(searchRunnable, 500);
-            }
-        });
-
-        searchEditText.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                String query = searchEditText.getText().toString().trim();
-                if (query.length() >= MIN_SEARCH_CHARS) {
-                    if (searchRunnable != null) handler.removeCallbacks(searchRunnable);
-                    if (!isSearching) switchToSearchMode();
-                    if (currentFilter != null) performLocalSearch(query);
-                    else presenter.getSearchedMeal(query);
+                if (!isSearching) switchToSearchMode();
+                if(currentFilter != null){
+                    Observable.fromIterable(currentFilter == FilterType.CATEGORY ? allCategoriesList
+                            : currentFilter == FilterType.INGREDIENT ? allIngredientsList
+                            : allAreasList)
+                            .filter(item -> {
+                                if (currentFilter == FilterType.CATEGORY) {
+                                    return ((Category) item).getStrCategory().toLowerCase().contains(query);
+                                } else if (currentFilter == FilterType.INGREDIENT) {
+                                    return ((Ingredient) item).getName().toLowerCase().contains(query);
+                                } else {
+                                    return ((Area) item).getStrArea().toLowerCase().contains(query);
+                                }
+                            })
+                             .map(item -> {
+                        if (currentFilter == FilterType.CATEGORY) {
+                            Category c = (Category) item;
+                            return new DisplayItem(c.getStrCategory(), c.getStrCategoryThumb());
+                        } else if (currentFilter == FilterType.INGREDIENT) {
+                            Ingredient i = (Ingredient) item;
+                            return new DisplayItem(i.getName(), i.getImageUrl());
+                        } else {
+                            Area a = (Area) item;
+                            return new DisplayItem(a.getStrArea(), a.getFlagUrl());
+                        }
+                    })
+                            .toList()
+                            .subscribe(displayItems -> adapter.setItems(displayItems));
                 } else {
-                    showSnack(requireView().getRootView(), "Enter at least " + MIN_SEARCH_CHARS + " characters");
+
+                    presenter.getSearchedMeal(query);
+
                 }
-                return true;
+
+
             }
-            return false;
         });
+
+
     }
 
     private void switchToSearchMode() {
@@ -188,24 +196,7 @@ public class SearchFragment extends Fragment implements GridAdapter.OnItemClickL
         });
     }
 
-    private void performLocalSearch(String query) {
-        query = query.toLowerCase();
-        List<DisplayItem> filteredList = new ArrayList<>();
-        if (currentFilter == FilterType.CATEGORY) {
-            for (Category c : allCategoriesList)
-                if (c.getStrCategory().toLowerCase().contains(query))
-                    filteredList.add(new DisplayItem(c.getStrCategory(), c.getStrCategoryThumb()));
-        } else if (currentFilter == FilterType.INGREDIENT) {
-            for (Ingredient i : allIngredientsList)
-                if (i.getName().toLowerCase().contains(query))
-                    filteredList.add(new DisplayItem(i.getName(), i.getImageUrl()));
-        } else if (currentFilter == FilterType.AREA) {
-            for (Area a : allAreasList)
-                if (a.getStrArea().toLowerCase().contains(query))
-                    filteredList.add(new DisplayItem(a.getStrArea(), a.getFlagUrl()));
-        }
-        adapter.setItems(filteredList);
-    }
+
 
     private void navigateToFilteredMeals(Bundle bundle) {
         FilteredMealsFragment fragment = new FilteredMealsFragment();
@@ -271,7 +262,6 @@ public class SearchFragment extends Fragment implements GridAdapter.OnItemClickL
                 recyclerView.setAdapter(searchAdapter);
             searchAdapter.notifyDataSetChanged();
         });
-
     }
 
     private void updateDisplayItemsFromCategories() {
@@ -295,6 +285,7 @@ public class SearchFragment extends Fragment implements GridAdapter.OnItemClickL
 
     @Override
     public void onItemClick(DisplayItem item) {
+        if (currentFilter == null) return;
         Bundle bundle = new Bundle();
         switch (currentFilter) {
             case CATEGORY: bundle.putString("category_name", item.getName()); break;
@@ -305,12 +296,24 @@ public class SearchFragment extends Fragment implements GridAdapter.OnItemClickL
     }
 
     @Override
-    public void onMealClick(Meal meal) {}
+    public void onMealClick(Meal meal) {
+        Bundle bundle = new Bundle();
+        bundle.putString("idMeal", meal.getIdMeal());
+
+        MealDetailsFragment fragment = new MealDetailsFragment();
+        fragment.setArguments(bundle);
+
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_layout, fragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (handler != null) handler.removeCallbacksAndMessages(null);
         if (networkObserver != null) networkObserver.unregister();
     }
 }

@@ -3,15 +3,14 @@ package com.example.foodplanner.prsentation.favorite.view;
 import static com.example.foodplanner.utils.SnackBarUtil.showSnack;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.meal.model.Meal;
@@ -19,7 +18,6 @@ import com.example.foodplanner.prsentation.favorite.presenter.FavPresenter;
 import com.example.foodplanner.prsentation.favorite.presenter.FavPresenterImpl;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
@@ -64,10 +62,6 @@ public class FavoriteFragment extends Fragment implements FavView, OnFavoriteCli
                         throwable -> Log.e("FavError", "Failed to delete and reload", throwable)
                 );
     }
-
-
-
-
 
     @Override
     public void onMealDeleted() {
