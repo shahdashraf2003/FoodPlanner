@@ -22,6 +22,9 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class CalenderFragment extends Fragment implements OnCalenderedMealClickListener {
 
     private CalendarView calendarView;
@@ -65,18 +68,34 @@ public class CalenderFragment extends Fragment implements OnCalenderedMealClickL
     }
 
     private void loadMealsForDate(String date) {
-        mealRepo.getCalendarMeals().observe(getViewLifecycleOwner(), meals -> {
-            List<Meal> filtered = meals.stream()
-                    .filter(meal -> date.equals(meal.getCalendarDate()))
-                    .toList();
-            calenderAdapter.setList(filtered);
-        });
+        mealRepo.getCalendarMeals().
+                subscribeOn(Schedulers.io())
+                .map(meals -> meals.stream()
+                        .filter(meal -> date.equals(meal.getCalendarDate()))
+                        .toList())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        meals -> calenderAdapter.setList(meals),
+                        throwable -> calenderAdapter.setList(List.of())
+                );
+
     }
 
 
 
     @Override
     public void onCalenderedMealClick(Meal meal) {
-        mealRepo.removeCalenderedMeal(meal);
+        mealRepo.removeCalenderedMeal(meal)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        () -> {
+                            loadMealsForDate(selectedDate);
+                        },
+                        throwable -> {
+                            throwable.printStackTrace();
+                        }
+                );
     }
+
 }

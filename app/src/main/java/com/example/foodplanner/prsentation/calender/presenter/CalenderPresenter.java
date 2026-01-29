@@ -6,8 +6,10 @@ import com.example.foodplanner.data.meal.model.Meal;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Single;
+
 public interface CalenderPresenter {
      void removeMealFromCalendar(Meal meal);
 
-   LiveData <List<Meal>> getCalendarMeals();
+   Single<List<Meal>> getCalendarMeals();
 }

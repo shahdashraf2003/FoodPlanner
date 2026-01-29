@@ -10,6 +10,11 @@ import com.example.foodplanner.prsentation.favorite.view.FavView;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class FavPresenterImpl  implements FavPresenter {
 
         private MealRepo mealRepo;
@@ -21,15 +26,16 @@ public class FavPresenterImpl  implements FavPresenter {
 
 
         @Override
-        public LiveData<List<Meal>> getFavMeals() {
+        public Single<List<Meal>> getFavMeals() {
             return  mealRepo.getFavMeals();
-        }
-
-        public void deleteFavMeal(Meal meal) {
-
-            mealRepo.deleteFavMeal(meal);
-            favView.onMealDeleted();
 
         }
+
+    public Completable deleteFavMeal(Meal meal) {
+
+       return mealRepo.deleteFavMeal(meal)
+                .subscribeOn(Schedulers.io());
+
     }
+}
 
