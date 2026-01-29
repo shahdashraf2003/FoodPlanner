@@ -1,8 +1,7 @@
 package com.example.foodplanner.prsentation.favorite.view;
 
-import com.example.foodplanner.data.meal.model.loacl.LocalMeal;
-import com.example.foodplanner.data.meal.model.remote.Meal;
+import com.example.foodplanner.data.meal.model.Meal;
 
 public interface OnFavoriteClickListener {
-    void onMealClick(LocalMeal meal);
+    void onMealClick(Meal meal);
 }

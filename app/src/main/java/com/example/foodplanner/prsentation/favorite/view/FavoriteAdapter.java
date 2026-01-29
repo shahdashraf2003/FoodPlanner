@@ -13,17 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
-import com.example.foodplanner.data.meal.model.loacl.LocalMeal;
-import com.example.foodplanner.data.meal.model.remote.Meal;
+import com.example.foodplanner.data.meal.model.Meal;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.FavViewHolder> {
 
-    private List<LocalMeal> meals ;
+    private List<Meal> meals ;
     private OnFavoriteClickListener listener;
     private Context context;
 
@@ -32,7 +30,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.FavVie
         this.listener = listener;
     }
 
-    public void setList(List<LocalMeal> meals) {
+    public void setList(List<Meal> meals) {
         this.meals = meals;
         Log.d("Fav", "setList: "+meals.size());
         notifyDataSetChanged();
@@ -49,7 +47,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.FavVie
 
     @Override
     public void onBindViewHolder(@NonNull FavViewHolder holder, int position) {
-        LocalMeal meal = meals.get(position);
+        Meal meal = meals.get(position);
         holder.tvName.setText(meal.getStrMeal());
         holder.tvCategory.setText(meal.getStrCategory());
         Glide.with(holder.itemView)

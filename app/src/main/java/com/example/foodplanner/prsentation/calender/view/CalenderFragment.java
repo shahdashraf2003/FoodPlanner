@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.meal.MealRepo;
-import com.example.foodplanner.data.meal.model.loacl.LocalMeal;
+import com.example.foodplanner.data.meal.model.Meal;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -66,7 +66,7 @@ public class CalenderFragment extends Fragment implements OnCalenderedMealClickL
 
     private void loadMealsForDate(String date) {
         mealRepo.getCalendarMeals().observe(getViewLifecycleOwner(), meals -> {
-            List<LocalMeal> filtered = meals.stream()
+            List<Meal> filtered = meals.stream()
                     .filter(meal -> date.equals(meal.getCalendarDate()))
                     .toList();
             calenderAdapter.setList(filtered);
@@ -76,7 +76,7 @@ public class CalenderFragment extends Fragment implements OnCalenderedMealClickL
 
 
     @Override
-    public void onCalenderedMealClick(LocalMeal meal) {
+    public void onCalenderedMealClick(Meal meal) {
         mealRepo.removeCalenderedMeal(meal);
     }
 }

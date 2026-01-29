@@ -8,7 +8,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.example.foodplanner.data.meal.model.loacl.LocalMeal;
+import com.example.foodplanner.data.meal.model.Meal;
 
 import java.util.List;
 
@@ -16,31 +16,31 @@ import java.util.List;
 public interface LocalMealsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertMeal(LocalMeal meal);
+    void insertMeal(Meal meal);
 
 
     @Update
-    void updateMeal(LocalMeal meal);
+    void updateMeal(Meal meal);
 
     @Delete
-    void deleteMeal(LocalMeal meal);
+    void deleteMeal(Meal meal);
 
     @Query("SELECT * FROM meals")
-    LiveData<List<LocalMeal>> getMeals();
+    LiveData<List<Meal>> getMeals();
 
     @Query("SELECT * FROM meals WHERE is_fav = 1")
-    LiveData<List<LocalMeal>> getFavMeals();
+    LiveData<List<Meal>> getFavMeals();
 
     @Query("SELECT * FROM meals WHERE is_calendar = 1")
-    LiveData<List<LocalMeal>> getCalendarMeals();
+    LiveData<List<Meal>> getCalendarMeals();
 
-    @Query("SELECT COUNT(*) FROM meals WHERE id = :mealId")
+    @Query("SELECT COUNT(*) FROM meals WHERE idMeal = :mealId")
     int exists(String mealId);
 
 
-    @Query("UPDATE meals SET is_fav = :isFav WHERE id = :mealId")
+    @Query("UPDATE meals SET is_fav = :isFav WHERE idMeal = :mealId")
     void updateFav(String mealId, boolean isFav);
 
-    @Query("UPDATE meals SET is_calendar = :isCalendar, calendar_date = :date WHERE id = :mealId")
+    @Query("UPDATE meals SET is_calendar = :isCalendar, calendar_date = :date WHERE idMeal = :mealId")
     void updateCalendar(String mealId, boolean isCalendar, String date);
 }

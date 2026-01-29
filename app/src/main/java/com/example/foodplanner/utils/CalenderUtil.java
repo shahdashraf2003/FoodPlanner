@@ -12,7 +12,7 @@ import android.widget.CalendarView;
 import android.widget.LinearLayout;
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.meal.MealRepo;
-import com.example.foodplanner.data.meal.model.loacl.LocalMeal;
+import com.example.foodplanner.data.meal.model.Meal;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -20,7 +20,7 @@ import java.util.Locale;
 
 public class CalenderUtil {
 
-    public static void showCalendarDialog(LocalMeal meal, Context context, MealRepo mealRepo) {
+    public static void showCalendarDialog(Meal meal, Context context, MealRepo mealRepo) {
 
         Dialog dialog = new Dialog(context);
 
@@ -71,7 +71,7 @@ public class CalenderUtil {
                 SimpleDateFormat sdf =
                         new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 String formattedDate = sdf.format(selectedDate.getTime());
-                LocalMeal localMeal = new LocalMeal();
+                Meal localMeal = new Meal();
                 localMeal.setIdMeal(meal.getIdMeal());
                 localMeal.setStrMeal( meal.getStrMeal());
                 localMeal.setStrMealThumb(meal.getStrMealThumb());

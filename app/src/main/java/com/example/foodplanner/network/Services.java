@@ -3,7 +3,7 @@ package com.example.foodplanner.network;
 import com.example.foodplanner.data.area.model.AreaResponse;
 import com.example.foodplanner.data.category.model.CategoryResponse;
 import com.example.foodplanner.data.ingredient.model.IngredientResponse;
-import com.example.foodplanner.data.meal.model.remote.MealResponse;
+import com.example.foodplanner.data.meal.model.MealResponse;
 import com.example.foodplanner.data.mealsfilterby.model.MealFilterByResponse;
 
 import retrofit2.Call;

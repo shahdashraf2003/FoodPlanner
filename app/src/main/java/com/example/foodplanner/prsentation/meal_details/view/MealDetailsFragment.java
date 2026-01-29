@@ -22,8 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.auth.local.SessionManager;
-import com.example.foodplanner.data.meal.model.loacl.LocalMeal;
-import com.example.foodplanner.data.meal.model.remote.Meal;
+
+import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.prsentation.meal_details.presenter.MealDetailsPresenter;
 import com.example.foodplanner.prsentation.meal_details.presenter.MealDetailsPresenterImp;
 import com.example.foodplanner.utils.NetworkConnectionObserver;
@@ -90,33 +90,28 @@ private NetworkConnectionObserver networkObserver;
 
 
 
-        fab.setOnClickListener(v -> {
-                    Log.d("favorite", "onCreateView: " + meal);
-                    if (isGuest) {
-                        showGuestWarningDialog();
+       fab.setOnClickListener(v -> {
+    Log.d("favorite", "onCreateView: " + meal);
+    if (isGuest) {
+        showGuestWarningDialog();
+    } else {
+        if (meal != null) {
+            addMealToFav(meal);
+        }
+    }
+});
 
-                    }
-                   else {
-                        if (meal != null) {
-                            LocalMeal localMeal = convertToLocalMeal(meal);
-                            Log.d("favorite", "onCreateView: " + meal);
-                            addMealToFav(localMeal);
-                        }
-                    }
-                }
-                );
-        FloatingActionButton addToCal = view.findViewById(R.id.fab_calender);
-        addToCal.setOnClickListener(v -> {
-            if(isGuest){
-                showGuestWarningDialog();
+     FloatingActionButton addToCal = view.findViewById(R.id.fab_calender);
+addToCal.setOnClickListener(v -> {
+    if (isGuest) {
+        showGuestWarningDialog();
+    } else {
+        if (meal != null) {
+            showCalendarDialog(meal, requireContext(), presenter.getMealRepo());
+        }
+    }
+});
 
-            }else {
-                if (meal != null) {
-                    LocalMeal localMeal = convertToLocalMeal(meal);
-                    showCalendarDialog(localMeal, requireContext(), presenter.getMealRepo());
-                }
-            }
-        });
         NoInternetDialog noInternetDialog = new NoInternetDialog(requireContext());
 
 
@@ -257,17 +252,10 @@ private NetworkConnectionObserver networkObserver;
         super.onDestroy();
         if (youtubePlayerView != null) getLifecycle().removeObserver(youtubePlayerView);
     }
-    private LocalMeal convertToLocalMeal(Meal meal) {
-        LocalMeal localMeal = new LocalMeal();
-        localMeal.setIdMeal(meal.getIdMeal());
-        localMeal.setStrMeal(meal.getStrMeal());
-        localMeal.setStrMealThumb(meal.getStrMealThumb());
-        localMeal.setStrCategory(meal.getStrCategory());
-        return localMeal;
-    }
+
 
     @Override
-    public void addMealToFav(LocalMeal meal) {
+    public void addMealToFav(Meal meal) {
         presenter.insertMealToFav(meal);
 
     }
