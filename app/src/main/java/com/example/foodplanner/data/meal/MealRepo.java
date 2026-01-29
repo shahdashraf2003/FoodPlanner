@@ -11,6 +11,9 @@ import com.example.foodplanner.data.meal.model.Meal;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Single;
+
 public class MealRepo {
     private MealLocalDataSource mealLocalDataSource;
     private MealRemoteDataSource mealRemoteDataSource;
@@ -30,31 +33,35 @@ public class MealRepo {
      public void getSearchedMeal(MealNetworkResponse mealResponse,String mealName){
          mealRemoteDataSource.getSearchedMeal(mealResponse,mealName);
      }
-    public LiveData<List<Meal>> getFavMeals()
+     //done
+    public Single<List<Meal>> getFavMeals()
     {
         return  mealLocalDataSource.getFavMeals();
     }
 
-    public void insertFavMeal(Meal meal)
-    {meal.setFav(true);
-        mealLocalDataSource.insertFavMeal(meal);
+    //done
+    public Completable insertFavMeal(Meal meal)
+    {
+        return mealLocalDataSource.insertFavMeal(meal);
     }
 
-    public void deleteFavMeal(Meal meal)
+    //done
+    public Completable deleteFavMeal(Meal meal)
     {
-        mealLocalDataSource.deleteFavMeal(meal);
+        return mealLocalDataSource.deleteFavMeal(meal);
+    }
+    //done
+    public Completable addMealToCalendar(Meal meal,String date)
+    {
+       return mealLocalDataSource.addMealToCalendar(meal,date);
     }
 
-    public void addMealToCalendar(Meal meal,String date)
+    //done
+    public Completable removeCalenderedMeal(Meal meal)
     {
-        mealLocalDataSource.addMealToCalendar(meal,date);
+        return mealLocalDataSource.removeMealFromCalendar(meal);
     }
-    public void removeCalenderedMeal(Meal meal)
-    {
-        mealLocalDataSource.removeMealFromCalendar(meal);
-
-    }
-    public LiveData<List<Meal>> getCalendarMeals()
+    public Single<List<Meal>> getCalendarMeals()
     {
         return  mealLocalDataSource.getCalendarMeals();
     }

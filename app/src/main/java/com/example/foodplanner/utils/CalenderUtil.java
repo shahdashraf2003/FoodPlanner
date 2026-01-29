@@ -18,6 +18,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class CalenderUtil {
 
     public static void showCalendarDialog(Meal meal, Context context, MealRepo mealRepo) {
@@ -71,16 +74,23 @@ public class CalenderUtil {
                 SimpleDateFormat sdf =
                         new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 String formattedDate = sdf.format(selectedDate.getTime());
-                Meal localMeal = new Meal();
-                localMeal.setIdMeal(meal.getIdMeal());
-                localMeal.setStrMeal( meal.getStrMeal());
-                localMeal.setStrMealThumb(meal.getStrMealThumb());
-                localMeal.setStrCategory(meal.getStrCategory());
-                localMeal.setCalendar(true);
-                localMeal.setCalendarDate(formattedDate);
-                Log.d("showCalendarDialog", "showCalendarDialog: "+localMeal);
 
-                mealRepo.addMealToCalendar(localMeal,formattedDate);
+                Log.d("showCalendarDialog", "showCalendarDialog: "+meal);
+
+                mealRepo.addMealToCalendar(meal, formattedDate)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                () -> {
+                                    showSnack(rootView,"Meal added to calendar");
+                                    dialog.dismiss();
+                                },
+                                throwable -> {
+                                    Log.e("CalenderUtil", "Failed to add meal to calendar", throwable);
+                                    showSnack(rootView,"Failed to add meal");
+                                }
+                        );
+
                 showSnack(rootView,"meal added to calendar");
                 dialog.dismiss();
             }

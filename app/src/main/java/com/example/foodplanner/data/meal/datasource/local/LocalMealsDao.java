@@ -1,6 +1,5 @@
 package com.example.foodplanner.data.meal.datasource.local;
 
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -12,35 +11,45 @@ import com.example.foodplanner.data.meal.model.Meal;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Single;
+
 @Dao
 public interface LocalMealsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertMeal(Meal meal);
-
+    Completable insertMeal(Meal meal);
 
     @Update
-    void updateMeal(Meal meal);
+    Completable updateMeal(Meal meal);
 
     @Delete
-    void deleteMeal(Meal meal);
+    Completable deleteMeal(Meal meal);
 
     @Query("SELECT * FROM meals")
-    LiveData<List<Meal>> getMeals();
+    Single<List<Meal>> getMeals();
 
     @Query("SELECT * FROM meals WHERE is_fav = 1")
-    LiveData<List<Meal>> getFavMeals();
+    Single<List<Meal>> getFavMeals();
 
     @Query("SELECT * FROM meals WHERE is_calendar = 1")
-    LiveData<List<Meal>> getCalendarMeals();
+    Single<List<Meal>> getCalendarMeals();
 
     @Query("SELECT COUNT(*) FROM meals WHERE idMeal = :mealId")
-    int exists(String mealId);
+    Single<Integer> exists(String mealId);
 
 
     @Query("UPDATE meals SET is_fav = :isFav WHERE idMeal = :mealId")
-    void updateFav(String mealId, boolean isFav);
+    Completable updateFav(String mealId, boolean isFav);
 
     @Query("UPDATE meals SET is_calendar = :isCalendar, calendar_date = :date WHERE idMeal = :mealId")
-    void updateCalendar(String mealId, boolean isCalendar, String date);
+    Completable updateCalendar(String mealId, boolean isCalendar, String date);
+
+    @Query("DELETE FROM meals")
+    Completable clearMeals();
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    Completable insertMeals(List<Meal> meals);
+
+
 }

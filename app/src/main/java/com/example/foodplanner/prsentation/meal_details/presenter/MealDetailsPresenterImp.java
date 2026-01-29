@@ -9,6 +9,8 @@ import com.example.foodplanner.prsentation.meal_details.view.MealDetailsView;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+
 public class MealDetailsPresenterImp implements MealDetailsPresenter{
 
     private MealRepo mealRepo;
@@ -44,8 +46,14 @@ public class MealDetailsPresenterImp implements MealDetailsPresenter{
 
     @Override
     public void insertMealToFav(Meal meal) {
-        mealRepo.insertFavMeal(meal);
-        mealDetailsView.showMessage("Meal added to favorites");
+        mealRepo.insertFavMeal(meal)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        ()-> {
+                            mealDetailsView.showMessage("Meal added to favorites");
+                        });
+
+
 
 
     }
@@ -54,13 +62,17 @@ public class MealDetailsPresenterImp implements MealDetailsPresenter{
     public MealRepo getMealRepo() {
         return mealRepo;
     }
-
     @Override
     public void addMealToCalendar(Meal meal, String date) {
+
         meal.setCalendar(true);
         meal.setCalendarDate(date);
-        mealRepo.addMealToCalendar(meal, date);
+        mealRepo.addMealToCalendar(meal, date).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        ()->{
+                           mealDetailsView.showMessage("Meal added to calendar");
+                        }
+                );
     }
-
 
 }

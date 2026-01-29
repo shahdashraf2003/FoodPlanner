@@ -6,7 +6,10 @@ import com.example.foodplanner.data.meal.model.Meal;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Single;
+
 public interface FavPresenter {
-    LiveData<List<Meal>> getFavMeals();
-    void deleteFavMeal(Meal meal);
+    Single<List<Meal>> getFavMeals();
+    Completable deleteFavMeal(Meal meal);
 }
