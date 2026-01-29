@@ -1,12 +1,14 @@
 package com.example.foodplanner.prsentation.auth.login.presenter;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.example.foodplanner.data.auth.local.SessionManager;
 import com.example.foodplanner.data.auth.repository.AuthRepo;
 import com.example.foodplanner.data.auth.repository.AuthRepoImp;
+import com.example.foodplanner.data.meal.datasource.local.LocalMealsDao;
+import com.example.foodplanner.data.sync.model.MealSyncModel;
 import com.example.foodplanner.prsentation.auth.login.view.LoginContract;
+import com.google.firebase.database.FirebaseDatabase;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -16,17 +18,28 @@ public class LoginPresenterImp implements LoginContract.Presenter {
     private LoginContract.View view;
     private AuthRepo authRepo;
     private SessionManager sessionManager;
+    private MealSyncModel mealSyncModel;
 
-    public LoginPresenterImp(LoginContract.View view, Context context) {
+    public LoginPresenterImp(LoginContract.View view, Context context, LocalMealsDao localMealsDao) {
         this.view = view;
         authRepo = new AuthRepoImp();
         sessionManager = new SessionManager(context);
+        mealSyncModel = new MealSyncModel(localMealsDao, FirebaseDatabase.getInstance());
     }
+
 
     @Override
     public void login(String email, String password) {
         authRepo.login(email, password)
-                .flatMapCompletable(user -> sessionManager.saveUser(user))
+                .flatMapCompletable(user ->
+                        sessionManager.saveUser(user)
+                                .andThen(mealSyncModel.fetchRemoteMeals(user.getUserID())
+                                        .flatMapCompletable(remoteMeals ->
+                                                mealSyncModel.clearLocalMeals()
+                                                        .andThen(mealSyncModel.saveRemoteMealsToLocal(remoteMeals))
+                                        )
+                                )
+                )
                 .andThen(sessionManager.getUser())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -35,13 +48,14 @@ public class LoginPresenterImp implements LoginContract.Presenter {
                         throwable -> view.onLoginError(throwable.getMessage())
                 );
     }
-
-
 
     @Override
     public void loginWithGoogle(String idToken) {
         authRepo.loginWithGoogle(idToken)
-                .flatMapCompletable(user -> sessionManager.saveUser(user))
+                .flatMapCompletable(user ->
+                        sessionManager.saveUser(user)
+                                .andThen(mealSyncModel.uploadLocalMeals(user.getUserID()))
+                )
                 .andThen(sessionManager.getUser())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -50,6 +64,7 @@ public class LoginPresenterImp implements LoginContract.Presenter {
                         throwable -> view.onLoginError(throwable.getMessage())
                 );
     }
+
 
     @Override
     public void loginAsGuest() {

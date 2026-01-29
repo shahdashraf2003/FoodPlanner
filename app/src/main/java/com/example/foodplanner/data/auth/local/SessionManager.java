@@ -7,7 +7,6 @@ import com.example.foodplanner.data.auth.model.UserModel;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Maybe;
-import io.reactivex.rxjava3.core.Single;
 
 public class SessionManager {
     private SharedPreferences sharedPreferences;
@@ -56,5 +55,9 @@ public class SessionManager {
         return Completable.fromAction(() -> {
             sharedPreferences.edit().clear().apply();
         });
+    }
+
+    public String getUserId() {
+        return sharedPreferences.getString(KEY_USER_ID, null);
     }
 }
