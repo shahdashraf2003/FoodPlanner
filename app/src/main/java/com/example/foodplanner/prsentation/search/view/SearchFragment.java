@@ -27,6 +27,7 @@ import com.example.foodplanner.prsentation.search.presenter.SearchPresenter;
 import com.example.foodplanner.prsentation.search.presenter.SearchPresenterImp;
 import com.example.foodplanner.utils.NetworkConnectionObserver;
 import com.example.foodplanner.utils.NoInternetDialog;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
@@ -91,6 +92,16 @@ public class SearchFragment extends Fragment implements GridAdapter.OnItemClickL
                 requireActivity().runOnUiThread(() -> noInternetDialog.hideDialog());
             }
         });
+        Chip chipClear = view.findViewById(R.id.chip_clear);
+        chipClear.setOnClickListener(v -> {
+            currentFilter = null;
+            isSearching = false;
+            searchEditText.setText("");
+            chipGroup.clearCheck();
+            searchEditText.setHint("Search recipes..");
+            adapter.setItems(new ArrayList<>());
+        });
+
 
         return view;
     }
@@ -118,7 +129,7 @@ public class SearchFragment extends Fragment implements GridAdapter.OnItemClickL
                 else updateDisplayItemsFromIngredients();
             } else if (checkedId == R.id.chip_country) {
                 currentFilter = FilterType.AREA;
-                searchEditText.setHint("Search by area");
+                searchEditText.setHint("Search by country");
                 if (allAreasList.isEmpty()) presenter.getAllAreasList();
                 else updateDisplayItemsFromAreas();
             } else {

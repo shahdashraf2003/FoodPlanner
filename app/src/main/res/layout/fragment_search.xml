@@ -95,7 +95,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 app:singleSelection="true"
-                app:selectionRequired="true">
+                app:selectionRequired="false"
+               >
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_category"
@@ -133,6 +134,20 @@
                     app:checkedIconTint="@color/white"
                     app:chipIconSize="24dp"
                     android:checkable="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_clear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="X"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                android:checkable="false"
+                app:chipBackgroundColor="@color/primary"
+                app:chipCornerRadius="50dp"
+                />
+
+
             </com.google.android.material.chip.ChipGroup>
         </com.google.android.material.card.MaterialCardView>
 
