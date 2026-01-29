@@ -8,9 +8,7 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
 
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.auth.model.UserModel;
@@ -19,7 +17,6 @@ import com.example.foodplanner.prsentation.auth.login.view.LoginActivity;
 import com.example.foodplanner.prsentation.auth.signup.presenter.SignupPresenterImp;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.FirebaseAuth;
 
 public class SignupActivity extends AppCompatActivity implements SignupView{
 
@@ -60,7 +57,7 @@ public class SignupActivity extends AppCompatActivity implements SignupView{
     @Override
     public void onSignupSuccess(UserModel user) {
         showSnack(findViewById(android.R.id.content),"Signup Successful! Welcome "+user.getUserName());
-        startActivity(new Intent(this, MainActivity.class));
+        startActivity(new Intent(this, LoginActivity.class));
 
 
     }

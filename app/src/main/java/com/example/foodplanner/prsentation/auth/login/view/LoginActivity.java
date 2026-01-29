@@ -1,5 +1,6 @@
 package com.example.foodplanner.prsentation.auth.login.view;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
 import static com.example.foodplanner.utils.SnackBarUtil.showSnack;
 
 import android.content.Intent;
@@ -15,9 +16,8 @@ import androidx.credentials.GetCredentialRequest;
 import com.example.foodplanner.prsentation.MainActivity;
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.auth.model.UserModel;
-import com.example.foodplanner.prsentation.auth.login.presenter.LoginPresenter;
+import com.example.foodplanner.prsentation.auth.login.presenter.LoginPresenterImp;
 import com.example.foodplanner.prsentation.auth.signup.view.SignupActivity;
-import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,10 +27,9 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     private TextInputEditText loginEmail ,loginPassword;
     private TextView signup;
     private MaterialButton skip , loginButton,google;
-    private LoginPresenter presenter;
+    private LoginContract.Presenter presenter;
 
 
-    CredentialManager credentialManager;
 
 
     @Override
@@ -38,15 +37,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
-
-        GetGoogleIdOption googleIdOption = new GetGoogleIdOption.Builder()
-                .setFilterByAuthorizedAccounts(true)
-                .setServerClientId(getString(R.string.default_web_client_id))
-                .build();
-
-        GetCredentialRequest request = new GetCredentialRequest.Builder()
-                .addCredentialOption(googleIdOption)
-                .build();
 
 
         auth = FirebaseAuth.getInstance();
@@ -56,26 +46,24 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         loginButton = findViewById(R.id.btn_login);
         skip = findViewById(R.id.btn_skip);
         google = findViewById(R.id.btn_google);
-        presenter = new LoginPresenter(
-                LoginActivity.this,
-                auth
-        );
+
+        presenter = new LoginPresenterImp(this, this);
 
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.login(loginEmail.getText().toString(), loginPassword.getText().toString());
-            }
+        loginButton.setOnClickListener(v -> {
+            String email = loginEmail.getText().toString().trim();
+            String pass = loginPassword.getText().toString().trim();
+            presenter.login(email, pass);
         });
-        google.setOnClickListener(new View.OnClickListener() {
+
+        skip.setOnClickListener(v -> presenter.loginAsGuest());
+      /* google.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 credentialManager = CredentialManager.create(LoginActivity.this);
-
+            presenter.loginWithGoogle();
               
             }
-        });
+        });*/
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,28 +73,36 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         });
     }
 
+
+
+
     @Override
     public void onLoginSuccess(UserModel user) {
         View rootView = findViewById(android.R.id.content);
 
-        showSnack(rootView,
-                "Welcome back"
-        );
-        startActivity(new Intent(
-                this, MainActivity.class));
+        if(user != null){
+           showSnack(rootView, "Welcome back " + user.getUserName());
+        } else {
+            showSnack(rootView, "Welcome Guest");
+        }
+
         loginEmail.setText("");
         loginPassword.setText("");
+        openHomeScreen();
     }
-
-
-
 
 
     @Override
     public void onLoginError(String message) {
         View rootView = findViewById(android.R.id.content);
-        showSnack(rootView, message);
+
+        showSnack(rootView,message);
     }
+
+    private void openHomeScreen() {
+        startActivity(new Intent( this, MainActivity.class));
+    }
+
 
 
 }
