@@ -2,12 +2,10 @@ package com.example.foodplanner.data.meal;
 
 import android.content.Context;
 
-import androidx.lifecycle.LiveData;
-
 import com.example.foodplanner.data.meal.datasource.local.MealLocalDataSource;
-import com.example.foodplanner.data.meal.datasource.remote.MealNetworkResponse;
 import com.example.foodplanner.data.meal.datasource.remote.MealRemoteDataSource;
 import com.example.foodplanner.data.meal.model.Meal;
+import com.example.foodplanner.data.meal.model.MealResponse;
 
 import java.util.List;
 
@@ -22,16 +20,16 @@ public class MealRepo {
         this.mealLocalDataSource = new MealLocalDataSource(context);
         this.mealRemoteDataSource = new MealRemoteDataSource();
     }
-    public void getRandomMeal(MealNetworkResponse mealResponse){
-        mealRemoteDataSource.getRandomMeal(mealResponse);
+    public Single<MealResponse> getRandomMeal(){
+       return mealRemoteDataSource.getRandomMeal();
     }
 
-    public void getDetailsOfMeal(MealNetworkResponse mealResponse,String mealId){
-        mealRemoteDataSource.getDetailsOfMeal(mealResponse,mealId);
+    public Single<MealResponse> getDetailsOfMeal(String mealId){
+       return mealRemoteDataSource.getDetailsOfMeal(mealId);
     }
 
-     public void getSearchedMeal(MealNetworkResponse mealResponse,String mealName){
-         mealRemoteDataSource.getSearchedMeal(mealResponse,mealName);
+     public  Single<MealResponse> getSearchedMeal(String mealName){
+       return   mealRemoteDataSource.getSearchedMeal(mealName);
      }
      //done
     public Single<List<Meal>> getFavMeals()

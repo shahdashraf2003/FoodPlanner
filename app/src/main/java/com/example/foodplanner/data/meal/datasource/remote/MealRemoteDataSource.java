@@ -1,16 +1,10 @@
 package com.example.foodplanner.data.meal.datasource.remote;
 
-import android.util.Log;
-
-import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.data.meal.model.MealResponse;
-import com.example.foodplanner.network.Services;
 import com.example.foodplanner.network.Network;
-import java.util.List;
+import com.example.foodplanner.network.Services;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.rxjava3.core.Single;
 
 public class MealRemoteDataSource {
     private Services mealService;
@@ -21,71 +15,23 @@ public class MealRemoteDataSource {
         mealService = Network.getInstance().services;
     }
 
-    public void getRandomMeal(MealNetworkResponse callback){
-        mealService.getRandomMeal().enqueue(new Callback<MealResponse>() {
-            @Override
-            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
-                if(response.isSuccessful() && response.body() != null){
-                    List<Meal> meal = response.body().getMeals();
-                    Log.d(TAG, "Meals received: " + meal.size());
-                    callback.onSuccess(meal);
-                } else {
-                    Log.d(TAG, "Response failed or empty");
-                    callback.onError("Response empty or failed");
-                }
-            }
+    public Single<MealResponse> getRandomMeal() {
+        return mealService.getRandomMeal();
 
-            @Override
-            public void onFailure(Call<MealResponse> call, Throwable t) {
-                Log.d(TAG, "API call failed: " + t.getMessage());
-                callback.onError(t.getMessage());
-            }
-        });
     }
 
-    public void getDetailsOfMeal(MealNetworkResponse callback,String mealId){
-        mealService.getMealDetailsById(mealId).enqueue(new Callback<MealResponse>() {
-            @Override
-            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
-                if(response.isSuccessful() && response.body() != null){
-                    List<Meal> meal = response.body().getMeals();
-                    Log.d(TAG, "Meals received: " + meal.size());
-                    callback.onSuccess(meal);
-                } else {
-                    Log.d(TAG, "Response failed or empty");
-                    callback.onError("Response empty or failed");
-                }
-            }
 
-            @Override
-            public void onFailure(Call<MealResponse> call, Throwable t) {
-                Log.d(TAG, "API call failed: " + t.getMessage());
-                callback.onError(t.getMessage());
-            }
-        });
+
+    public Single<MealResponse> getDetailsOfMeal(String mealId) {
+
+        return mealService.getMealDetailsById(mealId);
+
     }
 
-    public void getSearchedMeal(MealNetworkResponse callback,String mealName)
+
+    public Single<MealResponse> getSearchedMeal(String mealName)
     {
-        mealService.searchMeal(mealName).enqueue(new Callback<MealResponse>() {
-            @Override
-            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
-                if(response.isSuccessful() && response.body() != null){
-                    List<Meal> meal = response.body().getMeals();
-                    Log.d(TAG, "Meals received: " + meal.size());
-                    callback.onSuccess(meal);
-                } else {
-                    Log.d(TAG, "Response failed or empty");
-                    callback.onError("Response empty or failed");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MealResponse> call, Throwable t) {
-                Log.d(TAG, "API call failed: " + t.getMessage());
-                callback.onError(t.getMessage());
-            }
-        });
+        return mealService.searchMeal(mealName);
     }
 
 

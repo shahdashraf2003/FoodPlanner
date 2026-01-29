@@ -10,7 +10,7 @@ public interface HomeView {
 
     void onRandomMealFetchError(String errMsg);
     void onRandomMealFetchLoading();
-    void onRandomMealFetchSuccess(List<Meal> meals);
+    void onRandomMealFetchSuccess(Meal meal);
 
 
     // Categories

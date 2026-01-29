@@ -120,13 +120,8 @@ public class HomeFragment extends Fragment implements HomeView, CategoryOnClickL
     }
 
     @Override
-    public void onRandomMealFetchSuccess(List<Meal> meals) {
-        if (meals == null || meals.isEmpty()) {
-            showError("No meal found");
-            return;
-        }
+    public void onRandomMealFetchSuccess(Meal meal) {
 
-        Meal meal = meals.get(0);
         tvName.setText(meal.getStrMeal());
         tvDesc.setText(meal.getStrInstructions());
 
