@@ -89,8 +89,12 @@ public class SearchFragment extends Fragment implements GridAdapter.OnItemClickL
         setupChipListeners();
         setupSearchListener();
 
-        chipGroup.check(R.id.chip_category);
-        presenter.getAllCategoriesList();
+        if (allCategoriesList.isEmpty()) {
+            presenter.getAllCategoriesList();
+        } else {
+            updateDisplayItemsFromCategories();
+        }
+
         NoInternetDialog noInternetDialog = new NoInternetDialog(requireContext());
 
 
@@ -254,7 +258,7 @@ public class SearchFragment extends Fragment implements GridAdapter.OnItemClickL
     }
 
     @Override
-    public void onAreaFetchSuccess(List<Area> areas) {
+    public void onAreaListFetchSuccess(List<Area> areas) {
         progressBar.setVisibility(View.GONE);
         allAreasList = areas;
         updateDisplayItemsFromAreas();

@@ -2,15 +2,12 @@ package com.example.foodplanner.prsentation.home.presenter;
 
 import android.content.Context;
 
-import com.example.foodplanner.data.category.model.Category;
-import com.example.foodplanner.data.category.datasource.CategoryNetworkResponse;
 import com.example.foodplanner.data.category.datasource.CategoryRemoteDataSource;
 import com.example.foodplanner.data.meal.MealRepo;
-import com.example.foodplanner.data.meal.datasource.remote.MealNetworkResponse;
-import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.prsentation.home.view.HomeView;
 
-import java.util.List;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class HomePresenterImp implements HomePresenter {
     private MealRepo mealRepo;
@@ -22,37 +19,41 @@ public class HomePresenterImp implements HomePresenter {
         this.homeView =homeView;
     }
     public void getRandomMeal() {
+        homeView.onRandomMealFetchLoading();
+        mealRepo.getRandomMeal()
+                .subscribeOn(Schedulers.io())
+               .map(mealResponse -> {//list of meals
+                  return mealResponse.getMeals().get(0); //take first meal
+               })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                       meal->{
+                           homeView.onRandomMealFetchSuccess(meal);
+                       },
+                       throwable ->{
+                           homeView.onRandomMealFetchError(throwable.getMessage());
+                       }
+               );
 
-        mealRepo.getRandomMeal(
-                new MealNetworkResponse() {
-                    @Override
-                    public void onSuccess(List<Meal> meal) {
-                        homeView.onRandomMealFetchSuccess(meal);
-
-                    }
-
-                    @Override
-                    public void onError(String errorMsg) {
-
-                        homeView.onRandomMealFetchError(errorMsg);
-
-                    }
-
-                    @Override
-                    public void onLoading() {
-                        homeView.onRandomMealFetchLoading();
-                    }
-
-
-                }
-
-        );
     }
 
     @Override
     public void getAllCategories() {
-        categoryRemoteDataSource.getAllCategories(
-                new CategoryNetworkResponse() {
+        homeView.onAllCategoriesFetchLoading();
+        categoryRemoteDataSource.getAllCategories()
+                .subscribeOn(Schedulers.io())
+                .map(categoryResponse -> categoryResponse.getCategories())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        meals->{
+                            homeView.onAllCategoriesFetchSuccess(meals);
+                        }
+                        ,throwable ->{
+                            homeView.onAllCategoriesFetchError(throwable.getMessage());
+                        }
+                );
+
+              /*  new CategoryNetworkResponse() {
                     @Override
                     public void onSuccess(List<Category> categories) {
                         homeView.onAllCategoriesFetchSuccess(categories);
@@ -75,7 +76,7 @@ public class HomePresenterImp implements HomePresenter {
 
                 }
 
-        );
+        );*/
     }
 
 

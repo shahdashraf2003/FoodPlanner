@@ -1,17 +1,11 @@
 
 package com.example.foodplanner.data.mealsfilterby.datasource;
-import android.util.Log;
 
-import com.example.foodplanner.data.mealsfilterby.model.MealFilterBy;
 import com.example.foodplanner.data.mealsfilterby.model.MealFilterByResponse;
 import com.example.foodplanner.network.Network;
 import com.example.foodplanner.network.Services;
 
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.rxjava3.core.Single;
 
 public class MealFilterByDataSource {
 
@@ -22,66 +16,16 @@ public class MealFilterByDataSource {
         mealService = Network.getInstance().services;
     }
 
-    public void filterByIngredient(String ingredient, MealFilterByNetworkResponse callback) {
-        mealService.filterByIngredient(ingredient).enqueue(new Callback<MealFilterByResponse>() {
-            @Override
-            public void onResponse(Call<MealFilterByResponse> call, Response<MealFilterByResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<MealFilterBy> meals = response.body().getMealsFilterBy();
-                    callback.onSuccess(meals);
-                } else {
-                    callback.onError("Response empty or failed");
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MealFilterByResponse> call, Throwable t) {
-                Log.d(TAG, "API call failed: " + t.getMessage());
-                callback.onError(t.getMessage());
-            }
-
-
-        });
+    public Single<MealFilterByResponse> filterByIngredient(String ingredient) {
+       return mealService.filterByIngredient(ingredient);
     }
 
-    public void filterByCategory(String category, MealFilterByNetworkResponse callback) {
-        mealService.filterByCategory(category).enqueue(new Callback<MealFilterByResponse>() {
-            @Override
-            public void onResponse(Call<MealFilterByResponse> call, Response<MealFilterByResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<MealFilterBy> meals = response.body().getMealsFilterBy();
-                    callback.onSuccess(meals);
-                } else {
-                    callback.onError("Response empty or failed");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MealFilterByResponse> call, Throwable t) {
-                callback.onError(t.getMessage());
-            }
-
-
-        });
+    public Single<MealFilterByResponse> filterByCategory(String category) {
+        return  mealService.filterByCategory(category);
     }
 
-    public void filterByArea(String area, MealFilterByNetworkResponse callback) {
-        mealService.filterByArea(area).enqueue(new Callback<MealFilterByResponse>() {
-            @Override
-            public void onResponse(Call<MealFilterByResponse> call, Response<MealFilterByResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<MealFilterBy> meals = response.body().getMealsFilterBy();
-                    callback.onSuccess(meals);
-                } else {
-                    callback.onError("Response empty or failed");
-                }
-            }
+    public Single<MealFilterByResponse> filterByArea(String area) {
+        return mealService.filterByArea(area);
 
-            @Override
-            public void onFailure(Call<MealFilterByResponse> call, Throwable t) {
-                callback.onError(t.getMessage());
-            }
-        });
     }
 }

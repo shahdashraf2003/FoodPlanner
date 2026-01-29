@@ -6,43 +6,37 @@ import com.example.foodplanner.data.ingredient.model.IngredientResponse;
 import com.example.foodplanner.data.meal.model.MealResponse;
 import com.example.foodplanner.data.mealsfilterby.model.MealFilterByResponse;
 
-import retrofit2.Call;
+import io.reactivex.rxjava3.core.Single;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface Services {
 
     @GET("random.php")
-    Call<MealResponse> getRandomMeal();
+    Single<MealResponse> getRandomMeal();
 
     @GET("categories.php")
-    Call<CategoryResponse> getAllCategories();
+    Single<CategoryResponse> getAllCategories();
 
     @GET("lookup.php")
-    Call<MealResponse> getMealDetailsById(@Query("i") String mealId);
+    Single<MealResponse> getMealDetailsById(@Query("i") String mealId);
 
     @GET("list.php?i=list")
-    Call<IngredientResponse> getAllIngredientsList();
-
-
+    Single<IngredientResponse> getAllIngredientsList();
 
     @GET("list.php?a=list")
-    Call<AreaResponse> getAllAreasList();
-
-
-    @GET("filter.php")
-    Call<MealFilterByResponse> filterByIngredient(@Query("i") String ingredient);
+    Single<AreaResponse> getAllAreasList();
 
     @GET("filter.php")
-    Call<MealFilterByResponse> filterByCategory(@Query("c") String category);
+    Single<MealFilterByResponse> filterByIngredient(@Query("i") String ingredient);
 
     @GET("filter.php")
-    Call<MealFilterByResponse> filterByArea(@Query("a") String area);
+    Single<MealFilterByResponse> filterByCategory(@Query("c") String category);
+
+    @GET("filter.php")
+    Single<MealFilterByResponse> filterByArea(@Query("a") String area);
 
     @GET("search.php")
-    Call<MealResponse> searchMeal(@Query("s") String mealName);
+    Single<MealResponse> searchMeal(@Query("s") String mealName);
 
 }
-
-
-

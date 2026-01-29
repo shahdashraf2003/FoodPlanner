@@ -3,96 +3,70 @@ package com.example.foodplanner.prsentation.filtered_meals.presenter;
 import android.content.Context;
 
 import com.example.foodplanner.data.mealsfilterby.datasource.MealFilterByDataSource;
-import com.example.foodplanner.data.mealsfilterby.datasource.MealFilterByNetworkResponse;
-import com.example.foodplanner.data.mealsfilterby.model.MealFilterBy;
 import com.example.foodplanner.prsentation.filtered_meals.view.FilteredMealsView;
 
-import java.util.List;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class FilteredMealsPresenterImp implements FilteredMealsPresenter{
     private MealFilterByDataSource mealFilterByDataSource;
     private FilteredMealsView filteredMealsView;
+
     public FilteredMealsPresenterImp(Context context, FilteredMealsView filteredMealsView) {
         mealFilterByDataSource = new MealFilterByDataSource();
         this.filteredMealsView =filteredMealsView;
     }
     @Override
     public void filterByIngredient(String ingredient) {
-        mealFilterByDataSource.filterByIngredient(
-                ingredient,
-                new MealFilterByNetworkResponse(){
-
-                    @Override
-                    public void onSuccess(List<MealFilterBy> mealsFilterBy) {
-                        filteredMealsView.onFilteredMealsByIngredientSuccess(mealsFilterBy);
-                    }
-
-                    @Override
-                    public void onError(String errorMsg) {
-                        filteredMealsView.onFilteredMealsByIngredientError(errorMsg);
-
-                    }
-
-                    @Override
-                    public void onLoading() {
-                        filteredMealsView.onFilteredMealsByIngredientLoading();
-
-                    }
-                }
-        );
+        filteredMealsView.onFilteredMealsByIngredientLoading();
+        mealFilterByDataSource.filterByIngredient(ingredient)
+                .subscribeOn(Schedulers.io())
+                .map(mealFilterByResponse -> mealFilterByResponse.getMealsFilterBy())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        meals->{
+                            filteredMealsView.onFilteredMealsByIngredientSuccess(meals);
+                        },
+                        throwable ->{
+                            filteredMealsView.onFilteredMealsByIngredientError(throwable.getMessage());
+                        }
+                );
 
     }
 
     @Override
     public void filterByArea(String area) {
-        mealFilterByDataSource.filterByArea(
-                area,
-                new MealFilterByNetworkResponse(){
-
-                    @Override
-                    public void onSuccess(List<MealFilterBy> mealsFilterBy) {
-                        filteredMealsView.onFilteredMealsByCountrySuccess(mealsFilterBy);
-                    }
-
-                    @Override
-                    public void onError(String errorMsg) {
-                        filteredMealsView.onFilteredMealsByCountryError(errorMsg);
-
-                    }
-
-                    @Override
-                    public void onLoading() {
-                        filteredMealsView.onFilteredMealsByCountryLoading();
-
-                    }
-                }
-        );
+        filteredMealsView.onFilteredMealsByCountryLoading();
+        mealFilterByDataSource.filterByArea(area)
+                .subscribeOn(Schedulers.io())
+                .map(mealFilterByResponse -> mealFilterByResponse.getMealsFilterBy())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        meals->{
+                            filteredMealsView.onFilteredMealsByCountrySuccess(meals);
+                        },
+                        throwable ->{
+                            filteredMealsView.onFilteredMealsByCountryError(throwable.getMessage());
+                        }
+                );
     }
 
     @Override
     public void filterByCategory(String category) {
-        mealFilterByDataSource.filterByCategory(
-                category,
-                new MealFilterByNetworkResponse(){
-
-                    @Override
-                    public void onSuccess(List<MealFilterBy> mealsFilterBy) {
-                        filteredMealsView.onFilteredMealsByCategorySuccess(mealsFilterBy);
-                    }
-
-                    @Override
-                    public void onError(String errorMsg) {
-                        filteredMealsView.onFilteredMealsByCategoryError(errorMsg);
-
-                    }
-
-                    @Override
-                    public void onLoading() {
-                        filteredMealsView.onFilteredMealsByCategoryLoading();
-
-                    }
-                }
-        );
+        filteredMealsView.onFilteredMealsByCategoryLoading();
+        mealFilterByDataSource.filterByCategory(category)
+                .subscribeOn(Schedulers.io())
+                .map(mealFilterByResponse -> mealFilterByResponse.getMealsFilterBy())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        meals->{
+                            filteredMealsView.onFilteredMealsByCategorySuccess(meals);
+                        },
+                        throwable ->{
+                            filteredMealsView.onFilteredMealsByCategoryError(throwable.getMessage());
+                        }
+                );
     }
 
 

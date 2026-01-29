@@ -1,9 +1,6 @@
 package com.example.foodplanner.data.meal.datasource.local;
 
 import android.content.Context;
-import android.util.Log;
-
-import androidx.lifecycle.LiveData;
 
 import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.database.AppDB;
@@ -12,7 +9,6 @@ import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MealLocalDataSource {
     private LocalMealsDao localMealsDao;
@@ -34,7 +30,7 @@ public class MealLocalDataSource {
                         meal.setCalendarDate(null);
                         return localMealsDao.insertMeal(meal);
                     }
-                }).subscribeOn(Schedulers.io());
+                });
     }
 
 
@@ -59,15 +55,15 @@ public class MealLocalDataSource {
             meal.setCalendarDate(date);
             meal.setFav(false);
            return localMealsDao.insertMeal(meal);
-        }}).subscribeOn(Schedulers.io());
+        }});
 
     }
 
     public Completable removeMealFromCalendar(Meal meal) {
         meal.setCalendar(false);
         meal.setCalendarDate(null);
-        return localMealsDao.updateCalendar(meal.getIdMeal(), false, null)
-                .subscribeOn(Schedulers.io());
+        return localMealsDao.updateCalendar(meal.getIdMeal(), false, null);
+
     }
 
     public Single<List<Meal>> getCalendarMeals() {

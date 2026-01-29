@@ -18,7 +18,7 @@ public interface SearchView {
 
     void onAreaListFetchError(String errMsg);
     void onAreaListFetchLoading();
-    void onAreaFetchSuccess(List<Area> areas);
+    void onAreaListFetchSuccess(List<Area> areas);
 
     void onSearchedMaelFetchError(String errMsg);
     void onSearchedMaelFetchLoading();
