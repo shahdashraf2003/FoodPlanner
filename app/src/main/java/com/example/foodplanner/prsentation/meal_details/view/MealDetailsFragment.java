@@ -90,27 +90,27 @@ private NetworkConnectionObserver networkObserver;
 
 
 
-       fab.setOnClickListener(v -> {
-    Log.d("favorite", "onCreateView: " + meal);
-    if (isGuest) {
-        showGuestWarningDialog();
-    } else {
-        if (meal != null) {
-            addMealToFav(meal);
-        }
-    }
-});
+        fab.setOnClickListener(v -> {
+            Log.d("favorite", "onCreateView: " + meal);
+            if (isGuest) {
+                showGuestWarningDialog();
+            } else {
+                if (meal != null) {
+                    addMealToFav(meal);
+                }
+            }
+        });
 
-     FloatingActionButton addToCal = view.findViewById(R.id.fab_calender);
-addToCal.setOnClickListener(v -> {
-    if (isGuest) {
-        showGuestWarningDialog();
-    } else {
-        if (meal != null) {
-            showCalendarDialog(meal, requireContext(), presenter.getMealRepo());
-        }
-    }
-});
+         FloatingActionButton addToCal = view.findViewById(R.id.fab_calender);
+            addToCal.setOnClickListener(v -> {
+                if (isGuest) {
+                    showGuestWarningDialog();
+                } else {
+                    if (meal != null) {
+                        showCalendarDialog(meal, requireContext(), presenter.getMealRepo());
+                    }
+                }
+            });
 
         NoInternetDialog noInternetDialog = new NoInternetDialog(requireContext());
 
