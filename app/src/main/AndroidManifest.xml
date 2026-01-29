@@ -25,7 +25,7 @@
             android:name=".prsentation.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".prsentation.Splash"
+            android:name=".prsentation.splash.Splash"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

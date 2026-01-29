@@ -1,18 +1,16 @@
 package com.example.foodplanner.prsentation.filtered_meals.view;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.mealsfilterby.model.MealFilterBy;
@@ -52,8 +50,6 @@ public class FilteredMealsFragment extends Fragment implements FilteredMealsView
         recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
 
         NoInternetDialog noInternetDialog = new NoInternetDialog(requireContext());
-
-
 
         networkObserver = new NetworkConnectionObserver(requireContext(), new NetworkConnectionObserver.NetworkListener() {
             @Override

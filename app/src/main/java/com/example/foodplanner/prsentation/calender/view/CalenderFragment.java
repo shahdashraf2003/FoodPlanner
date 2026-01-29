@@ -50,9 +50,7 @@ public class CalenderFragment extends Fragment implements OnCalenderedMealClickL
         rvCalMeals.setLayoutManager(new LinearLayoutManager(requireContext()));
         calenderAdapter = new CalenderAdapter(this);
         rvCalMeals.setAdapter(calenderAdapter);
-
         mealRepo = new MealRepo(requireContext());
-
         Calendar today = Calendar.getInstance();
         selectedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(today.getTime());
         tvSelectedDate.setText("Meals for " + selectedDate);
