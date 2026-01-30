@@ -17,7 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
-  BottomNavigationView bottomNavigationView;
+    BottomNavigationView bottomNavigationView;
     FragmentManager manager;
     FragmentTransaction transaction;
 
@@ -26,39 +26,42 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        bottomNavigationView=findViewById(R.id.bottomNavigationView);
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
         HomeFragment home = new HomeFragment();
         manager = getSupportFragmentManager();
         transaction = manager.beginTransaction();
         transaction.add(R.id.frame_layout, home, "home_fragment");
         transaction.commit();
+
         bottomNavigationView.setOnItemSelectedListener(
-                item->{
+                item -> {
                     if (item.getItemId() == R.id.home_item) {
-                        replaceFragment(new HomeFragment());
+                        replaceFragment(new HomeFragment(), false);
 
                     } else if (item.getItemId() == R.id.search_item) {
-                        replaceFragment( new SearchFragment());
-                    }
-                    else if (item.getItemId() == R.id.calender_item) {
-                        replaceFragment( new CalenderFragment());
-                    }
-                    else if (item.getItemId() == R.id.fav_item) {
-                        replaceFragment( new FavoriteFragment());
-                    }
-                    else if( item.getItemId()==R.id.profile_item)
-                    {
-                        replaceFragment(new ProfileFragment());
+                        replaceFragment(new SearchFragment(), false);
+                    } else if (item.getItemId() == R.id.calender_item) {
+                        replaceFragment(new CalenderFragment(), false);
+                    } else if (item.getItemId() == R.id.fav_item) {
+                        replaceFragment(new FavoriteFragment(), false);
+                    } else if (item.getItemId() == R.id.profile_item) {
+                        replaceFragment(new ProfileFragment(), false);
                     }
                     return true;
                 }
         );
 
     }
-    public void replaceFragment(Fragment fragment)
-    {
-        FragmentTransaction transaction=manager.beginTransaction();
-        transaction.replace(R.id.frame_layout,fragment);
+
+    public void replaceFragment(Fragment fragment, boolean addToBackStack) {
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.replace(R.id.frame_layout, fragment);
+
+        if (!addToBackStack) {
+            transaction.addToBackStack(null);
+        }
+
         transaction.commit();
     }
+
 }

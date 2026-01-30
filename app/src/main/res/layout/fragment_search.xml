@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:padding="24dp"
+    android:paddingVertical="24dp"
+    android:paddingHorizontal="10dp"
     tools:context=".prsentation.search.view.SearchFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout

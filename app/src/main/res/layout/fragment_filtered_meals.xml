@@ -53,45 +53,57 @@
     </com.google.android.material.card.MaterialCardView>
 
 
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="4dp"
-        app:cardUseCompatPadding="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/headerCard"
-        app:strokeWidth="1dp">
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/headerCard"
+            app:strokeWidth="1dp">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/filteredRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="8dp" />
+
+                <ProgressBar
+                    android:id="@+id/progressBarFiltered"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvErrorFiltered"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@color/youtube_red"
+                    android:gravity="bottom"
+                    android:padding="16dp"
+                    android:text="@string/search"
+                    android:textColor="@android:color/white"
+                    android:textSize="22sp"
+                    android:textStyle="bold|italic"
+                    android:visibility="gone" />
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/filteredRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="469dp"
+            </FrameLayout>
 
-            android:padding="8dp" />
-        <TextView
-            android:id="@+id/tvErrorFiltered"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/search"
-            android:textColor="@android:color/holo_red_dark"
-            android:textSize="30sp"
-            android:visibility="gone" />
-        <ProgressBar
-            android:id="@+id/progressBarFiltered"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone"/>
+        </com.google.android.material.card.MaterialCardView>
 
 
 
 
-    </com.google.android.material.card.MaterialCardView>
 
 
 

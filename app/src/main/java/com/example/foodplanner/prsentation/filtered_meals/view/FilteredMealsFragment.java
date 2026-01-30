@@ -55,9 +55,7 @@ public class FilteredMealsFragment extends Fragment implements FilteredMealsView
             @Override
             public void onNetworkLost() {
                 Log.d("No", "onNetworkLost: ");
-                System.out.println("onNetworkLost");
                 requireActivity().runOnUiThread(() -> noInternetDialog.showDialog());
-
             }
 
             @Override
@@ -66,7 +64,7 @@ public class FilteredMealsFragment extends Fragment implements FilteredMealsView
             }
         });
 
-    Bundle bundle = getArguments();
+        Bundle bundle = getArguments();
         if (bundle != null) {
             areaName = bundle.getString("area_name");
             ingredientName = bundle.getString("ingredient_name");
@@ -92,20 +90,18 @@ public class FilteredMealsFragment extends Fragment implements FilteredMealsView
 
     private void showLoading(boolean isLoading) {
         progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-        recyclerView.setVisibility(isLoading ? View.INVISIBLE : View.VISIBLE);
         tvError.setVisibility(View.GONE);
     }
 
     private void showError(String message) {
-        tvError.setVisibility(View.VISIBLE);
         tvError.setText(message);
-        recyclerView.setVisibility(View.GONE);
+        tvError.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
     }
 
     private void showMeals(List<MealFilterBy> meals) {
         if (meals == null || meals.isEmpty()) {
-            showError("No meals found");
+            showError("Sorry, we couldn't find any meals for this filter.");
         } else {
             adapter.setMealList(meals);
             recyclerView.setVisibility(View.VISIBLE);
@@ -138,7 +134,7 @@ public class FilteredMealsFragment extends Fragment implements FilteredMealsView
     public void onFilteredMealsByCategoryLoading() { showLoading(true); }
 
     @Override
-    public void onFilteredMealsByCategoryError(String errMsg) { showError(errMsg); }
+    public void onFilteredMealsByCategoryError(String errMsg) { showError("Unable to load meals for this category. Please try again."); }
 
     @Override
     public void onFilteredMealsByCategorySuccess(List<MealFilterBy> meals) { showMeals(meals); }
@@ -147,7 +143,7 @@ public class FilteredMealsFragment extends Fragment implements FilteredMealsView
     public void onFilteredMealsByIngredientLoading() { showLoading(true); }
 
     @Override
-    public void onFilteredMealsByIngredientError(String errMsg) { showError(errMsg); }
+    public void onFilteredMealsByIngredientError(String errMsg) { showError("Sorry, we couldn't find meals with this ingredient. Please try again."); }
 
     @Override
     public void onFilteredMealsByIngredientSuccess(List<MealFilterBy> meals) { showMeals(meals); }
@@ -156,10 +152,9 @@ public class FilteredMealsFragment extends Fragment implements FilteredMealsView
     public void onFilteredMealsByCountryLoading() { showLoading(true); }
 
     @Override
-    public void onFilteredMealsByCountryError(String errMsg) { showError(errMsg); }
+    public void onFilteredMealsByCountryError(String errMsg) { showError("Oops! Something went wrong while fetching meals from this area. Please try later."); }
 
     @Override
     public void onFilteredMealsByCountrySuccess(List<MealFilterBy> meals) { showMeals(meals); }
-
 
 }

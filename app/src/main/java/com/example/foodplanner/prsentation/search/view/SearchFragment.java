@@ -252,8 +252,9 @@ public class SearchFragment extends Fragment implements GridAdapter.OnItemClickL
     @Override
     public void onSearchedMaelFetchError(String errMsg) {
         progressBar.setVisibility(View.GONE);
-        tvError.setText("Search error: " + errMsg);
+        tvError.setText(errMsg);
         tvError.setVisibility(View.VISIBLE);
+        searchAdapter.clearMeals();
     }
     @Override
     public void onSearchedMaelFetchLoading() { progressBar.setVisibility(View.VISIBLE); }

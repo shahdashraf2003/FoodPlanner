@@ -2,11 +2,9 @@
 <androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    tools:context=".prsentation.home.view.HomeFragment">
+    android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -24,7 +22,6 @@
             android:gravity="center"
             android:textStyle="bold|italic"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -54,15 +51,35 @@
             android:clickable="true"
             android:focusable="true">
 
-            <include
-                android:id="@+id/meal_card_include"
-                layout="@layout/meal_card"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-               />
+                android:layout_height="wrap_content">
+
+                <include
+                    android:id="@+id/meal_card_include"
+                    layout="@layout/meal_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <ProgressBar
+                    android:id="@+id/progressMealCard"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/tvErrorMealCard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="16sp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:visibility="gone"/>
+            </FrameLayout>
+
         </com.google.android.material.card.MaterialCardView>
-
-
 
         <TextView
             android:id="@+id/categories"
@@ -77,6 +94,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="16dp"/>
+
         <FrameLayout
             android:id="@+id/recyclerWrapper"
             android:layout_width="match_parent"
@@ -96,23 +114,22 @@
                 android:scrollbars="horizontal" />
 
             <ProgressBar
-                android:id="@+id/progressBarFiltered"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/progressCategories"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_gravity="center"
-                android:visibility="gone" />
+                android:visibility="gone"/>
 
             <TextView
-                android:id="@+id/tvErrorFiltered"
+                android:id="@+id/tvErrorCategories"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/holo_red_dark"
-                android:textSize="18sp"
-                android:gravity="center"
+                android:textSize="16sp"
                 android:layout_gravity="center"
+                android:gravity="center"
                 android:visibility="gone"/>
         </FrameLayout>
-
 
         <TextView
             android:id="@+id/footerMinimal"
@@ -126,6 +143,7 @@
             app:layout_constraintTop_toBottomOf="@id/recyclerWrapper"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/footerProfessional"
             android:layout_width="match_parent"
