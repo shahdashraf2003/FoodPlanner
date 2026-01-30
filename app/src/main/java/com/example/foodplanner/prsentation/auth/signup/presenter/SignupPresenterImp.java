@@ -1,22 +1,13 @@
 package com.example.foodplanner.prsentation.auth.signup.presenter;
 
-import static android.content.ContentValues.TAG;
-
-import android.util.Log;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-
 import com.example.foodplanner.data.auth.model.UserModel;
-import com.example.foodplanner.prsentation.auth.login.view.LoginContract;
 import com.example.foodplanner.prsentation.auth.signup.view.SignupView;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.concurrent.Executor;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SignupPresenterImp implements SignupPresenter {
     private SignupView view;
@@ -27,20 +18,34 @@ public class SignupPresenterImp implements SignupPresenter {
         this.auth = FirebaseAuth.getInstance();
     }
 
+    @Override
     public void signup(String name, String email, String password) {
-        auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser firebaseUser = auth.getCurrentUser();
-                            UserModel userModel = new UserModel(firebaseUser.getUid(), name, email);
-                            view.onSignupSuccess(userModel);
-                        } else {
-                            String errorMsg = task.getException() != null ? task.getException().getMessage() : "Signup failed";
-                            view.onSignupError(errorMsg);
-                        }
-                    }
-                });
+        view.onSignupLoading();
+        signupWithRx(name, email, password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        view::onSignupSuccess,
+                        throwable -> view.onSignupError(throwable.getMessage())
+                );
     }
+
+    private Single<UserModel> signupWithRx(String name, String email, String password) {
+        return Single.create(emitter ->
+                auth.createUserWithEmailAndPassword(email, password)
+                        .addOnSuccessListener(authResult -> {
+                            FirebaseUser firebaseUser = auth.getCurrentUser();
+                            if (firebaseUser != null) {
+                                emitter.onSuccess(
+                                        new UserModel(firebaseUser.getUid(), name, email)
+                                );
+                            } else {
+                                emitter.onError(new Exception("User is null"));
+                            }
+                        })
+                        .addOnFailureListener(emitter::onError)
+        );
+    }
+
+
 }

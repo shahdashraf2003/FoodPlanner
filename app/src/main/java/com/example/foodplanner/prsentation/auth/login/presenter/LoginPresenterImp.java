@@ -7,20 +7,24 @@ import com.example.foodplanner.data.auth.repository.AuthRepo;
 import com.example.foodplanner.data.auth.repository.AuthRepoImp;
 import com.example.foodplanner.data.meal.datasource.local.LocalMealsDao;
 import com.example.foodplanner.data.sync.model.MealSyncModel;
-import com.example.foodplanner.prsentation.auth.login.view.LoginContract;
+import com.example.foodplanner.prsentation.auth.login.view.LoginView;
+import com.google.firebase.FirebaseNetworkException;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.database.FirebaseDatabase;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class LoginPresenterImp implements LoginContract.Presenter {
+public class LoginPresenterImp implements LoginPresenter {
 
-    private LoginContract.View view;
+    private LoginView view;
     private AuthRepo authRepo;
     private SessionManager sessionManager;
     private MealSyncModel mealSyncModel;
 
-    public LoginPresenterImp(LoginContract.View view, Context context, LocalMealsDao localMealsDao) {
+    public LoginPresenterImp(LoginView view, Context context, LocalMealsDao localMealsDao) {
         this.view = view;
         authRepo = new AuthRepoImp();
         sessionManager = new SessionManager(context);
@@ -30,6 +34,7 @@ public class LoginPresenterImp implements LoginContract.Presenter {
 
     @Override
     public void login(String email, String password) {
+        view.onLoginLoading();
         authRepo.login(email, password)
                 .flatMapCompletable(user ->
                         sessionManager.saveUser(user)
@@ -45,8 +50,25 @@ public class LoginPresenterImp implements LoginContract.Presenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         user -> view.onLoginSuccess(user),
-                        throwable -> view.onLoginError(throwable.getMessage())
+                        throwable -> {
+                            String errorMessage;
+
+                            if (throwable instanceof FirebaseAuthInvalidUserException) {
+                                errorMessage = "No account found with this email.";
+                            } else if (throwable instanceof FirebaseAuthInvalidCredentialsException) {
+                                errorMessage = "Incorrect email or password.";
+                            } else if (throwable instanceof FirebaseAuthUserCollisionException) {
+                                errorMessage = "This email is already in use.";
+                            } else if (throwable instanceof FirebaseNetworkException) {
+                                errorMessage = "Please check your internet connection.";
+                            } else {
+                                errorMessage = "Email and Password are  required";
+                            }
+
+                            view.onLoginError(errorMessage);
+                        }
                 );
+
     }
 
     @Override

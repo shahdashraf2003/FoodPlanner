@@ -15,8 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodplanner.R;
-import com.example.foodplanner.data.meal.MealRepo;
 import com.example.foodplanner.data.meal.model.Meal;
+import com.example.foodplanner.prsentation.calender.presenter.CalenderPresenter;
+import com.example.foodplanner.prsentation.calender.presenter.CalenderPresenterImp;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,21 +25,22 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.schedulers.Schedulers;
-
-public class CalenderFragment extends Fragment implements OnCalenderedMealClickListener {
+public class CalenderFragment extends Fragment
+        implements OnCalenderedMealClickListener, CalenderView {
 
     private CalendarView calendarView;
     private TextView tvSelectedDate;
     private RecyclerView rvCalMeals;
-    private CalenderAdapter calenderAdapter;
-    private MealRepo mealRepo;
+    private CalenderAdapter adapter;
+    private CalenderPresenter presenter;
     private String selectedDate;
+    private TextView tvNoMeals;
+
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_calender, container, false);
     }
 
@@ -49,66 +51,60 @@ public class CalenderFragment extends Fragment implements OnCalenderedMealClickL
         calendarView = view.findViewById(R.id.calendarView);
         tvSelectedDate = view.findViewById(R.id.tvSelectedDate);
         rvCalMeals = view.findViewById(R.id.rvCalMeals);
-        rvCalMeals.setLayoutManager(new LinearLayoutManager(requireContext()));
-        calenderAdapter = new CalenderAdapter(this);
-        rvCalMeals.setAdapter(calenderAdapter);
-        mealRepo = new MealRepo(requireContext());
-        Calendar today = Calendar.getInstance();
-        selectedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(today.getTime());
-        tvSelectedDate.setText("Meals for " + selectedDate);
-        loadMealsForDate(selectedDate);
 
-        calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
-            Calendar selectedCal = Calendar.getInstance();
-            selectedCal.set(year, month, dayOfMonth);
-            selectedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(selectedCal.getTime());
+        rvCalMeals.setLayoutManager(new LinearLayoutManager(requireContext()));
+        adapter = new CalenderAdapter(this);
+        rvCalMeals.setAdapter(adapter);
+        tvNoMeals = view.findViewById(R.id.tvNoMeals);
+
+
+        presenter = new CalenderPresenterImp(requireContext(), this);
+
+        Calendar today = Calendar.getInstance();
+        selectedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                .format(today.getTime());
+        tvSelectedDate.setText("Meals for " + selectedDate);
+
+        presenter.getCalendarMeals(selectedDate);
+
+        calendarView.setOnDateChangeListener((v, y, m, d) -> {
+            Calendar c = Calendar.getInstance();
+            c.set(y, m, d);
+            selectedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    .format(c.getTime());
             tvSelectedDate.setText("Meals for " + selectedDate);
-            loadMealsForDate(selectedDate);
+            presenter.getCalendarMeals(selectedDate);
         });
     }
 
-    private void loadMealsForDate(String date) {
-        mealRepo.getCalendarMeals()
-                .subscribeOn(Schedulers.io())
-                .map(meals -> {
-                    List<Meal> filtered = new ArrayList<>();
-                    for (Meal meal : meals) {
-                        if (date.equals(meal.getCalendarDate())) {
-                            filtered.add(meal);
-                        }
-                    }
-                    return filtered;
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        meals -> {
-                            Log.d("DEBUG", "Meals count: " + meals.size());
-                            calenderAdapter.setList(meals);
-                        },
-                        throwable -> {
-                            Log.e("DEBUG", "Error fetching meals", throwable);
-                            calenderAdapter.setList(new ArrayList<>());
-                        }
-                );
-
-
+    @Override
+    public void showMeals(List<Meal> meals) {
+        adapter.setList(meals);
+        rvCalMeals.setVisibility(View.VISIBLE);
+        tvNoMeals.setVisibility(View.GONE);
     }
-
 
 
     @Override
-    public void onCalenderedMealClick(Meal meal) {
-        mealRepo.removeCalenderedMeal(meal)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        () -> {
-                            loadMealsForDate(selectedDate);
-                        },
-                        throwable -> {
-                            throwable.printStackTrace();
-                        }
-                );
+    public void onNoMealsFounded() {
+        adapter.setList(new ArrayList<>());
+        rvCalMeals.setVisibility(View.GONE);
+        tvNoMeals.setVisibility(View.VISIBLE);
     }
 
+
+    @Override
+    public void showError(String msg) {
+        Log.e("DEBUG", msg);
+    }
+
+    @Override
+    public void onMealRemoved(Meal meal) {
+        presenter.getCalendarMeals(selectedDate);
+    }
+
+    @Override
+    public void onCalenderedMealClick(Meal meal) {
+        presenter.removeMealFromCalendar(meal);
+    }
 }

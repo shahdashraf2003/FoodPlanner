@@ -3,10 +3,10 @@ package com.example.foodplanner.prsentation.favorite.view;
 import static com.example.foodplanner.utils.SnackBarUtil.showSnack;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,15 +17,18 @@ import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.prsentation.favorite.presenter.FavPresenter;
 import com.example.foodplanner.prsentation.favorite.presenter.FavPresenterImpl;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.schedulers.Schedulers;
+import java.util.List;
+
+
 
 
 public class FavoriteFragment extends Fragment implements FavView, OnFavoriteClickListener {
 
     private FavoriteAdapter favAdapter;
     private FavPresenter favPresenter;
-    private   RecyclerView rvFavMeals;
+    private RecyclerView rvFavMeals;
+    private LinearLayout layoutEmptyFav;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,38 +39,41 @@ public class FavoriteFragment extends Fragment implements FavView, OnFavoriteCli
 
         favAdapter = new FavoriteAdapter(this);
         rvFavMeals.setAdapter(favAdapter);
+        layoutEmptyFav = view.findViewById(R.id.layoutEmptyFav);
+
 
         favPresenter = new FavPresenterImpl(requireContext(), this);
-        favPresenter.getFavMeals()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        meals -> favAdapter.setList(meals),
-                        throwable -> Log.e("FavError", "Failed to load favorites", throwable) // onError
-                );
+        favPresenter.getFavMeals();
 
         return view;
     }
 
     @Override
     public void onMealClick(Meal meal) {
-        favPresenter.deleteFavMeal(meal)
-                .andThen(favPresenter.getFavMeals())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        meals -> {
-                            favAdapter.setList(meals);
-                            onMealDeleted();
-                        },
-                        throwable -> Log.e("FavError", "Failed to delete and reload", throwable)
-                );
+        favPresenter.deleteFavMeal(meal);
+    }
+    @Override
+    public void showMeals(List<Meal> meals) {
+        if (meals == null || meals.isEmpty()) {
+            layoutEmptyFav.setVisibility(View.VISIBLE);
+            rvFavMeals.setVisibility(View.GONE);
+        } else {
+            layoutEmptyFav.setVisibility(View.GONE);
+            rvFavMeals.setVisibility(View.VISIBLE);
+            favAdapter.setList(meals);
+        }
+    }
+
+    @Override
+    public void onNoMealsFounded() {
+        layoutEmptyFav.setVisibility(View.VISIBLE);
+        rvFavMeals.setVisibility(View.GONE);
     }
 
     @Override
     public void onMealDeleted() {
-        showSnack(requireView().getRootView(),
-                "Meal removed"
-               );
+        favPresenter.getFavMeals();
+
 
     }
 

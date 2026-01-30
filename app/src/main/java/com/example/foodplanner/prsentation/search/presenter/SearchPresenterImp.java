@@ -86,19 +86,20 @@ public class SearchPresenterImp implements SearchPresenter {
     @Override
     public void getSearchedMeal(String mealName) {
         searchView.onSearchedMaelFetchLoading();
+        if (mealName == null || mealName.trim().isEmpty()) {
+            searchView.onSearchedMaelFetchError("Please enter a keyword to search");
+            return;
+        }
         mealRepo.getSearchedMeal(mealName)
                 .subscribeOn(Schedulers.io())
                 .map(mealResponse -> mealResponse.getMeals())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        meals->{
-                            searchView.onSearchedMaelFetchSuccess(meals);
-                        },
-                        throwable ->{
-                            searchView.onSearchedMaelFetchError(throwable.getMessage());
-                        }
+                        meals -> searchView.onSearchedMaelFetchSuccess(meals),
+                        throwable -> searchView.onSearchedMaelFetchError(" No meals found matching your search")
                 );
     }
+
 
 
 

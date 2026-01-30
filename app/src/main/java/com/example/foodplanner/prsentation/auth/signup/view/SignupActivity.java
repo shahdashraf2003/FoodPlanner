@@ -4,15 +4,15 @@ import static com.example.foodplanner.utils.SnackBarUtil.showSnack;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
-
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.auth.model.UserModel;
-import com.example.foodplanner.prsentation.MainActivity;
 import com.example.foodplanner.prsentation.auth.login.view.LoginActivity;
 import com.example.foodplanner.prsentation.auth.signup.presenter.SignupPresenterImp;
 import com.google.android.material.button.MaterialButton;
@@ -24,6 +24,8 @@ public class SignupActivity extends AppCompatActivity implements SignupView{
     private TextInputEditText etName, etEmail, etPassword;
     private MaterialButton btnSignup;
     private TextView login;
+    ProgressBar progressBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,7 @@ public class SignupActivity extends AppCompatActivity implements SignupView{
         etPassword = findViewById(R.id.et_password_signup);
         btnSignup = findViewById(R.id.btn_signup);
         login=findViewById(R.id.btn_login_redirect);
+        progressBar = findViewById(R.id.progressBar);
         btnSignup.setOnClickListener(v -> {
 
             String name = etName.getText().toString().trim();
@@ -56,6 +59,7 @@ public class SignupActivity extends AppCompatActivity implements SignupView{
     }
     @Override
     public void onSignupSuccess(UserModel user) {
+        progressBar.setVisibility(View.GONE);
         showSnack(findViewById(android.R.id.content),"Signup Successful! Welcome "+user.getUserName());
         startActivity(new Intent(this, LoginActivity.class));
 
@@ -64,8 +68,20 @@ public class SignupActivity extends AppCompatActivity implements SignupView{
 
     @Override
     public void onSignupError(String message) {
+        progressBar.setVisibility(View.GONE);
         showSnack(findViewById(android.R.id.content),message);
 
 
+    }
+
+    @Override
+    public void onSignupLoading() {
+        progressBar.setVisibility(View.VISIBLE);
+
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+        super.onPointerCaptureChanged(hasCapture);
     }
 }

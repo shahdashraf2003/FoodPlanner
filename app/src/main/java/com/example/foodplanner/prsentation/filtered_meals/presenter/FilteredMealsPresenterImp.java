@@ -25,14 +25,11 @@ public class FilteredMealsPresenterImp implements FilteredMealsPresenter{
                 .map(mealFilterByResponse -> mealFilterByResponse.getMealsFilterBy())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        meals->{
-                            filteredMealsView.onFilteredMealsByIngredientSuccess(meals);
-                        },
-                        throwable ->{
-                            filteredMealsView.onFilteredMealsByIngredientError(throwable.getMessage());
-                        }
+                        meals -> filteredMealsView.onFilteredMealsByIngredientSuccess(meals),
+                        throwable -> filteredMealsView.onFilteredMealsByIngredientError(
+                                "Sorry, we couldn't find meals with this ingredient. Please try again."
+                        )
                 );
-
     }
 
     @Override
@@ -43,12 +40,10 @@ public class FilteredMealsPresenterImp implements FilteredMealsPresenter{
                 .map(mealFilterByResponse -> mealFilterByResponse.getMealsFilterBy())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        meals->{
-                            filteredMealsView.onFilteredMealsByCountrySuccess(meals);
-                        },
-                        throwable ->{
-                            filteredMealsView.onFilteredMealsByCountryError(throwable.getMessage());
-                        }
+                        meals -> filteredMealsView.onFilteredMealsByCountrySuccess(meals),
+                        throwable -> filteredMealsView.onFilteredMealsByCountryError(
+                                "Oops! Something went wrong while fetching meals from this area. Please try later."
+                        )
                 );
     }
 
@@ -60,15 +55,11 @@ public class FilteredMealsPresenterImp implements FilteredMealsPresenter{
                 .map(mealFilterByResponse -> mealFilterByResponse.getMealsFilterBy())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        meals->{
-                            filteredMealsView.onFilteredMealsByCategorySuccess(meals);
-                        },
-                        throwable ->{
-                            filteredMealsView.onFilteredMealsByCategoryError(throwable.getMessage());
-                        }
+                        meals -> filteredMealsView.onFilteredMealsByCategorySuccess(meals),
+                        throwable -> filteredMealsView.onFilteredMealsByCategoryError(
+                                "Unable to load meals for this category. Check your connection and try again."
+                        )
                 );
     }
-
-
 
 }

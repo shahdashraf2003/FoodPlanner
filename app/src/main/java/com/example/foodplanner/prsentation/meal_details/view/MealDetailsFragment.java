@@ -83,7 +83,7 @@ private NetworkConnectionObserver networkObserver;
         btnYoutube = view.findViewById(R.id.btn_youtube);
         progressLoading = view.findViewById(R.id.progressMealDetails);
         tvError = view.findViewById(R.id.tvErrorMealDetails);
-        ingredientsAdapter = new IngredientsAdapter(new ArrayList<>());
+        ingredientsAdapter = new IngredientsAdapter(new ArrayList<>(), new ArrayList<>());
         rvIngredients.setLayoutManager(new LinearLayoutManager(requireContext()));
         rvIngredients.setAdapter(ingredientsAdapter);
         FloatingActionButton fab = view.findViewById(R.id.fab_favorite);
