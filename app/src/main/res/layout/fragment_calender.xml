@@ -10,18 +10,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginTop="70dp"
-        android:padding="12dp">
+        android:layout_marginTop="40dp"
+
+
+        >
 
         <FrameLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/card_border"
-            android:padding="8dp">
+            android:layout_gravity="center"
+            android:padding="16dp">
 
             <CalendarView
                 android:id="@+id/calendarView"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/white" />
         </FrameLayout>

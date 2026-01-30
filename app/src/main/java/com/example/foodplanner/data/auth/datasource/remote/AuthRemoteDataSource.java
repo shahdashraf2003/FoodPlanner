@@ -1,4 +1,4 @@
-package com.example.foodplanner.data.auth.repository;
+package com.example.foodplanner.data.auth.datasource.remote;
 
 import com.example.foodplanner.data.auth.model.UserModel;
 import com.google.firebase.auth.AuthCredential;
@@ -8,22 +8,25 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 import io.reactivex.rxjava3.core.Single;
 
-public class AuthRepoImp  implements AuthRepo {
+public class AuthRemoteDataSource {
 
-    private FirebaseAuth auth;
+    private final FirebaseAuth auth;
 
-    public AuthRepoImp() {
+    public AuthRemoteDataSource() {
         auth = FirebaseAuth.getInstance();
     }
 
-    @Override
     public Single<UserModel> login(String email, String password) {
         return Single.create(emitter ->
                 auth.signInWithEmailAndPassword(email, password)
                         .addOnSuccessListener(result -> {
                             FirebaseUser user = result.getUser();
                             if (user != null) {
-                                emitter.onSuccess(new UserModel(user.getUid(), user.getDisplayName() != null ? user.getDisplayName() : "User", user.getEmail()));
+                                emitter.onSuccess(new UserModel(
+                                        user.getUid(),
+                                        user.getDisplayName() != null ? user.getDisplayName() : "User",
+                                        user.getEmail()
+                                ));
                             } else {
                                 emitter.onError(new Throwable("User is null"));
                             }
@@ -32,7 +35,6 @@ public class AuthRepoImp  implements AuthRepo {
         );
     }
 
-    @Override
     public Single<UserModel> loginWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         return Single.create(emitter ->
@@ -40,7 +42,11 @@ public class AuthRepoImp  implements AuthRepo {
                         .addOnSuccessListener(result -> {
                             FirebaseUser user = result.getUser();
                             if (user != null) {
-                                emitter.onSuccess(new UserModel(user.getUid(), user.getDisplayName() != null ? user.getDisplayName() : "User", user.getEmail()));
+                                emitter.onSuccess(new UserModel(
+                                        user.getUid(),
+                                        user.getDisplayName() != null ? user.getDisplayName() : "User",
+                                        user.getEmail()
+                                ));
                             } else {
                                 emitter.onError(new Throwable("User is null"));
                             }

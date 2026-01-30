@@ -6,24 +6,21 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
-import android.util.Log;
 import android.view.View;
 import android.widget.CalendarView;
 import android.widget.LinearLayout;
+
 import com.example.foodplanner.R;
-import com.example.foodplanner.data.meal.MealRepo;
 import com.example.foodplanner.data.meal.model.Meal;
+import com.example.foodplanner.prsentation.meal_details.view.OnDateSelectedListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.schedulers.Schedulers;
-
 public class CalenderUtil {
 
-    public static void showCalendarDialog(Meal meal, Context context, MealRepo mealRepo) {
+    public static void showCalendarDialog(Meal meal, Context context, OnDateSelectedListener listener) {
 
         Dialog dialog = new Dialog(context);
 
@@ -43,11 +40,12 @@ public class CalenderUtil {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         ));
-
         calendarView.setBackgroundColor(context.getResources().getColor(R.color.white));
         calendarView.setWeekDayTextAppearance(android.R.style.TextAppearance_Small);
+
         layout.addView(calendarView);
         dialog.setContentView(layout);
+
         View rootView = ((Activity) context)
                 .getWindow()
                 .getDecorView()
@@ -65,35 +63,17 @@ public class CalenderUtil {
             selectedDate.set(year, month, dayOfMonth, 0, 0, 0);
             selectedDate.set(Calendar.MILLISECOND, 0);
 
-            Log.d("showCalendarDialog", "showCalendarDialog: "+mealRepo);
             if (selectedDate.before(today)) {
-                showSnack(view,"You can't add to previous day");
-            } else  {
-                Log.d("showCalendarDialog", "showCalendarDialog: "+meal);
-
-                SimpleDateFormat sdf =
-                        new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                String formattedDate = sdf.format(selectedDate.getTime());
-
-                Log.d("showCalendarDialog", "showCalendarDialog: "+meal);
-
-                mealRepo.addMealToCalendar(meal, formattedDate)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                () -> {
-                                    showSnack(rootView,"Meal added to calendar");
-                                    dialog.dismiss();
-                                },
-                                throwable -> {
-                                    Log.e("CalenderUtil", "Failed to add meal to calendar", throwable);
-                                    showSnack(rootView,"Failed to add meal");
-                                }
-                        );
-
-                showSnack(rootView,"meal added to calendar");
-                dialog.dismiss();
+                showSnack(view, "You can't add to previous day");
+                return;
             }
+
+            SimpleDateFormat sdf =
+                    new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            String formattedDate = sdf.format(selectedDate.getTime());
+
+            listener.onDateSelected(formattedDate);
+            dialog.dismiss();
         });
 
         dialog.show();

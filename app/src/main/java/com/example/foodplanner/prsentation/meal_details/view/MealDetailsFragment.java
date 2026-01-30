@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
-import com.example.foodplanner.data.auth.local.SessionManager;
+import com.example.foodplanner.data.auth.datasource.local.SessionManager;
 
 import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.prsentation.meal_details.presenter.MealDetailsPresenter;
@@ -42,7 +42,7 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView ,Me
     private MealDetailsPresenter presenter;
     private String mealId;
 
-    private ImageView ivMealImage;
+   private ImageView ivMealImage;
     private TextView tvMealName, badgeCategory, badgeArea, tvMealInstructions, tvYoutubeTitle;
     private RecyclerView rvIngredients;
     private MaterialCardView cardYoutube;
@@ -58,7 +58,7 @@ private NetworkConnectionObserver networkObserver;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new MealDetailsPresenterImp(requireContext(), this);
+        presenter = new MealDetailsPresenterImp(this, requireContext());
     }
 
     @Override
@@ -107,7 +107,9 @@ private NetworkConnectionObserver networkObserver;
                     showGuestWarningDialog();
                 } else {
                     if (meal != null) {
-                        showCalendarDialog(meal, requireContext(), presenter.getMealRepo());
+                        showCalendarDialog(meal, requireContext(), date -> {
+                            presenter.addMealToCalendar(meal, date);
+                        });
                     }
                 }
             });
@@ -241,6 +243,8 @@ private NetworkConnectionObserver networkObserver;
                 "Meal Added to fav"
         );
     }
+
+
 
     private String extractYouTubeVideoId(String url) {
         if (url.contains("v=")) return url.split("v=")[1].split("&")[0];

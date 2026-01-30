@@ -51,7 +51,7 @@ public class FilteredMealsFragment extends Fragment implements FilteredMealsView
 
         NoInternetDialog noInternetDialog = new NoInternetDialog(requireContext());
 
-        networkObserver = new NetworkConnectionObserver(requireContext(), new NetworkConnectionObserver.NetworkListener() {
+        networkObserver = new NetworkConnectionObserver (requireContext(), new NetworkConnectionObserver.NetworkListener() {
             @Override
             public void onNetworkLost() {
                 Log.d("No", "onNetworkLost: ");

@@ -54,6 +54,11 @@ public class CalenderAdapter extends RecyclerView.Adapter<CalenderAdapter.CalVie
 
         holder.btnDelete.setOnClickListener(v -> {
             if (listener != null) {
+                listener.onCalenderedMealDeleteClick(meal);
+            }
+        });
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
                 listener.onCalenderedMealClick(meal);
             }
         });

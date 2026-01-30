@@ -1,5 +1,5 @@
 
-package com.example.foodplanner.data.mealsfilterby.datasource;
+package com.example.foodplanner.data.mealsfilterby.datasource.remote;
 
 import com.example.foodplanner.data.mealsfilterby.model.MealFilterByResponse;
 import com.example.foodplanner.network.Network;
@@ -7,12 +7,12 @@ import com.example.foodplanner.network.Services;
 
 import io.reactivex.rxjava3.core.Single;
 
-public class MealFilterByDataSource {
+public class MealFilterByRemoteDataSource {
 
     private Services mealService;
     public static String TAG = "MealFilterByDataSource";
 
-    public MealFilterByDataSource() {
+    public MealFilterByRemoteDataSource() {
         mealService = Network.getInstance().services;
     }
 

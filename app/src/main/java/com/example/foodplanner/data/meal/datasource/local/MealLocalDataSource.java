@@ -11,6 +11,7 @@ import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
 
 public class MealLocalDataSource {
+
     private LocalMealsDao localMealsDao;
 
     public MealLocalDataSource(Context context) {
@@ -19,54 +20,46 @@ public class MealLocalDataSource {
     }
 
     public Completable insertFavMeal(Meal meal) {
-        return localMealsDao.exists(meal.getIdMeal())
-                .flatMapCompletable(count -> {
-                    if (count > 0) {
-                        return localMealsDao.updateFav(meal.getIdMeal(), true);
-                    } else {
-
-                        meal.setFav(true);
-                        meal.setCalendar(false);
-                        meal.setCalendarDate(null);
-                        return localMealsDao.insertMeal(meal);
-                    }
-                });
+        return localMealsDao.insertMeal(meal);
     }
 
+    public Completable updateFavMeal(String mealId, boolean isFav) {
+        return localMealsDao.updateFav(mealId, isFav);
+    }
 
-       public Completable deleteFavMeal(Meal meal) {
-           meal.setFav(false);
-        return localMealsDao.updateFav(meal.getIdMeal(),false);
-
+    public Completable deleteFavMeal(Meal meal) {
+        return localMealsDao.updateFav(meal.getIdMeal(), false);
     }
 
     public Single<List<Meal>> getFavMeals() {
         return localMealsDao.getFavMeals();
     }
 
-    public Completable addMealToCalendar(Meal meal, String date) {
-        return localMealsDao.exists(meal.getIdMeal())
-                .flatMapCompletable(
-                        count->{
-                            if(count>0)
-                                return  localMealsDao.updateCalendar(meal.getIdMeal(), true,date);
-                        else{
-            meal.setCalendar(true);
-            meal.setCalendarDate(date);
-            meal.setFav(false);
-           return localMealsDao.insertMeal(meal);
-        }});
+    public Completable addMealToCalendar(Meal meal) {
+        return localMealsDao.insertMeal(meal);
+    }
 
+    public Completable updateMealCalendar(String mealId, boolean isCalendar, String date) {
+        return localMealsDao.updateCalendar(mealId, isCalendar, date);
     }
 
     public Completable removeMealFromCalendar(Meal meal) {
-        meal.setCalendar(false);
-        meal.setCalendarDate(null);
         return localMealsDao.updateCalendar(meal.getIdMeal(), false, null);
-
     }
 
     public Single<List<Meal>> getCalendarMeals() {
         return localMealsDao.getCalendarMeals();
+    }
+
+    public Single<List<Meal>> getAllMeals() {
+        return localMealsDao.getMeals();
+    }
+
+    public Single<Meal> getMealById(String mealId) {
+        return localMealsDao.getMealById(mealId);
+    }
+
+    public Single<Integer> mealExists(String mealId) {
+        return localMealsDao.exists(mealId);
     }
 }

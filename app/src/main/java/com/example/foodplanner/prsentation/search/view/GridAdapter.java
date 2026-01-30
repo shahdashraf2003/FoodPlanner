@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.foodplanner.R;
-import com.example.foodplanner.data.common.DisplayItem;
+import com.example.foodplanner.data.common.model.DisplayItem;
 import java.util.ArrayList;
 import java.util.List;
 

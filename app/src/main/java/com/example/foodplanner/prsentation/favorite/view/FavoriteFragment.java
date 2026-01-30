@@ -16,6 +16,7 @@ import com.example.foodplanner.R;
 import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.prsentation.favorite.presenter.FavPresenter;
 import com.example.foodplanner.prsentation.favorite.presenter.FavPresenterImpl;
+import com.example.foodplanner.prsentation.meal_details.view.MealDetailsFragment;
 
 import java.util.List;
 
@@ -50,6 +51,22 @@ public class FavoriteFragment extends Fragment implements FavView, OnFavoriteCli
 
     @Override
     public void onMealClick(Meal meal) {
+        Bundle bundle = new Bundle();
+        bundle.putString("idMeal", meal.getIdMeal());
+
+        MealDetailsFragment fragment = new MealDetailsFragment();
+        fragment.setArguments(bundle);
+
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_layout, fragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+
+    @Override
+    public void onMealDelelteClick(Meal meal) {
         favPresenter.deleteFavMeal(meal);
     }
     @Override

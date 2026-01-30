@@ -2,20 +2,20 @@ package com.example.foodplanner.prsentation.home.presenter;
 
 import android.content.Context;
 
-import com.example.foodplanner.data.category.datasource.CategoryRemoteDataSource;
-import com.example.foodplanner.data.meal.MealRepo;
+import com.example.foodplanner.data.category.repository.CategoryRepository;
+import com.example.foodplanner.data.meal.repository.MealRepository;
 import com.example.foodplanner.prsentation.home.view.HomeView;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class HomePresenterImp implements HomePresenter {
-    private MealRepo mealRepo;
-    private CategoryRemoteDataSource categoryRemoteDataSource;
+    private MealRepository mealRepo;
+    private CategoryRepository categoryRepo;
     private HomeView homeView;
     public HomePresenterImp(Context context, HomeView homeView) {
-        mealRepo = new MealRepo(context);
-        categoryRemoteDataSource=new CategoryRemoteDataSource();
+        mealRepo = new MealRepository(context);
+        categoryRepo=new CategoryRepository(context);
         this.homeView =homeView;
     }
     public void getRandomMeal() {
@@ -40,7 +40,7 @@ public class HomePresenterImp implements HomePresenter {
     @Override
     public void getAllCategories() {
         homeView.onAllCategoriesFetchLoading();
-        categoryRemoteDataSource.getAllCategories()
+        categoryRepo.getAllCategories()
                 .subscribeOn(Schedulers.io())
                 .map(categoryResponse -> categoryResponse.getCategories())
                 .observeOn(AndroidSchedulers.mainThread())

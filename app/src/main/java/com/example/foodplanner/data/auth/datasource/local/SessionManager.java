@@ -1,4 +1,4 @@
-package com.example.foodplanner.data.auth.local;
+package com.example.foodplanner.data.auth.datasource.local;
 
 import android.content.Context;
 import android.content.SharedPreferences;

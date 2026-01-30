@@ -1,4 +1,4 @@
-package com.example.foodplanner.data.common;
+package com.example.foodplanner.data.common.model;
 
 public class DisplayItem {
 
