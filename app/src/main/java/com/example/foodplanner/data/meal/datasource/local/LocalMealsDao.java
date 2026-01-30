@@ -51,5 +51,9 @@ public interface LocalMealsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     Completable insertMeals(List<Meal> meals);
 
+    @Query("SELECT * FROM meals WHERE idMeal = :mealId LIMIT 1")
+    Single<Meal> getMealById(String mealId);
+
+
 
 }

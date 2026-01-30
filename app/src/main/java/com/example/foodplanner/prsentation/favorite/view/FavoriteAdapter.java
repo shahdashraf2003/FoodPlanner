@@ -56,7 +56,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.FavVie
 
 
         holder.btnDelete.setOnClickListener(v -> {
-            listener.onMealClick(meal);
+            listener.onMealDelelteClick(meal);
         });
         holder.itemView.setOnClickListener(v -> {
             listener.onMealClick(meal);
