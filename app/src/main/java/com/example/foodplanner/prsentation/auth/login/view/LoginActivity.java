@@ -5,6 +5,7 @@ import static com.example.foodplanner.utils.SnackBarUtil.showSnack;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -15,18 +16,21 @@ import com.example.foodplanner.data.auth.model.UserModel;
 import com.example.foodplanner.data.meal.datasource.local.LocalMealsDao;
 import com.example.foodplanner.database.AppDB;
 import com.example.foodplanner.prsentation.MainActivity;
+import com.example.foodplanner.prsentation.auth.login.presenter.LoginPresenter;
 import com.example.foodplanner.prsentation.auth.login.presenter.LoginPresenterImp;
 import com.example.foodplanner.prsentation.auth.signup.view.SignupActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class LoginActivity extends AppCompatActivity implements LoginContract.View {
+public class LoginActivity extends AppCompatActivity implements LoginView {
     private FirebaseAuth auth;
     private TextInputEditText loginEmail ,loginPassword;
     private TextView signup;
     private MaterialButton skip , loginButton,google;
-    private LoginContract.Presenter presenter;
+    private LoginPresenter presenter;
+    ProgressBar progressBar;
+
 
 
 
@@ -45,8 +49,10 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         loginButton = findViewById(R.id.btn_login);
         skip = findViewById(R.id.btn_skip);
         google = findViewById(R.id.btn_google);
+        progressBar = findViewById(R.id.pd_login);
         LocalMealsDao localMealsDao = AppDB.getInstance(this).localMealsDao();
         presenter = new LoginPresenterImp(this, this, localMealsDao);
+
 
         loginButton.setOnClickListener(v -> {
             String email = loginEmail.getText().toString().trim();
@@ -77,6 +83,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     @Override
     public void onLoginSuccess(UserModel user) {
         View rootView = findViewById(android.R.id.content);
+            progressBar.setVisibility(View.GONE);
 
         if(user != null){
            showSnack(rootView, "Welcome back " + user.getUserName());
@@ -93,8 +100,14 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     @Override
     public void onLoginError(String message) {
         View rootView = findViewById(android.R.id.content);
-
+        progressBar.setVisibility(View.GONE);
         showSnack(rootView,message);
+    }
+
+    @Override
+    public void onLoginLoading() {
+        progressBar.setVisibility(View.VISIBLE);
+
     }
 
     private void openHomeScreen() {
@@ -102,5 +115,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     }
 
 
-
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+        super.onPointerCaptureChanged(hasCapture);
+    }
 }
