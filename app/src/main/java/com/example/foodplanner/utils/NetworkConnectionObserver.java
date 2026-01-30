@@ -1,5 +1,4 @@
 package com.example.foodplanner.utils;
-
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.Network;
@@ -17,6 +16,12 @@ public class NetworkConnectionObserver {
     public NetworkConnectionObserver(Context context, NetworkListener listener) {
         connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
+        if (!isNetworkAvailable()) {
+            listener.onNetworkLost();
+        } else {
+            listener.onNetworkAvailable();
+        }
+
         networkCallback = new ConnectivityManager.NetworkCallback() {
             @Override
             public void onLost(Network network) {
@@ -29,6 +34,13 @@ public class NetworkConnectionObserver {
             }
         };
         connectivityManager.registerDefaultNetworkCallback(networkCallback);
+    }
+
+    public boolean isNetworkAvailable() {
+        if (connectivityManager != null) {
+            return connectivityManager.getActiveNetwork() != null;
+        }
+        return false;
     }
 
     public void unregister() {
