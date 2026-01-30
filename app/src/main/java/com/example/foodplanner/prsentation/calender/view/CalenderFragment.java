@@ -18,6 +18,7 @@ import com.example.foodplanner.R;
 import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.prsentation.calender.presenter.CalenderPresenter;
 import com.example.foodplanner.prsentation.calender.presenter.CalenderPresenterImp;
+import com.example.foodplanner.prsentation.meal_details.view.MealDetailsFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -105,6 +106,22 @@ public class CalenderFragment extends Fragment
 
     @Override
     public void onCalenderedMealClick(Meal meal) {
+        Bundle bundle = new Bundle();
+        bundle.putString("idMeal", meal.getIdMeal());
+
+        MealDetailsFragment fragment = new MealDetailsFragment();
+        fragment.setArguments(bundle);
+
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_layout, fragment)
+                .addToBackStack(null)
+                .commit();
+
+    }
+
+    @Override
+    public void onCalenderedMealDeleteClick(Meal meal) {
         presenter.removeMealFromCalendar(meal);
     }
 }
