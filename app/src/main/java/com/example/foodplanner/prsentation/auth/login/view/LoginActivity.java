@@ -19,20 +19,24 @@ import com.example.foodplanner.prsentation.MainActivity;
 import com.example.foodplanner.prsentation.auth.login.presenter.LoginPresenter;
 import com.example.foodplanner.prsentation.auth.login.presenter.LoginPresenterImp;
 import com.example.foodplanner.prsentation.auth.signup.view.SignupActivity;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity implements LoginView {
+
     private FirebaseAuth auth;
-    private TextInputEditText loginEmail ,loginPassword;
+    private TextInputEditText loginEmail, loginPassword;
     private TextView signup;
-    private MaterialButton skip , loginButton,google;
+    private MaterialButton skip, loginButton, google;
     private LoginPresenter presenter;
-    ProgressBar progressBar;
-
-
-
+    private ProgressBar progressBar;
+    GoogleSignInClient googleSignInClient;
 
 
     @Override
@@ -40,7 +44,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
-
 
         auth = FirebaseAuth.getInstance();
         loginEmail = findViewById(R.id.et_EmailAddress);
@@ -50,9 +53,9 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         skip = findViewById(R.id.btn_skip);
         google = findViewById(R.id.btn_google);
         progressBar = findViewById(R.id.pd_login);
+
         LocalMealsDao localMealsDao = AppDB.getInstance(this).localMealsDao();
         presenter = new LoginPresenterImp(this, this, localMealsDao);
-
 
         loginButton.setOnClickListener(v -> {
             String email = loginEmail.getText().toString().trim();
@@ -61,32 +64,28 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         });
 
         skip.setOnClickListener(v -> presenter.loginAsGuest());
-      /* google.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            presenter.loginWithGoogle();
-              
-            }
-        });*/
-        signup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
-                startActivity(intent);
-            }
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
+        google.setOnClickListener(v -> {
+            Intent signInIntent = googleSignInClient.getSignInIntent();
+            startActivityForResult(signInIntent, 1001);
         });
+
+
+        signup.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, SignupActivity.class)));
     }
-
-
-
 
     @Override
     public void onLoginSuccess(UserModel user) {
+        progressBar.setVisibility(View.GONE);
         View rootView = findViewById(android.R.id.content);
-            progressBar.setVisibility(View.GONE);
 
         if(user != null){
-           showSnack(rootView, "Welcome back " + user.getUserName());
+            showSnack(rootView, "Welcome back " + user.getUserName());
         } else {
             showSnack(rootView, "Welcome Guest");
         }
@@ -96,27 +95,64 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         openHomeScreen();
     }
 
-
     @Override
     public void onLoginError(String message) {
-        View rootView = findViewById(android.R.id.content);
         progressBar.setVisibility(View.GONE);
-        showSnack(rootView,message);
+        View rootView = findViewById(android.R.id.content);
+        showSnack(rootView, message);
+    }
+
+    @Override
+    public void onGuestLogin() {
+        progressBar.setVisibility(View.GONE);
+        View rootView = findViewById(android.R.id.content);
+        showSnack(rootView, "Welcome Guest");
+        openHomeScreen();
     }
 
     @Override
     public void onLoginLoading() {
         progressBar.setVisibility(View.VISIBLE);
+    }
 
+    @Override
+    public void onLoginFinished() {
+        progressBar.setVisibility(View.GONE);
     }
 
     private void openHomeScreen() {
-        startActivity(new Intent( this, MainActivity.class));
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
-
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
         super.onPointerCaptureChanged(hasCapture);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(presenter instanceof LoginPresenterImp){
+            ((LoginPresenterImp) presenter).onDestroy();
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1001) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                GoogleSignInAccount account = task.getResult(Exception.class);
+                if(account != null && account.getIdToken() != null){
+                    presenter.loginWithGoogle(account.getIdToken());
+                }
+            } catch (Exception e) {
+                View rootView = findViewById(android.R.id.content);
+                showSnack(rootView, "Google Sign-In failed: " + e.getMessage());
+            }
+        }
+    }
+
 }

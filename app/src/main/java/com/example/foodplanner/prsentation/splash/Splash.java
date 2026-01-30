@@ -7,7 +7,7 @@ import android.os.Handler;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.foodplanner.R;
-import com.example.foodplanner.data.auth.local.SessionManager;
+import com.example.foodplanner.data.auth.datasource.local.SessionManager;
 import com.example.foodplanner.prsentation.MainActivity;
 import com.example.foodplanner.prsentation.auth.login.view.LoginActivity;
 import com.airbnb.lottie.LottieAnimationView;

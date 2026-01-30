@@ -2,7 +2,6 @@ package com.example.foodplanner.prsentation.profile.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +10,7 @@ import android.widget.Button;
 import androidx.fragment.app.Fragment;
 
 import com.example.foodplanner.R;
-import com.example.foodplanner.data.auth.local.SessionManager;
-import com.example.foodplanner.data.auth.model.UserModel;
+import com.example.foodplanner.data.auth.datasource.local.SessionManager;
 import com.example.foodplanner.data.meal.datasource.local.LocalMealsDao;
 import com.example.foodplanner.database.AppDB;
 import com.example.foodplanner.prsentation.auth.login.view.LoginActivity;
@@ -20,9 +18,6 @@ import com.example.foodplanner.prsentation.calender.view.CalenderFragment;
 import com.example.foodplanner.prsentation.favorite.view.FavoriteFragment;
 import com.example.foodplanner.prsentation.profile.presenter.ProfilePresenter;
 import com.example.foodplanner.prsentation.profile.presenter.ProfilePresenterImp;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class ProfileFragment extends Fragment implements ProfileView {
 
@@ -48,42 +43,7 @@ public class ProfileFragment extends Fragment implements ProfileView {
             presenter.loadUser();
         }
 
-
-        btnLogout.setOnClickListener(v -> {
-            if (!sessionManager.isGuest()) {
-                String userId = sessionManager.getUserId();
-                if (userId != null) {
-                    presenter.uploadAndClearMeals(userId)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(
-                                    () -> {
-                                        Log.d("SYNC", "Uploading meals for user: " + userId);
-                                        if (getActivity() != null) {
-                                            getActivity().finishAffinity(); }
-
-                                    },
-                                    throwable -> {
-                                        showMessage("Logout failed: " + throwable.getMessage());
-                                    }
-                            );
-                } else {
-                    sessionManager.logout()
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(
-                                    () -> {
-
-                                    }
-                            );
-                }
-            } else {
-                openLoginScreen();
-            }
-        });
-
-
-
+        btnLogout.setOnClickListener(v -> presenter.logout());
 
         btnFavourite.setOnClickListener(v -> {
             FavoriteFragment fragment = new FavoriteFragment();
@@ -91,7 +51,6 @@ public class ProfileFragment extends Fragment implements ProfileView {
                     .replace(R.id.frame_layout, fragment)
                     .addToBackStack(null)
                     .commit();
-
         });
 
         btnPlanned.setOnClickListener(v -> {
@@ -100,14 +59,13 @@ public class ProfileFragment extends Fragment implements ProfileView {
                     .replace(R.id.frame_layout, fragment)
                     .addToBackStack(null)
                     .commit();
-
         });
 
         return view;
     }
 
     @Override
-    public void showUser(UserModel user) {
+    public void showUser(com.example.foodplanner.data.auth.model.UserModel user) {
         btnFavourite.setVisibility(View.VISIBLE);
         btnPlanned.setVisibility(View.VISIBLE);
         btnLogout.setText("Logout");

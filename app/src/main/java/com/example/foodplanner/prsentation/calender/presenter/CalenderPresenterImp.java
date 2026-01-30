@@ -2,7 +2,7 @@ package com.example.foodplanner.prsentation.calender.presenter;
 
 import android.content.Context;
 
-import com.example.foodplanner.data.meal.MealRepo;
+import com.example.foodplanner.data.meal.repository.MealRepository;
 import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.prsentation.calender.view.CalenderView;
 
@@ -14,11 +14,11 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class CalenderPresenterImp implements CalenderPresenter {
 
-    private MealRepo mealRepo;
+    private MealRepository mealRepo;
     private CalenderView view;
 
     public CalenderPresenterImp(Context context, CalenderView view) {
-        this.mealRepo = new MealRepo(context);
+        this.mealRepo = new MealRepository(context);
         this.view = view;
     }
 

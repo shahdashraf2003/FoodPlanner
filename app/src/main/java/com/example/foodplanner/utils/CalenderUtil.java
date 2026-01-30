@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.CalendarView;
 import android.widget.LinearLayout;
 import com.example.foodplanner.R;
-import com.example.foodplanner.data.meal.MealRepo;
+import com.example.foodplanner.data.meal.repository.MealRepository;
 import com.example.foodplanner.data.meal.model.Meal;
 
 import java.text.SimpleDateFormat;
@@ -23,7 +23,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class CalenderUtil {
 
-    public static void showCalendarDialog(Meal meal, Context context, MealRepo mealRepo) {
+    public static void showCalendarDialog(Meal meal, Context context, MealRepository mealRepo) {
 
         Dialog dialog = new Dialog(context);
 

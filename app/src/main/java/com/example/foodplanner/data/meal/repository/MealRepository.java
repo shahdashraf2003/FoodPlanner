@@ -1,4 +1,4 @@
-package com.example.foodplanner.data.meal;
+package com.example.foodplanner.data.meal.repository;
 
 import android.content.Context;
 
@@ -12,11 +12,11 @@ import java.util.List;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
 
-public class MealRepo {
+public class MealRepository {
     private MealLocalDataSource mealLocalDataSource;
     private MealRemoteDataSource mealRemoteDataSource;
 
-    public MealRepo(Context context) {
+    public MealRepository(Context context) {
         this.mealLocalDataSource = new MealLocalDataSource(context);
         this.mealRemoteDataSource = new MealRemoteDataSource();
     }

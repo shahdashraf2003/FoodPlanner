@@ -2,7 +2,7 @@ package com.example.foodplanner.prsentation.meal_details.presenter;
 
 import android.content.Context;
 
-import com.example.foodplanner.data.meal.MealRepo;
+import com.example.foodplanner.data.meal.repository.MealRepository;
 import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.prsentation.meal_details.view.MealDetailsView;
 
@@ -11,10 +11,10 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MealDetailsPresenterImp implements MealDetailsPresenter{
 
-    private MealRepo mealRepo;
+    private MealRepository mealRepo;
     private MealDetailsView mealDetailsView;
     public MealDetailsPresenterImp(Context context, MealDetailsView mealDetailsView) {
-        mealRepo = new MealRepo(context);
+        mealRepo = new MealRepository(context);
         this.mealDetailsView =mealDetailsView;
     }
     @Override
@@ -49,7 +49,7 @@ public class MealDetailsPresenterImp implements MealDetailsPresenter{
     }
 
     @Override
-    public MealRepo getMealRepo() {
+    public MealRepository getMealRepo() {
         return mealRepo;
     }
 

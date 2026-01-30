@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
-import com.example.foodplanner.data.auth.local.SessionManager;
+import com.example.foodplanner.data.auth.datasource.local.SessionManager;
 
 import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.prsentation.meal_details.presenter.MealDetailsPresenter;

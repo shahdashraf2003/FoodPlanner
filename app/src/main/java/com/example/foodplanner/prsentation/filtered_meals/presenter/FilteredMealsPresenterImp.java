@@ -2,25 +2,24 @@ package com.example.foodplanner.prsentation.filtered_meals.presenter;
 
 import android.content.Context;
 
-import com.example.foodplanner.data.mealsfilterby.datasource.MealFilterByDataSource;
+import com.example.foodplanner.data.mealsfilterby.repositoy.MealFilterByRepository;
 import com.example.foodplanner.prsentation.filtered_meals.view.FilteredMealsView;
-
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class FilteredMealsPresenterImp implements FilteredMealsPresenter{
-    private MealFilterByDataSource mealFilterByDataSource;
+    private MealFilterByRepository mealFilterByRepository;
     private FilteredMealsView filteredMealsView;
 
     public FilteredMealsPresenterImp(Context context, FilteredMealsView filteredMealsView) {
-        mealFilterByDataSource = new MealFilterByDataSource();
+        mealFilterByRepository = new MealFilterByRepository(context);
         this.filteredMealsView =filteredMealsView;
     }
     @Override
     public void filterByIngredient(String ingredient) {
         filteredMealsView.onFilteredMealsByIngredientLoading();
-        mealFilterByDataSource.filterByIngredient(ingredient)
+        mealFilterByRepository.filterByIngredient(ingredient)
                 .subscribeOn(Schedulers.io())
                 .map(mealFilterByResponse -> mealFilterByResponse.getMealsFilterBy())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -35,7 +34,7 @@ public class FilteredMealsPresenterImp implements FilteredMealsPresenter{
     @Override
     public void filterByArea(String area) {
         filteredMealsView.onFilteredMealsByCountryLoading();
-        mealFilterByDataSource.filterByArea(area)
+        mealFilterByRepository.filterByArea(area)
                 .subscribeOn(Schedulers.io())
                 .map(mealFilterByResponse -> mealFilterByResponse.getMealsFilterBy())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -50,7 +49,7 @@ public class FilteredMealsPresenterImp implements FilteredMealsPresenter{
     @Override
     public void filterByCategory(String category) {
         filteredMealsView.onFilteredMealsByCategoryLoading();
-        mealFilterByDataSource.filterByCategory(category)
+        mealFilterByRepository.filterByCategory(category)
                 .subscribeOn(Schedulers.io())
                 .map(mealFilterByResponse -> mealFilterByResponse.getMealsFilterBy())
                 .observeOn(AndroidSchedulers.mainThread())

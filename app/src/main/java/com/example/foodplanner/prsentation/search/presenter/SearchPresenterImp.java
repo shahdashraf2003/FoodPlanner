@@ -3,10 +3,10 @@ package com.example.foodplanner.prsentation.search.presenter;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.foodplanner.data.area.datasource.AreaRemoteDataSource;
-import com.example.foodplanner.data.category.datasource.CategoryRemoteDataSource;
-import com.example.foodplanner.data.ingredient.datasource.IngredientRemoteDataSource;
-import com.example.foodplanner.data.meal.MealRepo;
+import com.example.foodplanner.data.area.repository.AreaRepository;
+import com.example.foodplanner.data.category.repository.CategoryRepository;
+import com.example.foodplanner.data.ingredient.repository.IngredientRepository;
+import com.example.foodplanner.data.meal.repository.MealRepository;
 import com.example.foodplanner.prsentation.search.view.SearchView;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -14,24 +14,24 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SearchPresenterImp implements SearchPresenter {
 
-    private final AreaRemoteDataSource areaRemoteDataSource;
-    private final CategoryRemoteDataSource allCategoriesRemoteDataSource;
-    private final IngredientRemoteDataSource ingredientRemoteDataSource;
-    private final MealRepo mealRepo;
+    private final AreaRepository areaRepo;
+    private final CategoryRepository allCategoryRepo;
+    private final IngredientRepository ingredientRepo;
+    private final MealRepository mealRepo;
     private final SearchView searchView;
 
     public SearchPresenterImp(Context context, SearchView searchView) {
-        areaRemoteDataSource = new AreaRemoteDataSource();
-        allCategoriesRemoteDataSource = new CategoryRemoteDataSource();
-        ingredientRemoteDataSource = new IngredientRemoteDataSource();
-        mealRepo= new MealRepo(context);
+        areaRepo = new AreaRepository(context);
+        allCategoryRepo = new CategoryRepository(context);
+        ingredientRepo = new IngredientRepository(context);
+        mealRepo= new MealRepository(context);
         this.searchView = searchView;
     }
 
     @Override
     public void getAllIngredientsList() {
         searchView.onIngredientsFetchLoading();
-        ingredientRemoteDataSource.getAllIngredients()
+        ingredientRepo.getAllIngredients()
                 .map(categoryResponse -> categoryResponse.getAllIngredientsList())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -49,7 +49,7 @@ public class SearchPresenterImp implements SearchPresenter {
     @Override
     public void getAllCategoriesList() {
         searchView.onCategoriesFilterFetchLoading();
-        allCategoriesRemoteDataSource.getAllCategories()
+        allCategoryRepo.getAllCategories()
                 .map(categoryResponse -> categoryResponse.getCategories())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -69,7 +69,7 @@ public class SearchPresenterImp implements SearchPresenter {
         searchView.onAreaListFetchLoading();
             Log.d("SearchPresenter", "Fetching areas...");
 
-            areaRemoteDataSource.getAllAreasList()
+            areaRepo.getAllAreasList()
                     .subscribeOn(Schedulers.io())
                     .map(areaResponse -> areaResponse.getAllAreas())
                     .observeOn(AndroidSchedulers.mainThread())

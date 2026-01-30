@@ -1,4 +1,4 @@
-package com.example.foodplanner.data.area.datasource;
+package com.example.foodplanner.data.area.datasource.remote;
 
 import com.example.foodplanner.data.area.model.AreaResponse;
 import com.example.foodplanner.network.Network;

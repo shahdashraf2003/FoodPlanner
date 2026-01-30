@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.area.model.Area;
 import com.example.foodplanner.data.category.model.Category;
-import com.example.foodplanner.data.common.DisplayItem;
+import com.example.foodplanner.data.common.model.DisplayItem;
 import com.example.foodplanner.data.ingredient.model.Ingredient;
 import com.example.foodplanner.data.meal.model.Meal;
 import com.example.foodplanner.prsentation.filtered_meals.view.FilteredMealsFragment;
