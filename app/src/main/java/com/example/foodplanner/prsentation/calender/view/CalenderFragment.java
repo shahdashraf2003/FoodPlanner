@@ -1,5 +1,7 @@
 package com.example.foodplanner.prsentation.calender.view;
 
+import static com.example.foodplanner.utils.SnackBarUtil.showSnack;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -102,6 +104,7 @@ public class CalenderFragment extends Fragment
     @Override
     public void onMealRemoved(Meal meal) {
         presenter.getCalendarMeals(selectedDate);
+        showSnack(requireView(), "Meal removed from calendar");
     }
 
     @Override

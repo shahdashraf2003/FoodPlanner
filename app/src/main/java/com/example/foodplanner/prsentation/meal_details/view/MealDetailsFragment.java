@@ -239,10 +239,9 @@ private NetworkConnectionObserver networkObserver;
 
     @Override
     public void showMessage(String message) {
-        showSnack(requireView().getRootView(),
-                "Meal Added to fav"
-        );
+        showSnack(requireView().getRootView(), message);
     }
+
 
 
 
