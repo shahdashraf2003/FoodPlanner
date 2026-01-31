@@ -33,14 +33,11 @@ import com.google.android.material.chip.ChipGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.rxjava3.core.Observable;
-
 public class SearchFragment extends Fragment implements GridAdapter.OnItemClickListener, SearchView, OnMealClickListener {
 
     private RecyclerView recyclerView;
     private GridAdapter adapter;
     private SearchAdapter searchAdapter;
-
     private ChipGroup chipGroup;
     private EditText searchEditText;
     private ProgressBar progressBar;
@@ -92,6 +89,7 @@ public class SearchFragment extends Fragment implements GridAdapter.OnItemClickL
                 requireActivity().runOnUiThread(() -> noInternetDialog.hideDialog());
             }
         });
+
         Chip chipClear = view.findViewById(R.id.chip_clear);
         chipClear.setOnClickListener(v -> {
             currentFilter = null;
@@ -100,98 +98,89 @@ public class SearchFragment extends Fragment implements GridAdapter.OnItemClickL
             chipGroup.clearCheck();
             searchEditText.setHint("Search recipes..");
             adapter.setItems(new ArrayList<>());
+            searchAdapter.clearMeals();
+            tvError.setVisibility(View.GONE);
+            chipGroup.setOnCheckedChangeListener(null);
+            chipGroup.clearCheck();
+            setupChipListeners();
         });
-
 
         return view;
     }
 
     private void setupChipListeners() {
-        chipGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            searchEditText.setText("");
+        Chip chipCategory = chipGroup.findViewById(R.id.chip_category);
+        Chip chipIngredient = chipGroup.findViewById(R.id.chip_ingredient);
+        Chip chipCountry = chipGroup.findViewById(R.id.chip_country);
+
+        View.OnClickListener chipClickListener = v -> {
             tvError.setVisibility(View.GONE);
+            isSearching = false;
+            recyclerView.setAdapter(adapter);
+            adapter.setItems(currentDisplayItems);
 
-            if (isSearching) {
-                isSearching = false;
-                recyclerView.setAdapter(adapter);
-                adapter.setItems(currentDisplayItems);
-            }
-
-            if (checkedId == R.id.chip_category) {
+            if (v.getId() == R.id.chip_category) {
                 currentFilter = FilterType.CATEGORY;
                 searchEditText.setHint("Search by category");
                 if (allCategoriesList.isEmpty()) presenter.getAllCategoriesList();
                 else updateDisplayItemsFromCategories();
-            } else if (checkedId == R.id.chip_ingredient) {
+            } else if (v.getId() == R.id.chip_ingredient) {
                 currentFilter = FilterType.INGREDIENT;
                 searchEditText.setHint("Search by ingredient");
                 if (allIngredientsList.isEmpty()) presenter.getAllIngredientsList();
                 else updateDisplayItemsFromIngredients();
-            } else if (checkedId == R.id.chip_country) {
+            } else if (v.getId() == R.id.chip_country) {
                 currentFilter = FilterType.AREA;
                 searchEditText.setHint("Search by country");
                 if (allAreasList.isEmpty()) presenter.getAllAreasList();
                 else updateDisplayItemsFromAreas();
-            } else {
-                currentFilter = null;
-                searchEditText.setHint("Search meals");
             }
-        });
+        };
+
+        chipCategory.setOnClickListener(chipClickListener);
+        chipIngredient.setOnClickListener(chipClickListener);
+        chipCountry.setOnClickListener(chipClickListener);
     }
+
 
     private void setupSearchListener() {
         searchEditText.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                tvError.setText("");
-
-            }
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { tvError.setText(""); }
             @Override public void afterTextChanged(Editable s) {}
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String query = s.toString().trim();
+                String query = s.toString().trim().toLowerCase();
                 if (query.isEmpty()) {
                     if (isSearching) revertToFilterView();
                     return;
                 }
                 if (!isSearching) switchToSearchMode();
-                if(currentFilter != null){
-                    Observable.fromIterable(currentFilter == FilterType.CATEGORY ? allCategoriesList
-                            : currentFilter == FilterType.INGREDIENT ? allIngredientsList
-                            : allAreasList)
-                            .filter(item -> {
-                                if (currentFilter == FilterType.CATEGORY) {
-                                    return ((Category) item).getStrCategory().toLowerCase().contains(query);
-                                } else if (currentFilter == FilterType.INGREDIENT) {
-                                    return ((Ingredient) item).getName().toLowerCase().contains(query);
-                                } else {
-                                    return ((Area) item).getStrArea().toLowerCase().contains(query);
-                                }
-                            })
-                             .map(item -> {
-                        if (currentFilter == FilterType.CATEGORY) {
-                            Category c = (Category) item;
-                            return new DisplayItem(c.getStrCategory(), c.getStrCategoryThumb());
-                        } else if (currentFilter == FilterType.INGREDIENT) {
-                            Ingredient i = (Ingredient) item;
-                            return new DisplayItem(i.getName(), i.getImageUrl());
-                        } else {
-                            Area a = (Area) item;
-                            return new DisplayItem(a.getStrArea(), a.getFlagUrl());
-                        }
-                    })
-                            .toList()
-                            .subscribe(displayItems -> adapter.setItems(displayItems));
+
+                List<DisplayItem> filteredItems = new ArrayList<>();
+
+                if (currentFilter == FilterType.CATEGORY) {
+                    for (Category c : allCategoriesList) {
+                        if (c.getStrCategory().toLowerCase().contains(query))
+                            filteredItems.add(new DisplayItem(c.getStrCategory(), c.getStrCategoryThumb()));
+                    }
+                    adapter.setItems(filteredItems);
+                } else if (currentFilter == FilterType.INGREDIENT) {
+                    for (Ingredient i : allIngredientsList) {
+                        if (i.getName().toLowerCase().contains(query))
+                            filteredItems.add(new DisplayItem(i.getName(), i.getImageUrl()));
+                    }
+                    adapter.setItems(filteredItems);
+                } else if (currentFilter == FilterType.AREA) {
+                    for (Area a : allAreasList) {
+                        if (a.getStrArea().toLowerCase().contains(query))
+                            filteredItems.add(new DisplayItem(a.getStrArea(), a.getFlagUrl()));
+                    }
+                    adapter.setItems(filteredItems);
                 } else {
-
                     presenter.getSearchedMeal(query);
-
                 }
-
-
             }
         });
-
-
     }
 
     private void switchToSearchMode() {
@@ -206,8 +195,6 @@ public class SearchFragment extends Fragment implements GridAdapter.OnItemClickL
             adapter.setItems(currentDisplayItems);
         });
     }
-
-
 
     private void navigateToFilteredMeals(Bundle bundle) {
         FilteredMealsFragment fragment = new FilteredMealsFragment();
@@ -299,11 +286,9 @@ public class SearchFragment extends Fragment implements GridAdapter.OnItemClickL
     public void onItemClick(DisplayItem item) {
         if (currentFilter == null) return;
         Bundle bundle = new Bundle();
-        switch (currentFilter) {
-            case CATEGORY: bundle.putString("category_name", item.getName()); break;
-            case INGREDIENT: bundle.putString("ingredient_name", item.getName()); break;
-            case AREA: bundle.putString("area_name", item.getName()); break;
-        }
+        if (currentFilter == FilterType.CATEGORY) bundle.putString("category_name", item.getName());
+        else if (currentFilter == FilterType.INGREDIENT) bundle.putString("ingredient_name", item.getName());
+        else if (currentFilter == FilterType.AREA) bundle.putString("area_name", item.getName());
         navigateToFilteredMeals(bundle);
     }
 
@@ -311,17 +296,14 @@ public class SearchFragment extends Fragment implements GridAdapter.OnItemClickL
     public void onMealClick(Meal meal) {
         Bundle bundle = new Bundle();
         bundle.putString("idMeal", meal.getIdMeal());
-
         MealDetailsFragment fragment = new MealDetailsFragment();
         fragment.setArguments(bundle);
-
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frame_layout, fragment)
                 .addToBackStack(null)
                 .commit();
     }
-
 
     @Override
     public void onDestroyView() {

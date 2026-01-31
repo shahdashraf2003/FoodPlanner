@@ -67,7 +67,7 @@ public class ProfilePresenterImp implements ProfilePresenter {
                 disposables.add(
                         uploadAndClearMeals(userId)
                                 .subscribe(
-                                        () -> view.openLoginScreen(),
+                                        () -> view.closeApp(),
                                         throwable -> view.showMessage("Logout failed: " + throwable.getMessage())
                                 )
                 );

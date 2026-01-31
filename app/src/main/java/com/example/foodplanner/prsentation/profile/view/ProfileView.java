@@ -7,4 +7,5 @@ public interface ProfileView {
     void showGuestMode();
     void openLoginScreen();
     void showMessage(String message);
+    void closeApp();
 }

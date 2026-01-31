@@ -87,4 +87,9 @@ public class ProfileFragment extends Fragment implements ProfileView {
 
     @Override
     public void showMessage(String message) {}
+
+    @Override
+    public void closeApp() {
+        requireActivity().finishAffinity();
+    }
 }
