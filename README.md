@@ -94,6 +94,6 @@ git clone https://github.com/shahdashraf2003/FoodPlanner
 - Shows empty state if no meals found
 - Prevents crashes with proper null checks and RxJava error handling
 
-## 👥 Contributors
+## 👤 Developer
 
 Shahd Ashraf
